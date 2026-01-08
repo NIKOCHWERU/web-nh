@@ -47,11 +47,11 @@ const HomeClient = () => {
             animate="visible"
             variants={fadeInUp}
           >
-            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mb-4 md:mb-6 leading-tight tracking-tight uppercase">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight tracking-tight uppercase">
               Sentral Edukasi <br/>
               <span className="text-gold">Dan Solusi Hukum</span>
             </h1>
-            <p className="text-base md:text-xl mb-8 md:text-xl mb-10 text-gray-300 leading-relaxed border-l-4 md:border-l-4 border-gold pl-4 md:pl-6 font-light">
+            <p className="text-base md:text-lg lg:text-xl mb-8 md:mb-10 text-gray-300 leading-relaxed border-l-4 border-gold pl-4 md:pl-6 font-light">
               Kami memberikan pendampingan hukum yang profesional dengan pendekatan edukatif 
               untuk solusi yang berkeadilan dan berkelanjutan.
             </p>
@@ -186,7 +186,7 @@ const HomeClient = () => {
           </div>
           
           <motion.div 
-            className="grid lg:grid-cols-3 gap-10"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -250,7 +250,7 @@ const HomeClient = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-4 relative z-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
             {[
               { 
                 step: "01", 
