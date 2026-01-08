@@ -61,20 +61,20 @@ const Navbar = () => {
         {/* Logo */}
         <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 lg:gap-4 group">
           <div className="relative">
-            <img src="/logo.png" alt="Narasumber Hukum Logo" className="w-10 h-10 md:w-12 lg:w-16 md:h-12 lg:h-16 object-contain filter drop-shadow-xl transition-transform duration-500 group-hover:scale-105" />
+            <img src="/logo.png" alt="Narasumber Hukum Logo" className="w-10 h-10 md:w-14 lg:w-16 md:h-14 lg:h-16 object-contain filter drop-shadow-xl transition-transform duration-500 group-hover:scale-105" />
           </div>
           <div className="flex flex-col">
-             <span className="text-lg md:text-xl lg:text-2xl font-bold tracking-[0.15em] uppercase font-serif text-gold border-b border-gold/40 pb-0.5 leading-tight">
+             <span className="text-lg md:text-2xl font-bold tracking-[0.15em] uppercase font-serif text-gold border-b border-gold/40 pb-0.5 leading-tight">
               Narasumber Hukum
             </span>
-            <span className="text-[8px] lg:text-[10px] text-white tracking-[0.3em] uppercase mt-0.5 font-sans whitespace-nowrap">
+            <span className="text-[8px] md:text-[9px] lg:text-[10px] text-white tracking-[0.3em] uppercase mt-0.5 font-sans whitespace-nowrap">
               Sentral Edukasi & Solusi
             </span>
           </div>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex md:space-x-4 lg:space-x-8 items-center text-[10px] lg:text-sm font-medium uppercase tracking-wide">
+        <div className="hidden md:flex md:space-x-6 lg:space-x-8 items-center text-xs lg:text-sm font-medium uppercase tracking-wide">
           {navLinks.map((link) => (
              link.isHash && location.pathname === '/' ? (
                 <a 
@@ -98,7 +98,7 @@ const Navbar = () => {
           <a 
             href="/#contact" 
             onClick={handleContactClick}
-            className="bg-gold text-navy px-3 lg:px-5 py-2 rounded font-bold hover:bg-opacity-90 transition duration-300 uppercase text-[9px] lg:text-xs tracking-widest cursor-pointer"
+            className="bg-gold text-navy px-4 lg:px-5 py-2 rounded font-bold hover:bg-opacity-90 transition duration-300 uppercase text-[10px] lg:text-xs tracking-widest cursor-pointer"
           >
             Hubungi
           </a>
