@@ -245,10 +245,10 @@ const AboutClient = () => {
               title="Google Map"
             ></iframe>
           </div>
-          <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-6 text-white text-lg">
-             <div className="flex items-center gap-3 bg-white/5 px-8 py-4 rounded-full border border-white/10">
-                <MapPin className="text-gold" />
-                <span className="font-light tracking-wide">Menara Cakrawala Lt. 12 Unit 5A, Jl. M.H. Thamrin Kav. 9, Menteng, Jakarta Pusat 10340</span>
+          <div className="mt-8 md:mt-12 flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6 text-white text-xs md:text-lg">
+             <div className="flex items-center gap-3 bg-white/5 px-6 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-full border border-white/10 text-center md:text-left">
+                <MapPin className="text-gold flex-shrink-0" size={18} />
+                <span className="font-light tracking-wide leading-relaxed">Menara Cakrawala Lt. 12 Unit 5A, Jl. M.H. Thamrin Kav. 9, Menteng, Jakarta Pusat 10340</span>
              </div>
           </div>
         </div>
