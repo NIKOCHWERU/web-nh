@@ -26,7 +26,11 @@ const Footer = () => {
                      { name: 'Facebook', icon: <Facebook size={20} />, url: '#' },
                      { name: 'LinkedIn', icon: <Linkedin size={20} />, url: '#' },
                      { name: 'Youtube', icon: <Youtube size={20} />, url: '#' },
-                     { name: 'Whatsapp', icon: <FaWhatsapp size={20} />, url: 'https://wa.me/6281252992361' },
+                     { 
+                        name: 'Whatsapp', 
+                        icon: <FaWhatsapp size={20} />, 
+                        url: `https://wa.me/6281252992361?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}` 
+                      },
                    ].map((item, idx) => (
                      <a 
                        key={idx} 
@@ -65,13 +69,19 @@ const Footer = () => {
                 <div className="space-y-4 text-sm text-gray-300">
                     <div className="group">
                         <p className="font-bold text-white mb-1">Admin 1</p>
-                        <a href="https://wa.me/6281252992361" className="flex items-center gap-2 hover:text-gold transition">
+                        <a 
+                          href={`https://wa.me/6281252992361?text=${encodeURIComponent("Halo Admin Narasumber Hukum, saya ingin berkonsultasi.")}`} 
+                          className="flex items-center gap-2 hover:text-gold transition"
+                        >
                             <Phone size={16} /> 0812-5299-2361
                         </a>
                     </div>
                     <div className="group">
                          <p className="font-bold text-white mb-1">Admin 2</p>
-                        <a href="https://wa.me/6287712345678" className="flex items-center gap-2 hover:text-gold transition">
+                        <a 
+                          href={`https://wa.me/6287712345678?text=${encodeURIComponent("Halo Admin Narasumber Hukum, saya ingin berkonsultasi.")}`} 
+                          className="flex items-center gap-2 hover:text-gold transition"
+                        >
                              <Phone size={16} /> 0877-1234-5678 (Contoh)
                         </a>
                     </div>
