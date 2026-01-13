@@ -65,16 +65,16 @@ const Footer = () => {
                 <h4 className="text-xl font-bold mb-6 text-gold">Kantor Kami</h4>
                 <div className="space-y-4 text-sm text-gray-300">
                     <div>
-                        <p className="font-bold text-white mb-1">Kantor Pusat</p>
-                        <p>Jl. Jendral Sudirman No. 45, Jakarta Selatan</p>
+                        <p className="font-bold text-white mb-1">Kantor I</p>
+                        <p>Jl.M.H Thamrin No. 9 Lt 12, Kebon Sirih Menteng, DKI Jakarta, 10340</p>
                     </div>
                     <div>
-                         <p className="font-bold text-white mb-1">Kantor Cabang 1</p>
-                        <p>Jl. Diponegoro No. 88, Surabaya, Jawa Timur</p>
+                         <p className="font-bold text-white mb-1">Kantor II</p>
+                        <p>Jl. Sunset Road No. 77, Lt.3, Kuta, Kec. Kuta, Badung, Bali, 80361</p>
                     </div>
                      <div>
-                         <p className="font-bold text-white mb-1">Kantor Cabang 2</p>
-                        <p>Jl. Asia Afrika No. 12, Bandung, Jawa Barat</p>
+                         <p className="font-bold text-white mb-1">Kantor III</p>
+                        <p>Jl. Kertabumi No 1 Ruko Kertabumi Blok A No.9 Lantai 2 Kelurahan Karawang Kulon, Kecamatan Karawang Barat, Kabupaten Karawang, Provinsi Jawa Barat</p>
                     </div>
                 </div>
             </div>
@@ -84,21 +84,21 @@ const Footer = () => {
                 <h4 className="text-xl font-bold mb-6 text-gold">Hubungi Kami</h4>
                 <div className="space-y-4 text-sm text-gray-300">
                     <div className="group">
-                        <p className="font-bold text-white mb-1">Admin 1</p>
+                        <p className="font-bold text-white mb-1">Admin</p>
                         <a 
-                          href={`https://wa.me/6281252992361?text=${encodeURIComponent("Halo Admin Narasumber Hukum, saya ingin berkonsultasi.")}`} 
+                          href={`https://wa.me/6282211020022?text=${encodeURIComponent("Halo Admin Narasumber Hukum, saya ingin berkonsultasi.")}`} 
                           className="flex items-center gap-2 hover:text-gold transition"
                         >
-                            <Phone size={16} /> 0812-5299-2361
+                            <Phone size={16} /> 0822 1102 0022
                         </a>
                     </div>
                     <div className="group">
-                         <p className="font-bold text-white mb-1">Admin 2</p>
+                         <p className="font-bold text-white mb-1">Advisor</p>
                         <a 
-                          href={`https://wa.me/6287712345678?text=${encodeURIComponent("Halo Admin Narasumber Hukum, saya ingin berkonsultasi.")}`} 
+                          href={`https://wa.me/6282144424311?text=${encodeURIComponent("Halo Admin Narasumber Hukum, saya ingin berkonsultasi.")}`} 
                           className="flex items-center gap-2 hover:text-gold transition"
                         >
-                             <Phone size={16} /> 0877-1234-5678 (Contoh)
+                             <Phone size={16} /> 0821 4442 4311
                         </a>
                     </div>
                      <div className="mt-6">

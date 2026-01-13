@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import ConsultationCTA from '@/components/ConsultationCTA';
 
 const fadeInUp: any = {
   hidden: { opacity: 0, y: 20 },
@@ -82,6 +83,9 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           />
         </motion.article>
 
+        {/* Consultation CTA */}
+        <ConsultationCTA />
+
         {/* Footer info */}
         <motion.footer 
           initial={{ opacity: 0 }}
@@ -100,3 +104,4 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
 };
 
 export default ArticleDetailClient;
+

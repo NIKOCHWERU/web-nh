@@ -240,7 +240,7 @@ const AboutClient = () => {
                 variants={fadeInUp}
                 className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:border-gold/30 transition-all duration-300 hover:-translate-y-2 group"
               >
-                <div className="w-16 h-16 bg-navy/5 rounded-xl flex items-center justify-center text-gold mb-6 group-hover:bg-gold group-hover:text-navy transition-all duration-300">
+                <div className="w-16 h-16 bg-navy/5 rounded-xl flex items-center justify-center text-gold mb-6 group-hover:bg-gold group-hover:text-navy transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                   {mission.icon}
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-navy font-serif">{mission.title}</h3>
