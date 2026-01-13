@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="bg-navy text-white pt-16 border-t border-white/5">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-[1.5fr_1fr_1fr] gap-12 mb-12">
+        <div className="grid md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 mb-12">
             {/* Brand Check */}
             <div className="flex flex-col">
                  <div className="flex items-center gap-4 mb-8">
@@ -42,6 +42,22 @@ const Footer = () => {
                      </a>
                    ))}
                  </div>
+            </div>
+
+            {/* Our Services */}
+             <div>
+                <h4 className="text-xl font-bold mb-6 text-gold">Layanan Kami</h4>
+                <ul className="space-y-4 text-sm text-gray-300">
+                    <li>
+                        <a href="/services" className="hover:text-gold transition-colors block leading-relaxed">Bidang Hukum</a>
+                    </li>
+                    <li>
+                         <a href="/services" className="hover:text-gold transition-colors block leading-relaxed">Bidang Perizinan, Perpajakan, Keimigrasian dan Legalitas</a>
+                    </li>
+                     <li>
+                         <a href="/services" className="hover:text-gold transition-colors block leading-relaxed">Bidang Pengembangan dan Pelatihan Sumber Daya Manusia</a>
+                    </li>
+                </ul>
             </div>
 
             {/* Offices */}

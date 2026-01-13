@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from 'react';
-import { ArrowRight, Scale, FileText, ShieldCheck, Lightbulb, Phone, Mail, MapPin, CheckCircle, ChevronDown, ChevronUp, StarIcon } from 'lucide-react';
+import { ArrowRight, Scale, FileText, ShieldCheck, Lightbulb, Phone, Mail, MapPin, CheckCircle, ChevronDown, ChevronUp, StarIcon, Heart, Search, Zap, Lock } from 'lucide-react';
 import { Variants, motion } from 'framer-motion';
 import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
 
-const fadeInUp: Variants = {
+const fadeInUp: any = {
   hidden: { opacity: 0, y: 60 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
 };
@@ -83,21 +83,21 @@ const HomeClient = () => {
             {[
               { 
                 icon: <Scale className="text-gold" size={40} />, 
-                title: "Litigasi Perdata", 
+                title: "Bidang Hukum", 
                 image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80",
-                desc: "Pendampingan hukum profesional untuk sengketa bisnis, properti, dan perdata umum." 
+                desc: "Kami siap mendampingi, memberikan pertimbangan, serta melakukan segala bentuk upaya hukum di Indonesia, baik pembelaan di dalam maupun di luar Pengadilan (Litigasi & Non-Litigasi)." 
               },
               { 
                 icon: <FileText className="text-gold" size={40} />, 
-                title: "Legalitas Bisnis", 
+                title: "Bidang Perizinan & Legalitas", 
                 image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80",
-                desc: "Solusi lengkap pendirian badan usaha (PT/CV), perizinan, dan penyusunan kontrak kerja." 
+                desc: "Solusi praktis perlindungan aset dan legalitas bisnis. Kami mendampingi dari investasi awal hingga operasional, mencakup pengurusan izin di 18 Kementerian sesuai regulasi terbaru." 
               },
               { 
                 icon: <ShieldCheck className="text-gold" size={40} />, 
-                title: "Pendapat Hukum", 
-                image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80",
-                desc: "Analisis hukum mendalam (Legal Opinion) untuk membantu pengambilan keputusan strategis." 
+                title: "Pengembangan SDM", 
+                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
+                desc: "Kami berdedikasi merancang langkah perubahan berdampak bagi individu dan perusahaan melalui metode pelatihan SDM terbaru yang relevan dan inovatif." 
               }
             ].map((service, idx) => (
               <div 
@@ -142,15 +142,17 @@ const HomeClient = () => {
             <div className="text-center mb-16 relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide">Mengapa Memilih Kami?</h2>
               <div className="w-24 h-1.5 bg-gold mx-auto"></div>
-              <p className="mt-4 text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed"> Keunggulan layanan yang membedakan kami dari yang lain </p>
+              <p className="mt-4 text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
+                Kami peduli, berpengalaman, dan ahli. Bersama kami, Anda tidak lagi berjalan sendiri menghadapi masalah hukum.
+              </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
               {[
-                { title: "Profesional & Berintegritas", desc: "Menjunjung tinggi kode etik profesi dan integritas dalam setiap penanganan perkara." },
-                { title: "Solusi Komprehensif", desc: "Pendekatan menyeluruh untuk menyelesaikan masalah hukum dari akar hingga tuntas." },
-                { title: "Transparan", desc: "Setiap langkah dan biaya dikomunikasikan secara jelas sejak awal tanpa ada yang ditutupi." },
-                { title: "Responsif", desc: "Tim kami selalu siap mendengarkan dan merespon kebutuhan hukum Anda dengan cepat." }
+                { title: "Komitmen Layanan Terbaik", desc: "Kepercayaan dan kualitas adalah kunci utama. Kami berkomitmen penuh memberikan pelayanan terbaik bagi Anda." },
+                { title: "Individu & Perusahaan", desc: "Solusi hukum tanpa batasan. Siap melayani kebutuhan baik untuk perseorangan maupun korporasi." },
+                { title: "Tim Berpengalaman", desc: "Tim terampil, tangguh, dan terbiasa menghadapi berbagai tantangan hukum secara maksimal." },
+                { title: "Strategi Cekatan", desc: "Strategi terukur, efisien, dan bertanggung jawab demi efektivitas penyelesaian masalah Anda." }
               ].map((item, idx) => (
                 <motion.div 
                   key={idx}
@@ -171,6 +173,76 @@ const HomeClient = () => {
           </div>
       </section>  
 
+      {/* OUR VALUES SECTION */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-wider text-navy">Nilai-nilai Kami</h2>
+            <div className="w-24 h-1.5 bg-gold mx-auto mb-8"></div>
+            <p className="text-gray-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+              Prinsip utama yang menjadi landasan setiap langkah kami dalam melayani Anda.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-8">
+            {[
+              { 
+                title: "Kepuasan Klien", 
+                image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+                desc: "Kepuasan klien adalah prioritas utama kami. Kami berkomitmen untuk memenuhi dan melampaui harapan klien."
+              },
+              { 
+                title: "Ketelitian", 
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+                desc: "Kami menekankan pada ketelitian dalam setiap tindakan, sehingga setiap klien mendapatkan hasil terbaik dalam penyelesaian." 
+              },
+              { 
+                title: "Inovasi", 
+                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+                desc: "Kami selalu mencari solusi inovatif dan kreatif untuk memecahkan setiap tantangan dalam perjalanan menuju tujuan bersama klien." 
+              },
+              { 
+                title: "Komitmen", 
+                image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
+                desc: "Kami memiliki komitmen kuat untuk memberikan pelayanan terbaik dan mendukung klien mencapai setiap tujuan yang disepakati." 
+              },
+              { 
+                title: "Integritas", 
+                image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80",
+                desc: "Kami menjunjung tinggi integritas dan etika sebagai prinsip utama dalam setiap langkah serta tindakan kami." 
+              }
+            ].map((value, idx) => (
+              <motion.div 
+                key={idx}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.333rem)] h-80 flex-shrink-0"
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0">
+                  <img 
+                    src={value.image} 
+                    alt={value.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-navy/80 group-hover:bg-navy/70 transition-colors duration-500"></div>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10 p-8 flex flex-col h-full justify-center text-center">
+                  <h3 className="text-2xl font-bold mb-4 text-gold font-serif tracking-wide transform group-hover:-translate-y-1 transition-transform">{value.title}</h3>
+                  <p className="text-gray-200 text-sm leading-relaxed">
+                    {value.desc}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* TESTIMONIALS SECTION */}
       <section id="reviews" className="py-16 md:py-24 bg-white relative overflow-hidden">
         <div className="absolute top-1/3 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>
@@ -186,7 +258,7 @@ const HomeClient = () => {
           </div>
           
           <motion.div 
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
+            className="grid md:grid-cols-2 gap-8 lg:gap-10"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -194,28 +266,34 @@ const HomeClient = () => {
           >
             {[
               {
-                name: "Bpk. Heru Prasetyo",
-                role: "Direktur Utama PT. Maju Sentosa",
-                text: "Tim Narasumber Hukum sangat profesional dan responsif dalam menangani legalitas bisnis kami. Penjelasan hukum yang diberikan sangat mudah dipahami dan edukatif.",
+                name: "Anwar Muksin",
+                role: "Klien",
+                text: "Tim Narasumber Hukum memiliki pemahaman yang mendalam tentang hukum, perizinan dan legalitas yang ada di Indonesia. Kami bersyukur semua permasalahan dalam usaha saya dapat ditangani dengan baik dan efisien oleh tim Narasumber Hukum",
                 rating: 5
               },
               {
-                name: "Ibu Siti Aminah",
-                role: "Pemilik UMKM Kuliner",
-                text: "Sangat terbantu dalam pengurusan izin usaha dan kontrak kerjasama. Harganya transparan dan pelayanannya sangat ramah. Rekomendasi utama untuk solusi hukum!",
+                name: "Ani Handayani",
+                role: "Klien",
+                text: "Ibu Debora dan tim melakukan pekerjaan yang sangat baik dan praktis. Mereka memberikan penjelasan yang jelas untuk membantu kami mengambil keputusan. Terimakasih kepada seluruh tim Narasumber Hukum",
                 rating: 5
               },
               {
-                name: "Bpk. Ahmad Fauzi",
-                role: "Klien Kasus Perdata",
-                text: "Pendampingan yang luar biasa dari awal hingga akhir perkara. Saya merasa sangat tenang karena tim selalu memberikan update rutin dan strategi yang matang.",
+                name: "Ridwan Hanafi",
+                role: "Klien",
+                text: "Tim ini dapat diandalkan dan responsif. Saya sangat puas dengan kinerja tim, berintegritas dan bersedia mempertimbangkan biaya alternatif untuk menjaga kepuasan klien.",
+                rating: 5
+              },
+              {
+                name: "Meliana Iskandar",
+                role: "Klien",
+                text: "Tim Narasumber Hukum telah mengatur segalanya dengan cermat, dan semuanya terjadi sesuai antisipasi dan penjelasan kepada kami. Sangat sangat membantu dan berguna, terimakasih banyak tim Narasumber Hukum",
                 rating: 5
               }
             ].map((review, idx) => (
               <motion.div 
                 key={idx} 
                 variants={fadeInUp}
-                className="bg-gray-50 p-6 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:shadow-2xl hover:border-gold/30 transition-all duration-500 transform hover:-translate-y-3 group"
+                className="bg-gray-50 p-6 md:p-10 rounded-[1.5rem] md:rounded-[2rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:shadow-2xl hover:border-gold/30 transition-all duration-500 transform hover:-translate-y-3 group"
               >
                 <div>
                   <div className="flex text-gold mb-4 md:mb-8 gap-1.5">
@@ -310,6 +388,36 @@ const HomeClient = () => {
               <FAQItem key={idx} question={faq.q} answer={faq.a} />
             ))}
           </div>
+        </div>
+      </section>
+
+
+
+      {/* CALL TO ACTION SECTION */}
+      <section className="py-20 bg-navy text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gold/10"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-2xl md:text-5xl font-bold mb-8 uppercase tracking-widest leading-tight font-serif">
+              "Jangan Ditunda Dan Dipendam, <br/> <span className="text-gold">Segera Selesaikan.</span>"
+            </h2>
+            <Link 
+              href="https://wa.me/6281252992361" 
+              target="_blank"
+              className="inline-flex items-center gap-3 bg-gold text-navy px-10 py-5 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-navy transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
+            >
+              <span className="flex items-center justify-center w-6 h-6 bg-navy text-gold rounded-full">
+                <Phone size={14} />
+              </span>
+              Konsultasi Gratis
+            </Link>
+          </motion.div>
         </div>
       </section>
 

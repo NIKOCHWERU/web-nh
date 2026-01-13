@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+
 
 const ContactForm = () => {
   const [status, setStatus] = useState('idle'); // idle, sending, success, error
@@ -18,29 +18,25 @@ const ContactForm = () => {
     e.preventDefault();
     setStatus('sending');
 
-    // EmailJS configurations
-    // IMPORTANT: Get these from your EmailJS Dashboard (emailjs.com)
-    // Replace 'service_xxx', 'template_xxx', and 'public_xxx' with your real keys
-    const SERVICE_ID = 'service_f9ge48s'; // Service ID Anda
-    const TEMPLATE_ID = 'template_12cgovq'; // Ganti dengan ID Template dari EmailJS Dashboard
-    const PUBLIC_KEY = 'RLTxikJMOUsUjWClY'; // Ganti dengan Public Key Anda dari EmailJS Dashboard
-
-    const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
-      phone: formData.phone,
-      subject: formData.subject,
-      message: formData.message,
-      to_email: 'niko.narasumberhukum@gmail.com'
-    };
-
     try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
       setStatus('success');
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
       setTimeout(() => setStatus('idle'), 5000);
     } catch (error) {
-      console.error('EmailJS Error:', error);
+      console.error('API Error:', error);
       setStatus('error');
       setTimeout(() => setStatus('idle'), 5000);
     }
@@ -168,7 +164,7 @@ const ContactForm = () => {
                 className="flex items-center gap-2 text-red-500 text-sm font-medium justify-center"
               >
                 <AlertCircle size={16} />
-                Terjadi kesalahan. Silakan cek Service ID, Template ID, dan Public Key Anda di EmailJS.
+                Terjadi kesalahan. Silakan coba beberapa saat lagi atau hubungi kami via WhatsApp.
               </motion.div>
             )}
           </motion.form>
