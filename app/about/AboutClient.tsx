@@ -240,7 +240,7 @@ const AboutClient = () => {
                 variants={fadeInUp}
                 className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:border-gold/30 transition-all duration-300 hover:-translate-y-2 group"
               >
-                <div className="w-16 h-16 bg-navy/5 rounded-xl flex items-center justify-center text-gold mb-6 group-hover:bg-gold group-hover:text-navy transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                <div className="w-16 h-16 bg-navy/5 rounded-xl flex items-center justify-center text-gold mb-6 group-hover:bg-navy group-hover:text-gold transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm group-hover:shadow-gold/20">
                   {mission.icon}
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-navy font-serif">{mission.title}</h3>
@@ -319,9 +319,9 @@ const AboutClient = () => {
             >
               <div className="bg-white rounded-xl p-6 mb-6 flex items-center justify-center min-h-[120px]">
                 <img 
-                    src="/logo.png" 
+                    src="/logo-narasumber-hukum.png" 
                     alt="Firma Narasumber Hukum" 
-                    className="h-16 md:h-20 object-contain brightness-0 group-hover:brightness-100 transition-all duration-500 opacity-50 group-hover:opacity-100" 
+                    className="h-16 md:h-20 object-contain transition-all duration-500" 
                   />
               </div>
               <h3 className="text-xl font-bold text-center text-gold font-serif">Firma Narasumber Hukum</h3>
@@ -335,9 +335,9 @@ const AboutClient = () => {
             >
               <div className="bg-white rounded-xl p-6 mb-6 flex items-center justify-center min-h-[120px]">
                 <img 
-                  src="/logo-mti-talenstory.png" 
+                  src="/logo-mti-talenstory.jpg" 
                   alt="MTI Talenstory" 
-                  className="max-w-full h-auto max-h-24 object-contain"
+                  className="max-w-full h-auto max-h-24 object-contain transition-all duration-500"
                 />
               </div>
               <h3 className="text-xl font-bold text-center text-gold font-serif">PT Teira Dwan Indonesia</h3>
