@@ -64,44 +64,63 @@ const ArticlesClient = () => {
        </section>
 
        <section className="py-24 bg-white container mx-auto px-4">
-         <motion.div 
-           className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
-           initial="hidden"
-           animate="visible"
-           variants={staggerContainer}
-         >
-           {articles.map((article) => (
-             <Link href={`/articles/${article.slug}`} key={article.id}>
-               <motion.article 
-                 variants={fadeInUp} 
-                 className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group flex flex-col h-full border border-gray-100 cursor-pointer"
-               >
-                 <div className="relative overflow-hidden aspect-video">
-                   <img 
-                      src={article.image ? (article.image.startsWith('http') ? article.image : `${process.env.NEXT_PUBLIC_API_URL}/storage/${article.image}`) : 'https://via.placeholder.com/800x600?text=No+Image'} 
-                      alt={article.title} 
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition duration-700"
-                   />
-                   <div className="absolute top-6 left-6 bg-gold text-navy text-[10px] font-bold px-4 py-1.5 uppercase tracking-widest rounded-full shadow-lg">
-                     {article.category?.name || 'Hukum'}
+         {articles.length > 0 ? (
+           <motion.div 
+             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
+             initial="hidden"
+             animate="visible"
+             variants={staggerContainer}
+           >
+             {articles.map((article) => (
+               <Link href={`/articles/${article.slug}`} key={article.id}>
+                 <motion.article 
+                   variants={fadeInUp} 
+                   className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group flex flex-col h-full border border-gray-100 cursor-pointer"
+                 >
+                   <div className="relative overflow-hidden aspect-video">
+                     <img 
+                        src={article.image ? (article.image.startsWith('http') ? article.image : `${process.env.NEXT_PUBLIC_API_URL}/storage/${article.image}`) : 'https://via.placeholder.com/800x600?text=No+Image'} 
+                        alt={article.title} 
+                        className="w-full h-full object-cover transform group-hover:scale-105 transition duration-700"
+                     />
+                     <div className="absolute top-6 left-6 bg-gold text-navy text-[10px] font-bold px-4 py-1.5 uppercase tracking-widest rounded-full shadow-lg">
+                       {article.category?.name || 'Hukum'}
+                     </div>
                    </div>
-                 </div>
-                 <div className="p-8 md:p-10 flex flex-col flex-grow">
-                   <div className="mb-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                     {new Date(article.published_at).toLocaleDateString()} | By Admin
+                   <div className="p-8 md:p-10 flex flex-col flex-grow">
+                     <div className="mb-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                       {new Date(article.published_at).toLocaleDateString()} | By Admin
+                     </div>
+                     <h3 className="font-bold text-xl md:text-2xl mb-4 text-navy group-hover:text-gold transition leading-tight font-serif min-h-[3.5rem]">
+                       {article.title}
+                     </h3>
+                     <div className="text-gray-500 text-sm mb-8 flex-grow leading-relaxed line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content }}></div>
+                     <div className="flex items-center text-gold font-bold text-xs uppercase tracking-[0.2em] mt-auto">
+                       Baca Selengkapnya <ArrowRight size={16} className="ml-3 group-hover:translate-x-2 transition-transform" />
+                     </div>
                    </div>
-                   <h3 className="font-bold text-xl md:text-2xl mb-4 text-navy group-hover:text-gold transition leading-tight font-serif min-h-[3.5rem]">
-                     {article.title}
-                   </h3>
-                   <div className="text-gray-500 text-sm mb-8 flex-grow leading-relaxed line-clamp-3" dangerouslySetInnerHTML={{ __html: article.content }}></div>
-                   <div className="flex items-center text-gold font-bold text-xs uppercase tracking-[0.2em] mt-auto">
-                     Baca Selengkapnya <ArrowRight size={16} className="ml-3 group-hover:translate-x-2 transition-transform" />
-                   </div>
-                 </div>
-               </motion.article>
-             </Link>
-           ))}
-         </motion.div>
+                 </motion.article>
+               </Link>
+             ))}
+           </motion.div>
+         ) : (
+           <motion.div 
+             initial="hidden" 
+             animate="visible" 
+             variants={fadeInUp}
+             className="text-center py-20"
+           >
+             <div className="mb-6 flex justify-center">
+               <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center">
+                 <ArrowRight className="text-gray-300 rotate-90" size={32} />
+               </div>
+             </div>
+             <h3 className="text-2xl font-bold text-navy mb-4 font-serif">Belum Ada Artikel</h3>
+             <p className="text-gray-500 max-w-sm mx-auto">
+               Saat ini belum ada artikel yang dipublikasikan. Silakan periksa kembali nanti untuk pembaruan hukum terbaru.
+             </p>
+           </motion.div>
+         )}
        </section>
     </div>
   );

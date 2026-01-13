@@ -319,10 +319,10 @@ const AboutClient = () => {
             >
               <div className="bg-white rounded-xl p-6 mb-6 flex items-center justify-center min-h-[120px]">
                 <img 
-                  src="/logo-narasumber-hukum.jpg" 
-                  alt="Firma Narasumber Hukum" 
-                  className="max-w-full h-auto max-h-24 object-contain"
-                />
+                    src="/logo.png" 
+                    alt="Firma Narasumber Hukum" 
+                    className="h-16 md:h-20 object-contain brightness-0 group-hover:brightness-100 transition-all duration-500 opacity-50 group-hover:opacity-100" 
+                  />
               </div>
               <h3 className="text-xl font-bold text-center text-gold font-serif">Firma Narasumber Hukum</h3>
               <p className="text-gray-300 text-sm text-center mt-2 uppercase tracking-widest">Advocate, Intercessor & Legal Consultant</p>
