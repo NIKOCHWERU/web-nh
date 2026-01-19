@@ -114,7 +114,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
-          className="prose prose-lg md:prose-xl max-w-none text-gray-700 leading-relaxed font-light mb-16 prose-p:mb-6 prose-headings:font-serif prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ol:list-decimal prose-li:ml-4 prose-li:marker:text-gold"
+          className="prose prose-lg md:prose-xl max-w-none text-gray-900 leading-relaxed font-normal mb-16 prose-p:mb-6 prose-p:text-justify prose-headings:font-serif prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 prose-li:marker:text-gray-900"
         >
           <div 
             dangerouslySetInnerHTML={{ __html: processContent(article.content) }} 

@@ -66,7 +66,7 @@ export default function RootLayout({
               },
               "sameAs": [
                 "https://www.instagram.com/narasumberhukum/",
-                "https://www.linkedin.com/company/narasumber-hukum/"
+                "https://www.linkedin.com/company/kantor-narasumber-hukum/"
               ]
             })
           }}
