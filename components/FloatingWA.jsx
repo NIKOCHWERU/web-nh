@@ -6,7 +6,7 @@ const FloatingWA = () => {
   
   return (
     <a 
-      href={`https://wa.me/6281252992361?text=${waMessage}`} 
+      href={`https://wa.me/6282211020022?text=${waMessage}`} 
       target="_blank" 
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300 transform hover:scale-110 z-50 flex items-center gap-2 group"
