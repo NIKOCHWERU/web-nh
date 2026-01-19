@@ -448,7 +448,7 @@ const HomeClient = () => {
                   icon: <Phone size={24} />, 
                   label: "Telepon & WA", 
                   value: "+62-822-1102-0022",
-                  href: `https://wa.me/6281252992361?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}` 
+                  href: `https://wa.me/6282211020022?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}` 
                 },
                 { 
                   icon: <MapPin size={24} />, 

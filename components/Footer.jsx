@@ -29,7 +29,7 @@ const Footer = () => {
                      { 
                         name: 'Whatsapp', 
                         icon: <FaWhatsapp size={20} />, 
-                        url: `https://wa.me/6281252992361?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}` 
+                        url: `https://wa.me/6282211020022?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}` 
                       },
                    ].map((item, idx) => (
                      <a 
