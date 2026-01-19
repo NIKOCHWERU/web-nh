@@ -59,7 +59,7 @@ export default function RootLayout({
               "logo": "https://narasumberhukum.online/logo.png",
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+62-822-1102-0022",
+                "telephone": "0822-1102-0022",
                 "contactType": "customer service",
                 "areaServed": "ID",
                 "availableLanguage": "Indonesian"
