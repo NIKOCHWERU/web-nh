@@ -408,7 +408,7 @@ const HomeClient = () => {
               "Jangan Ditunda Dan Dipendam, <br/> <span className="text-gold">Segera Selesaikan.</span>"
             </h2>
             <Link 
-              href="https://wa.me/6281252992361" 
+              href="https://wa.me/6282211020022" 
               target="_blank"
               className="inline-flex items-center gap-3 bg-gold text-navy px-10 py-5 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-navy transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
             >

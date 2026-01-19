@@ -51,7 +51,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
 
   return (
     <div className="pt-24 pb-20 bg-white min-h-screen">
-      <div className="container mx-auto px-4 max-w-4xl">
+      <div className="container mx-auto px-4 max-w-[90%] md:max-w-6xl">
         {/* Back Button */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -114,7 +114,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
-          className="prose prose-lg md:prose-xl max-w-none text-gray-700 leading-relaxed font-light mb-16 prose-p:mb-6 prose-headings:font-serif prose-headings:text-navy prose-a:text-gold"
+          className="prose prose-lg md:prose-xl max-w-none text-gray-700 leading-relaxed font-light mb-16 prose-p:mb-6 prose-headings:font-serif prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ol:list-decimal prose-li:ml-4 prose-li:marker:text-gold"
         >
           <div 
             dangerouslySetInnerHTML={{ __html: processContent(article.content) }} 
