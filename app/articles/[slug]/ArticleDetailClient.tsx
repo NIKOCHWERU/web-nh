@@ -41,6 +41,14 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
     );
   };
 
+  const [lightboxOpen, setLightboxOpen] = React.useState(false);
+  const [currentImage, setCurrentImage] = React.useState('');
+
+  const openLightbox = (imgSrc: string) => {
+    setCurrentImage(imgSrc);
+    setLightboxOpen(true);
+  };
+
   return (
     <div className="pt-24 pb-20 bg-white min-h-screen">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -91,12 +99,13 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="mb-12 rounded-3xl overflow-hidden shadow-2xl aspect-video"
+          className="mb-12 rounded-3xl overflow-hidden shadow-2xl aspect-video cursor-pointer"
+          onClick={() => openLightbox(getImageUrl(article.image))}
         >
           <img 
             src={getImageUrl(article.image)} 
             alt={article.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
           />
         </motion.div>
 
@@ -105,7 +114,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
-          className="prose prose-lg md:prose-xl max-w-none text-gray-700 leading-relaxed font-light mb-12"
+          className="prose prose-lg md:prose-xl max-w-none text-gray-700 leading-relaxed font-light mb-16 prose-p:mb-6 prose-headings:font-serif prose-headings:text-navy prose-a:text-gold"
         >
           <div 
             dangerouslySetInnerHTML={{ __html: processContent(article.content) }} 
@@ -122,28 +131,23 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
             variants={fadeInUp}
             className="mb-16"
           >
-            <h3 className="text-2xl font-bold text-navy mb-6 font-serif">Galeri Pendukung</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <h3 className="text-2xl font-bold text-navy mb-6 font-serif border-l-4 border-gold pl-4">Galeri Dokumentasi</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {article.supporting_images.map((item: any, index: number) => {
                 const imagePath = typeof item === 'string' ? item : item.image;
                 const caption = typeof item === 'string' ? null : item.caption;
                 
                 return (
-                  <div key={index} className="group">
-                    <div className="rounded-xl overflow-hidden shadow-lg aspect-video hover:scale-[1.02] transition-transform duration-300 mb-3">
+                  <div key={index} className="group cursor-pointer" onClick={() => openLightbox(getImageUrl(imagePath))}>
+                    <div className="rounded-lg overflow-hidden shadow-md aspect-square hover:shadow-xl transition-all duration-300 relative">
                       <img 
                         src={getImageUrl(imagePath)}
                         alt={caption || `Supporting image ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                       />
+                      {/* Overlay on hover */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                     </div>
-                    {caption && (
-                      <div className="bg-gray-50 border-l-4 border-gold p-3 rounded-r-lg">
-                        <p className="text-sm text-gray-600 italic font-serif leading-relaxed">
-                          {caption}
-                        </p>
-                      </div>
-                    )}
                   </div>
                 );
               })}
@@ -166,6 +170,24 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
             <span className="text-sm text-gray-500">{article.category?.name || 'Umum'}</span>
           </div>
         </motion.footer>
+
+        {/* Lightbox Modal */}
+        {lightboxOpen && (
+          <div 
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <button className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <img 
+              src={currentImage} 
+              alt="Lightbox view" 
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking image
+            />
+          </div>
+        )}
       </div>
     </div>
   );
