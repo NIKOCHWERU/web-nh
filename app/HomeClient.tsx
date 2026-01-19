@@ -444,9 +444,9 @@ const HomeClient = () => {
               variants={staggerContainer}
             >
               {[
-                { icon: <Phone size={24} />, label: "Telepon & WA", value: "+62 812-5299-2361" },
+                { icon: <Phone size={24} />, label: "Telepon & WA", value: "+62-822-1102-0022" },
                 { icon: <MapPin size={24} />, label: "Lokasi Kantor", value: "Jakarta Pusat, Indonesia" },
-                { icon: <Mail size={24} />, label: "Email Resmi", value: "niko.narasumberhukum@gmail.com" }
+                { icon: <Mail size={24} />, label: "Email Resmi", value: "hello@narasumberhukum.com" }
               ].map((item, idx) => (
                 <motion.div 
                   key={idx}
