@@ -448,13 +448,13 @@ const HomeClient = () => {
                   icon: <Phone size={24} />, 
                   label: "Telepon & WA", 
                   value: "+62-822-1102-0022",
-                  href: "https://wa.me/6282211020022" 
+                  href: `https://wa.me/6281252992361?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}` 
                 },
                 { 
                   icon: <MapPin size={24} />, 
                   label: "Lokasi Kantor", 
                   value: "Jakarta Pusat, Indonesia",
-                  href: "https://www.google.com/maps/search/Jakarta+Pusat,+Indonesia" 
+                  href: "https://maps.app.goo.gl/Z77ydQisZAQ6d1aQ9" 
                 },
                 { 
                   icon: <Mail size={24} />, 
