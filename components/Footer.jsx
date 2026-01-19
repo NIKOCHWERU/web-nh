@@ -22,10 +22,10 @@ const Footer = () => {
                  
                  <div className="flex flex-wrap gap-3">
                    {[
-                     { name: 'Instagram', icon: <Instagram size={20} />, url: '#' },
-                     { name: 'Facebook', icon: <Facebook size={20} />, url: '#' },
-                     { name: 'LinkedIn', icon: <Linkedin size={20} />, url: '#' },
-                     { name: 'Youtube', icon: <Youtube size={20} />, url: '#' },
+                     { name: 'Instagram', icon: <Instagram size={20} />, url: 'https://www.instagram.com/narasumberhukum' },
+                     { name: 'Facebook', icon: <Facebook size={20} />, url: 'https://facebook.com/kantor.narasumber.hukum' },
+                     { name: 'LinkedIn', icon: <Linkedin size={20} />, url: 'https://www.linkedin.com/company/kantor-narasumber-hukum' },
+                    //  { name: 'Youtube', icon: <Youtube size={20} />, url: '' },
                      { 
                         name: 'Whatsapp', 
                         icon: <FaWhatsapp size={20} />, 

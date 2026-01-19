@@ -444,14 +444,32 @@ const HomeClient = () => {
               variants={staggerContainer}
             >
               {[
-                { icon: <Phone size={24} />, label: "Telepon & WA", value: "+62-822-1102-0022" },
-                { icon: <MapPin size={24} />, label: "Lokasi Kantor", value: "Jakarta Pusat, Indonesia" },
-                { icon: <Mail size={24} />, label: "Email Resmi", value: "hello@narasumberhukum.com" }
+                { 
+                  icon: <Phone size={24} />, 
+                  label: "Telepon & WA", 
+                  value: "+62-822-1102-0022",
+                  href: "https://wa.me/6282211020022" 
+                },
+                { 
+                  icon: <MapPin size={24} />, 
+                  label: "Lokasi Kantor", 
+                  value: "Jakarta Pusat, Indonesia",
+                  href: "https://www.google.com/maps/search/Jakarta+Pusat,+Indonesia" 
+                },
+                { 
+                  icon: <Mail size={24} />, 
+                  label: "Email Resmi", 
+                  value: "hello@narasumberhukum.com",
+                  href: "mailto:hello@narasumberhukum.com"
+                }
               ].map((item, idx) => (
-                <motion.div 
+                <motion.a 
                   key={idx}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   variants={fadeInUp}
-                  className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-gold/30 transition-all duration-500"
+                  className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-gold/30 transition-all duration-500 cursor-pointer"
                 >
                   <div className="w-12 h-12 md:w-14 md:h-14 bg-navy text-gold rounded-2xl flex items-center justify-center mb-5 md:mb-6 group-hover:bg-gold group-hover:text-navy transition-all duration-500 shadow-lg">
                     {item.icon}
@@ -460,7 +478,7 @@ const HomeClient = () => {
                   <p className="font-bold text-navy text-[11px] sm:text-xs md:text-sm">
                     {item.value}
                   </p>
-                </motion.div>
+                </motion.a>
               ))}
             </motion.div>
 
