@@ -31,6 +31,16 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
     return `${process.env.NEXT_PUBLIC_API_URL}/storage/${cleanPath}`;
   };
 
+  // Process content to fix inline image URLs
+  const processContent = (content: string) => {
+    if (!content) return '';
+    // Replace relative paths starting with /storage/ or just storage/
+    return content.replace(
+      /src="(\/?)storage\/([^"]+)"/g, 
+      (match, slash, path) => `src="${process.env.NEXT_PUBLIC_API_URL}/storage/${path}"`
+    );
+  };
+
   return (
     <div className="pt-24 pb-20 bg-white min-h-screen">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -98,7 +108,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           className="prose prose-lg md:prose-xl max-w-none text-gray-700 leading-relaxed font-light mb-12"
         >
           <div 
-            dangerouslySetInnerHTML={{ __html: article.content }} 
+            dangerouslySetInnerHTML={{ __html: processContent(article.content) }} 
             className="article-content"
           />
         </motion.article>
