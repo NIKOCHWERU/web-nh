@@ -12,8 +12,15 @@ const fadeInUp: any = {
 
 const ArticleDetailClient = ({ article }: { article: any }) => {
   // Helper to construct image URL
-  const getImageUrl = (path: string | null) => {
+  const getImageUrl = (path: any) => {
     if (!path) return 'https://via.placeholder.com/1200x675?text=No+Image';
+    
+    // Safety check for non-string paths (e.g. if backend returns array or object unexpectedly)
+    if (typeof path !== 'string') {
+      console.warn('Invalid image path received:', path);
+      return 'https://via.placeholder.com/1200x675?text=Invalid+Image';
+    }
+
     if (path.startsWith('http')) return path;
     // Remove leading slash if present to avoid double slashes
     const cleanPath = path.startsWith('/') ? path.slice(1) : path;
@@ -106,16 +113,30 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
             className="mb-16"
           >
             <h3 className="text-2xl font-bold text-navy mb-6 font-serif">Galeri Pendukung</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {article.supporting_images.map((img: string, index: number) => (
-                <div key={index} className="rounded-xl overflow-hidden shadow-lg aspect-video hover:scale-[1.02] transition-transform duration-300">
-                  <img 
-                    src={getImageUrl(img)}
-                    alt={`Supporting image ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {article.supporting_images.map((item: any, index: number) => {
+                const imagePath = typeof item === 'string' ? item : item.image;
+                const caption = typeof item === 'string' ? null : item.caption;
+                
+                return (
+                  <div key={index} className="group">
+                    <div className="rounded-xl overflow-hidden shadow-lg aspect-video hover:scale-[1.02] transition-transform duration-300 mb-3">
+                      <img 
+                        src={getImageUrl(imagePath)}
+                        alt={caption || `Supporting image ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {caption && (
+                      <div className="bg-gray-50 border-l-4 border-gold p-3 rounded-r-lg">
+                        <p className="text-sm text-gray-600 italic font-serif leading-relaxed">
+                          {caption}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
         )}
