@@ -13,9 +13,13 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "https://narasumberhukum.online/favicon.ico",
-    shortcut: "https://narasumberhukum.online/favicon.ico",
-    apple: "https://narasumberhukum.online/icon.png",
+    icon: [
+      { url: "/icon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [
+      { url: "/icon.png", sizes: "1024x1024" },
+    ],
   },
   openGraph: {
     title: "Narasumber Hukum | Kantor Hukum & Solusi Edukatif",

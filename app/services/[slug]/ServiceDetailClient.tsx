@@ -90,7 +90,7 @@ const ServiceDetailClient = ({ slug }: { slug: string }) => {
                         Jangan ragu untuk mendiskusikan masalah Anda dengan tim ahli kami. Kami siap memberikan solusi terbaik.
                     </p>
                     <a 
-                        href={`https://wa.me/6281252992361?text=${encodeURIComponent(`Halo, saya ingin berkonsultasi mengenai ${service.title}`)}`}
+                        href={`https://wa.me/6282211020022?text=${encodeURIComponent(`Halo, saya ingin berkonsultasi mengenai ${service.title}`)}`}
                         target="_blank"
                         className="inline-flex items-center gap-3 bg-gold text-navy px-10 py-5 rounded-full font-bold hover:bg-white transition-all duration-300 shadow-2xl hover:shadow-gold/50 hover:-translate-y-1 text-lg"
                     >
