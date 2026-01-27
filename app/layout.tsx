@@ -6,9 +6,12 @@ import FloatingWA from "@/components/FloatingWA";
 import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
-  title: "Narasumber Hukum | Kantor Hukum, Sentral Edukasi & Solusi",
+  title: {
+    template: "%s | Narasumber Hukum",
+    default: "Sentral Edukasi Dan Solusi | Narasumber Hukum",
+  },
   description: "Kantor Narasumber Hukum memberikan pendampingan hukum profesional dengan pendekatan edukatif untuk solusi yang berkeadilan, resmi, dan terpercaya.",
-  metadataBase: new URL("https://narasumberhukum.online"),
+  metadataBase: new URL("https://www.narasumberhukum.com"),
   alternates: {
     canonical: "/",
   },
@@ -24,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Narasumber Hukum | Kantor Hukum & Solusi Edukatif",
     description: "Kantor Narasumber Hukum: Pendampingan hukum profesional dengan pendekatan edukatif untuk solusi yang berkeadilan.",
-    url: "https://narasumberhukum.online",
+    url: "https://www.narasumberhukum.com",
     siteName: "Narasumber Hukum",
     images: [
       {
@@ -55,24 +58,32 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Narasumber Hukum",
-              "url": "https://narasumberhukum.online",
-              "logo": "https://narasumberhukum.online/logo.png",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "0822-1102-0022",
-                "contactType": "customer service",
-                "areaServed": "ID",
-                "availableLanguage": "Indonesian"
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Narasumber Hukum",
+                "url": "https://www.narasumberhukum.com",
+                "logo": "https://www.narasumberhukum.com/logo.png",
+                "contactPoint": {
+                  "@type": "ContactPoint",
+                  "telephone": "+62 822-1102-0022",
+                  "contactType": "customer service",
+                  "areaServed": "ID",
+                  "availableLanguage": "Indonesian"
+                },
+                "sameAs": [
+                  "https://www.instagram.com/narasumberhukum/",
+                  "https://www.linkedin.com/company/kantor-narasumber-hukum/"
+                ]
               },
-              "sameAs": [
-                "https://www.instagram.com/narasumberhukum/",
-                "https://www.linkedin.com/company/kantor-narasumber-hukum/"
-              ]
-            })
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Narasumber Hukum",
+                "url": "https://www.narasumberhukum.com"
+              }
+            ])
           }}
         />
         <ScrollToTop />

@@ -56,11 +56,11 @@ const HomeClient = () => {
               untuk solusi yang berkeadilan dan berkelanjutan.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#services-preview" className="bg-gold text-navy px-8 py-4 rounded font-bold transition duration-300 hover:bg-white hover:text-navy uppercase text-sm tracking-widest flex items-center justify-center gap-2 group">
+              <Link href="/layanan" className="bg-gold text-navy px-8 py-4 rounded font-bold transition duration-300 hover:bg-white hover:text-navy uppercase text-sm tracking-widest flex items-center justify-center gap-2 group">
                 Layanan Kami
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </a>
-              <Link href="/#contact" className="px-8 py-4 rounded font-bold border border-white text-white hover:bg-white hover:text-navy transition duration-300 uppercase text-sm tracking-widest flex items-center justify-center">
+              </Link>
+              <Link href="/kontak" className="px-8 py-4 rounded font-bold border border-white text-white hover:bg-white hover:text-navy transition duration-300 uppercase text-sm tracking-widest flex items-center justify-center">
                 Konsultasi Sekarang
               </Link>
             </div>
@@ -129,8 +129,8 @@ const HomeClient = () => {
             ))}
           </div>
 
-          <Link href="/services" className="inline-flex items-center gap-2 text-gold font-bold uppercase tracking-widest hover:underline text-sm">
-            Lihat Selengkapnya <ArrowRight size={16} />
+          <Link href="/layanan" className="inline-flex items-center gap-2 text-gold font-bold uppercase tracking-widest hover:underline text-sm">
+            Lihat Layanan Hukum Kami <ArrowRight size={16} />
           </Link>
         </div>
       </section>
@@ -433,6 +433,11 @@ const HomeClient = () => {
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed font-light italic">
               "Kami siap mendengarkan dan mendampingi setiap perkara Anda dengan profesionalisme tinggi."
             </p>
+            <div className="mt-8">
+               <Link href="/tentang" className="text-navy font-bold hover:text-gold transition-colors underline decoration-gold underline-offset-4">
+                  Pelajari Profil Narasumber Hukum
+               </Link>
+            </div>
           </div>
 
           <div className="max-w-5xl mx-auto">

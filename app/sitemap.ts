@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://narasumberhukum.com';
+    const baseUrl = 'https://www.narasumberhukum.com';
 
     // Static routes
     const routes: MetadataRoute.Sitemap = [
@@ -12,22 +12,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 1,
         },
         {
-            url: `${baseUrl}/about`,
+            url: `${baseUrl}/tentang`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/services`,
+            url: `${baseUrl}/layanan`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/articles`,
+            url: `${baseUrl}/artikel`,
             lastModified: new Date(),
             changeFrequency: 'daily',
             priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/kontak`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
         },
     ];
 
@@ -43,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const articles = data.data || [];
 
         const articleRoutes = articles.map((article: any) => ({
-            url: `${baseUrl}/articles/${article.slug}`,
+            url: `${baseUrl}/artikel/${article.slug}`,
             lastModified: new Date(article.updated_at || article.published_at),
             changeFrequency: 'weekly' as const,
             priority: 0.7,

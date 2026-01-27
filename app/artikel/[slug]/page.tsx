@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import ArticleDetailClient from '@/app/articles/[slug]/ArticleDetailClient';
+import ArticleDetailClient from '@/app/artikel/[slug]/ArticleDetailClient';
 
 async function getArticle(slug: string) {
   try {

@@ -25,10 +25,11 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', path: '/', isHash: false },
-    { name: 'Layanan', path: '/services', isHash: false },
-    { name: 'Tentang Kami', path: '/about', isHash: false },
-    { name: 'Artikel', path: '/articles', isHash: false },
+    { name: 'Beranda', path: '/', isHash: false },
+    { name: 'Tentang Kami', path: '/tentang', isHash: false },
+    { name: 'Layanan', path: '/layanan', isHash: false },
+    { name: 'Artikel', path: '/artikel', isHash: false },
+    { name: 'Kontak', path: '/kontak', isHash: false },
   ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -95,13 +96,12 @@ const Navbar = () => {
                 </Link>
              )
           ))}
-          <a 
-            href="/#contact" 
-            onClick={handleContactClick}
+          <Link 
+            href="/kontak" 
             className="bg-gold text-navy px-4 lg:px-5 py-2 rounded font-bold hover:bg-opacity-90 transition duration-300 uppercase text-[10px] lg:text-xs tracking-widest cursor-pointer"
           >
             Hubungi
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -135,13 +135,13 @@ const Navbar = () => {
                 </Link>
               )
             ))}
-             <a 
-              href="/#contact"
-              onClick={handleContactClick}
+             <Link 
+              href="/kontak"
+              onClick={() => setIsOpen(false)}
               className="block bg-gold text-navy px-5 py-2.5 rounded font-bold hover:bg-opacity-90 transition uppercase mt-1"
             >
               Hubungi
-            </a>
+            </Link>
           </div>
         </div>
       )}
