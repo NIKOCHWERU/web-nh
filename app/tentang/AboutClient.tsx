@@ -259,11 +259,11 @@ const AboutClient = () => {
               variants={fadeInUp}
               className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
             >
-              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px]">
+              <div className="bg-navy rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] border border-gold/20">
                 <img
-                  src="/logo.png"
+                  src="/logo-narasumber-hukum.png"
                   alt={t('partners.narasumber')}
-                  className="h-12 md:h-16 object-contain transition-all duration-500"
+                  className="w-full h-auto object-contain transition-all duration-500"
                 />
               </div>
               <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.narasumber')}</h3>
