@@ -75,6 +75,19 @@ export const translations = {
             hr: {
                 title: "Pengembangan & Pelatihan Sumber Daya Manusia",
                 desc: "Kami berdedikasi merancang langkah perubahan berdampak bagi individu dan perusahaan melalui metode pelatihan SDM terbaru yang relevan dan inovatif.",
+            },
+            not_found: "Layanan Tidak Ditemukan",
+            back_to_services: "Kembali ke Layanan",
+            cta_title: "Butuh Bantuan Hukum?",
+            cta_desc: "Jangan ragu untuk mendiskusikan masalah Anda dengan tim ahli kami. Kami siap memberikan solusi terbaik.",
+            hukum: {
+                content: "<p>Kami siap mendampingi, memberikan pertimbangan, serta melakukan segala bentuk upaya hukum di Indonesia, baik pembelaan di dalam maupun di luar Pengadilan (Litigasi & Non-Litigasi).</p><p>Layanan kami mencakup berbagai aspek hukum perdata dan pidana, memastikan hak-hak hukum Anda terlindungi dengan strategi yang tepat dan etis.</p>"
+            },
+            perizinan: {
+                content: "<p>Solusi praktis perlindungan aset dan legalitas bisnis. Kami mendampingi dari investasi awal hingga operasional, mencakup pengurusan izin di 18 Kementerian sesuai regulasi terbaru.</p><p>Kami memastikan seluruh dokumen legalitas perusahaan Anda lengkap dan valid, sehingga Anda dapat fokus mengembangkan bisnis tanpa kekhawatiran hukum.</p>"
+            },
+            sdm: {
+                content: "<p>Kami berdedikasi merancang langkah perubahan berdampak bagi individu dan perusahaan melalui metode pelatihan SDM terbaru yang relevan dan inovatif.</p><p>Program kami dirancang untuk meningkatkan produktivitas, integritas, dan profesionalisme tenaga kerja Anda melalui pendekatan yang edukatif dan solutif.</p>"
             }
         },
         why_us: {
@@ -254,6 +267,19 @@ export const translations = {
             hr: {
                 title: "Human Resources Development & Training",
                 desc: "We are dedicated to designing impactful change for individuals and companies through the latest relevant and innovative HR training methods.",
+            },
+            not_found: "Service Not Found",
+            back_to_services: "Back to Services",
+            cta_title: "Need Legal Assistance?",
+            cta_desc: "Don't hesitate to discuss your issues with our expert team. We are ready to provide the best solutions.",
+            hukum: {
+                content: "<p>We are ready to assist, provide considerations, and carry out all forms of legal action in Indonesia, through both Litigation (in-court) and Non-Litigation (out-of-court) defense.</p><p>Our services cover various aspects of civil and criminal law, ensuring your legal rights are protected with the right and ethical strategies.</p>"
+            },
+            perizinan: {
+                content: "<p>Practical solutions for asset protection and business legality. We assist from initial investment to operation, covering permit processing across 18 Ministries in accordance with current regulations.</p><p>We ensure all your company's legality documents are complete and valid, so you can focus on growing your business without legal concerns.</p>"
+            },
+            sdm: {
+                content: "<p>We are dedicated to designing impactful change for individuals and companies through the latest relevant and innovative HR training methods.</p><p>Our programs are designed to increase the productivity, integrity, and professionalism of your workforce through an educational and solutive approach.</p>"
             }
         },
         why_us: {
