@@ -259,7 +259,7 @@ const AboutClient = () => {
               variants={fadeInUp}
               className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
             >
-              <div className="bg-navy rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] border border-gold/20">
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
                 <img
                   src="/logo-narasumber-hukum.png"
                   alt={t('partners.narasumber')}
@@ -273,13 +273,13 @@ const AboutClient = () => {
             {/* SLECO Project Logo */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
             >
-              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px]">
+              <div className="bg-navy rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gold/20">
                 <img
-                  src="/logo-sleco.png"
+                  src="/logo.png"
                   alt={t('partners.sleco')}
-                  className="h-12 md:h-16 object-contain transition-all duration-500"
+                  className="h-16 w-auto object-contain transition-all duration-500 opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100"
                 />
               </div>
               <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.sleco')}</h3>
@@ -289,16 +289,14 @@ const AboutClient = () => {
             {/* MTI Talenstory Logo */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
             >
-              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px]">
-                <div className="flex flex-col items-center">
-                  <img
-                    src="/logo-mti-talenstory.jpg"
-                    alt={t('partners.mti')}
-                    className="max-w-full h-auto max-h-16 object-contain transition-all duration-500"
-                  />
-                </div>
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full">
+                <img
+                  src="/logo-mti-talenstory.jpg"
+                  alt={t('partners.mti')}
+                  className="w-full h-auto max-h-16 object-contain transition-all duration-500"
+                />
               </div>
               <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.mti')}</h3>
               <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest">{t('partners.mti_sub')}</p>
