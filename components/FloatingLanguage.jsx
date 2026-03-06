@@ -20,6 +20,9 @@ const FloatingLanguage = () => {
             <span className="font-bold text-sm tracking-widest uppercase">
                 {locale === 'id' ? 'ID' : 'EN'}
             </span>
+            <span className="hidden group-hover:block whitespace-nowrap font-bold text-xs ml-1">
+                {locale === 'id' ? 'Ganti Bahasa' : 'Switch Language'}
+            </span>
         </button>
     );
 };

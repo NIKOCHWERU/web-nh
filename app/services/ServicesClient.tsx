@@ -72,31 +72,25 @@ const ServicesClient = () => {
                     >
                         {servicesData.map((service, idx) => (
                             <motion.div key={idx} variants={fadeInUp} className="bg-white rounded-xl shadow-xl overflow-hidden group hover:-translate-y-2 transition duration-300 border border-gray-100 flex flex-col h-full">
-                                <Link href={`/services/${service.slug}`} className="block h-full">
-                                    <div className="h-56 overflow-hidden relative">
-                                        <img
-                                            src={service.image}
-                                            alt={service.title}
-                                            className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                                        />
-                                        <div className="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                                <Link href={service.path} className="block h-full">
+                                    <div className={`h-48 ${service.color} flex items-center justify-center relative overflow-hidden`}>
+                                        <div className="absolute inset-0 bg-black/10"></div>
+                                        <div className="relative z-10 text-white transform group-hover:scale-110 transition duration-500">
+                                            {React.cloneElement(service.icon as React.ReactElement, { size: 64, className: "w-16 h-16" })}
+                                        </div>
+                                        <div className="absolute inset-0 bg-navy/20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
                                             <span className="p-3 bg-gold rounded-full text-navy transform scale-0 group-hover:scale-100 transition delay-100 duration-300">
                                                 <ArrowRight size={24} />
                                             </span>
                                         </div>
                                     </div>
                                     <div className="p-8 flex flex-col flex-grow">
-                                        <div className="p-8 flex flex-col h-full">
-                                            <div className={`w-16 h-16 rounded-2xl ${service.color} text-white flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
-                                                {service.icon}
-                                            </div>
-                                            <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-gold transition-colors font-serif">
-                                                {t(service.titleKey)}
-                                            </h3>
-                                            <p className="text-gray-400 mb-8 line-clamp-3 leading-relaxed">
-                                                {t(service.shortDescKey)}
-                                            </p>
-                                        </div>
+                                        <h3 className="text-2xl font-bold mb-4 text-navy group-hover:text-gold transition-colors font-serif">
+                                            {t(service.titleKey)}
+                                        </h3>
+                                        <p className="text-gray-600 mb-8 line-clamp-3 leading-relaxed">
+                                            {t(service.shortDescKey)}
+                                        </p>
                                         <div className="text-gold font-bold text-sm uppercase tracking-wider flex items-center gap-2 group-hover:gap-4 transition-all mt-auto">
                                             {t('services.view_detail')} <ArrowRight size={16} />
                                         </div>
