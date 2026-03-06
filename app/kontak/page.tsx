@@ -1,31 +1,28 @@
+"use client";
 import { Metadata } from "next";
 import ContactForm from "@/components/ContactForm";
-
-export const metadata: Metadata = {
-  title: "Kontak | Narasumber Hukum",
-  description:
-    "Hubungi Narasumber Hukum untuk konsultasi hukum profesional di Karawang. Kami siap membantu menyelesaikan masalah hukum Anda.",
-};
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function KontakPage() {
+  const { t } = useLanguage();
   return (
     <div className="pt-24 pb-16 bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-navy mb-4">
-              Kontak Kami
+              {t('contact_page.title')}
             </h1>
             <p className="text-lg text-gray-600">
-              Tim profesional kami siap memberikan solusi hukum terbaik untuk Anda.
+              {t('contact_page.description')}
             </p>
           </div>
-          
+
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="p-8 md:p-12 bg-navy text-white">
-                <h2 className="text-2xl font-bold mb-6 text-gold">Informasi Kontak</h2>
-                
+                <h2 className="text-2xl font-bold mb-6 text-gold">{t('footer.contact_title')}</h2>
+
                 <div className="space-y-8">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
@@ -35,7 +32,7 @@ export default function KontakPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg mb-1">Alamat</h3>
+                      <h3 className="font-bold text-lg mb-1">{t('footer.office_title')}</h3>
                       <p className="text-white/80">Jl. Interchange Karawang Barat, Karawang, Jawa Barat</p>
                     </div>
                   </div>
@@ -59,13 +56,13 @@ export default function KontakPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg mb-1">Email</h3>
+                      <h3 className="font-bold text-lg mb-1">{t('contact_page.email_label')}</h3>
                       <p className="text-white/80">halo@narasumberhukum.com</p>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="p-8 md:p-12">
                 <ContactForm />
               </div>

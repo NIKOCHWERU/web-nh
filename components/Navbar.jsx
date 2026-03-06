@@ -1,13 +1,15 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Phone, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const { locale, setLocale, t } = useLanguage();
 
   const isHomePage = pathname === '/';
 
@@ -25,18 +27,18 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Beranda', path: '/', isHash: false },
-    { name: 'Tentang Kami', path: '/tentang', isHash: false },
-    { name: 'Layanan', path: '/layanan', isHash: false },
-    { name: 'Artikel', path: '/artikel', isHash: false },
-    { name: 'Kontak', path: '/kontak', isHash: false },
+    { name: t('nav.home'), path: '/', isHash: false },
+    { name: t('nav.about'), path: '/tentang', isHash: false },
+    { name: t('nav.services'), path: '/services', isHash: false },
+    { name: t('nav.articles'), path: '/artikel', isHash: false },
+    { name: t('nav.contact'), path: '/kontak', isHash: false },
   ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleNavClick = (e, link) => {
     setIsOpen(false);
-    
+
     // Smooth scroll for hash links if on home page
     if (link.isHash && pathname === '/') {
       e.preventDefault();
@@ -48,13 +50,6 @@ const Navbar = () => {
     }
   };
 
-  const handleContactClick = (e) => {
-    setIsOpen(false);
-    if (pathname === '/') {
-      e.preventDefault();
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled || !isHomePage ? 'bg-navbar shadow-2xl py-3' : 'bg-transparent py-5'}`}>
@@ -65,11 +60,11 @@ const Navbar = () => {
             <img src="/logo.png" alt="Narasumber Hukum Logo" className="w-10 h-10 md:w-14 lg:w-16 md:h-14 lg:h-16 object-contain filter drop-shadow-xl transition-transform duration-500 group-hover:scale-105" />
           </div>
           <div className="flex flex-col">
-             <span className="text-lg md:text-2xl font-bold tracking-[0.15em] uppercase font-serif text-gold border-b border-gold/40 pb-0.5 leading-tight">
+            <span className="text-lg md:text-2xl font-bold tracking-[0.15em] uppercase font-serif text-gold border-b border-gold/40 pb-0.5 leading-tight">
               Narasumber Hukum
             </span>
             <span className="text-[8px] md:text-[9px] lg:text-[10px] text-white tracking-[0.3em] uppercase mt-0.5 font-sans whitespace-nowrap">
-              Sentral Edukasi & Solusi
+              {t('nav.tagline') || 'Sentral Edukasi & Solusi'}
             </span>
           </div>
         </Link>
@@ -77,37 +72,41 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex md:space-x-6 lg:space-x-8 items-center text-xs lg:text-sm font-medium uppercase tracking-wide">
           {navLinks.map((link) => (
-             link.isHash && location.pathname === '/' ? (
-                <a 
-                  key={link.name} 
-                  href={link.path.split('/')[1]}
-                  onClick={(e) => handleNavClick(e, link)}
-                  className={`cursor-pointer transition duration-300 hover:text-gold text-white`}
-                >
-                  {link.name}
-                </a>
-             ) : (
-                <Link 
-                  key={link.name} 
-                  href={link.path}
-                  className={`transition duration-300 hover:text-gold ${pathname === link.path ? 'text-gold' : 'text-white'}`}
-                >
-                   {link.name}
-                </Link>
-             )
+            link.isHash && (typeof window !== 'undefined' && window.location.pathname === '/') ? (
+              <a
+                key={link.name}
+                href={link.path.split('/')[1]}
+                onClick={(e) => handleNavClick(e, link)}
+                className={`cursor-pointer transition duration-300 hover:text-gold text-white`}
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                href={link.path}
+                className={`transition duration-300 hover:text-gold ${pathname === link.path ? 'text-gold' : 'text-white'}`}
+              >
+                {link.name}
+              </Link>
+            )
           ))}
-          <Link 
-            href="/kontak" 
+
+
+          <Link
+            href="/kontak"
             className="bg-gold text-navy px-4 lg:px-5 py-2 rounded font-bold hover:bg-opacity-90 transition duration-300 uppercase text-[10px] lg:text-xs tracking-widest cursor-pointer"
           >
-            Hubungi
+            {t('nav.cta')}
           </Link>
         </div>
 
         {/* Mobile Menu Button */}
-        <button onClick={toggleMenu} className="md:hidden text-gold focus:outline-none">
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <button onClick={toggleMenu} className="text-gold focus:outline-none">
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu Dropdown */}
@@ -115,9 +114,9 @@ const Navbar = () => {
         <div className="md:hidden bg-navbar border-t border-white/5">
           <div className="flex flex-col p-3 space-y-3 text-sm font-medium uppercase text-center text-white">
             {navLinks.map((link) => (
-              link.isHash && location.pathname === '/' ? (
-                <a 
-                  key={link.name} 
+              link.isHash && (typeof window !== 'undefined' && window.location.pathname === '/') ? (
+                <a
+                  key={link.name}
                   href={link.path.split('/')[1]}
                   onClick={(e) => handleNavClick(e, link)}
                   className="block hover:text-gold transition py-1.5"
@@ -125,22 +124,22 @@ const Navbar = () => {
                   {link.name}
                 </a>
               ) : (
-                <Link 
-                  key={link.name} 
+                <Link
+                  key={link.name}
                   href={link.path}
-                   onClick={() => setIsOpen(false)}
+                  onClick={() => setIsOpen(false)}
                   className={`block hover:text-gold transition py-1.5 ${pathname === link.path ? 'text-gold' : ''}`}
                 >
                   {link.name}
                 </Link>
               )
             ))}
-             <Link 
+            <Link
               href="/kontak"
               onClick={() => setIsOpen(false)}
               className="block bg-gold text-navy px-5 py-2.5 rounded font-bold hover:bg-opacity-90 transition uppercase mt-1"
             >
-              Hubungi
+              {t('nav.cta')}
             </Link>
           </div>
         </div>

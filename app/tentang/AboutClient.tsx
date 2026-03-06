@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Scale, Target, Lightbulb, Shield, Heart, TrendingUp, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const fadeInUp: any = {
   hidden: { opacity: 0, y: 60 },
@@ -19,74 +20,18 @@ const staggerContainer = {
 };
 
 const AboutClient = () => {
-  const missions = [
-    {
-      icon: <Heart size={32} />,
-      title: "Pelayanan Terbaik",
-      desc: "Menyediakan layanan hukum berkualitas tinggi yang mendahulukan kepentingan klien dengan memberikan solusi tepat, responsif, dan inovatif."
-    },
-    {
-      icon: <Scale size={32} />,
-      title: "Keadilan dan Kepastian Hukum",
-      desc: "Mengadvokasi keadilan dan kepastian hukum sebagai landasan utama dalam setiap tindakan hukum yang kami ambil, dengan memastikan bahwa hak dan kepentingan klien dijaga dengan cermat."
-    },
-    {
-      icon: <TrendingUp size={32} />,
-      title: "Kemitraan yang Berkelanjutan",
-      desc: "Mengembangkan hubungan jangka panjang yang saling menguntungkan dengan klien kami, dengan fokus pada dukungan berkelanjutan dalam mencapai tujuan hukum dan bisnis mereka."
-    },
-    {
-      icon: <Lightbulb size={32} />,
-      title: "Inovasi dan Pengetahuan",
-      desc: "Terus mengembangkan pengetahuan dan teknologi dalam hukum untuk memberikan solusi yang paling muktahir dan efektif kepada klien kami."
-    },
-    {
-      icon: <Shield size={32} />,
-      title: "Integritas dan Etika",
-      desc: "Menegakkan standar tertinggi dalam integritas dan etika hukum, menjadikan kejujuran dan keadilan sebagai prinsip utama dalam setiap tindakan kami."
-    },
-    {
-      icon: <Target size={32} />,
-      title: "Dukungan pada Pertumbuhan Bisnis",
-      desc: "Membantu klien dalam menghadapi tantangan hukum yang kompleks dan memastikan pertumbuhan berkelanjutan bisnis mereka."
-    }
-  ];
+  const { t } = useLanguage();
+  const missions = (t('about_page.mission.items') as any).map((item: any, idx: number) => {
+    const icons = [<Heart size={32} />, <Scale size={32} />, <TrendingUp size={32} />, <Lightbulb size={32} />, <Shield size={32} />, <Target size={32} />];
+    return {
+      ...item,
+      icon: icons[idx]
+    };
+  });
 
-  const legalScopes = [
-    "Perkara Kewarganegaraan",
-    "Perkara Perkawinan",
-    "Perkara Adopsi atau Hak Asuh Anak",
-    "Perkara Kepemilikan Barang atau Aset",
-    "Perkara Hak Usaha",
-    "Perkara Perikatan-perikatan",
-    "Perkara Perkumpulan dan Persekutuan",
-    "Perkara Jual-Beli, Tukar-Menukar, Sewa-Menyewa, Pinjam-Meminjam",
-    "Perkara Hutang Piutang",
-    "Perkara Waris atau Hibah",
-    "Perkara Hak Paten atau Hak Kekayaan Intelektual",
-    "Perkara Pencemaran Nama Baik",
-    "Perkara Perubahan Nama atau Identitas",
-    "Perkara Wanprestasi",
-    "Perkara Perbuatan Melawan Hukum (PMH)",
-    "Perkara Pemisahan Harta",
-    "Perkara Perjanjian Bisnis atau Pekerjaan",
-    "Perkara Pencurian atau Perampokan",
-    "Perkara Pembunuhan",
-    "Perkara Penipuan",
-    "Perkara Pemerasan",
-    "Perkara Penganiayaan",
-    "Perkara Pemerkosaan",
-    "Perkara Korupsi",
-    "Perkara Pengemplangan Pajak",
-    "Perkara Pemalsuan Dokumen",
-    "Perkara Perzinahan",
-    "Perkara Kekerasan Dalam Rumah Tangga",
-    "Perkara Narkotika",
-    "Perkara Pelanggaran Ketertiban Umum",
-    "Perkara Pemalsuan",
-    "Perkara Perbuatan Curang",
-    "Perkara Pelanggaran Jabatan dan Perkara Pidana Lainnya"
-  ];
+  const description = t('about_page.description') as unknown as string[];
+
+  const legalScopes = t('about_page.legal_scope.items') as unknown as string[];
 
   return (
     <div className="pt-20">
@@ -94,9 +39,9 @@ const AboutClient = () => {
       <section className="relative py-20 md:py-32 overflow-hidden bg-navy">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1920&q=80" 
-            alt="Legal Background" 
+          <img
+            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1920&q=80"
+            alt="Legal Background"
             className="w-full h-full object-cover opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy/95 to-navy/90"></div>
@@ -105,28 +50,28 @@ const AboutClient = () => {
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl"></div>
-        
+
         <div className="container mx-auto px-4 relative z-10 text-center">
-        
+
 
           {/* Subtitle */}
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-3xl md:text-4xl font-bold mb-6 uppercase tracking-wide text-white"
           >
-            Tentang <span className="text-gold">Kami</span>
+            {t('about_page.title')} <span className="text-gold">{t('about_page.title_gold')}</span>
           </motion.h2>
 
           {/* Tagline */}
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.6 }}
             className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed italic font-serif"
           >
-            "Legal Certainty, Constructive Solutions, Empowering Your Legal Journey"
+            "{t('about_page.tagline')}"
           </motion.p>
 
           {/* Decorative Scale Icon */}
@@ -172,18 +117,15 @@ const AboutClient = () => {
               variants={fadeInUp}
               className="prose prose-lg max-w-none"
             >
-              <p className="text-gray-600 leading-relaxed mb-6">
-                <strong className="text-navy">NARASUMBER HUKUM</strong> saat ini terdiri dari Narasumber Hukum yang bekerjasama dengan <strong>PT Sedana Legal Consultant (SELECO)</strong> dan <strong>PT Teira Dwan Indonesia (MTI-Talenstory)</strong>. Dengan ini menjadikan kami sebuah kesatuan pelayanan dalam sektor Hukum, Izin, dan Legalitas disertai dengan Pengembangan dan Pelatihan Sumber Daya Manusia.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                Kami mengaplikasikan pengetahuan, kemampuan, dan kreativitas yang maksimal untuk mencapai tujuan bersama dengan klien kami. Kami tersedia untuk memberikan layanan hukum, izin, legalitas, pengembangan dan pelatihan SDM yang efektif dan efisien secara tepat.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                Pendirian <strong className="text-navy">NARASUMBER HUKUM</strong> dilatarbelakangi oleh pemahaman akan pentingnya kualitas pelayanan, dan komitmen terhadap kepuasan klien. Kami percaya bahwa dengan menyediakan layanan yang lengkap serta berkualitas tinggi adalah solusi yang tepat untuk memberikan berbagai kemudahan dan kelegaan bagi klien kami.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                Kami yakin bahwa kolaborasi dalam tim kami menghasilkan kinerja maksimal dalam menangani dan menyelesaikan kebutuhan klien kami, karena tim kami berpengalaman dan terlatih serta terbiasa menghadapi berbagai perkara atau proyek dengan tingkat keahliannya yang tinggi.
-              </p>
+              {(t('about_page.description') as any).map((p: string, i: number) => (
+                <p key={i} className="text-gray-600 leading-relaxed mb-6">
+                  {p.includes('NARASUMBER HUKUM') ? (
+                    <>
+                      <strong className="text-navy">NARASUMBER HUKUM</strong> {p.replace('NARASUMBER HUKUM', '')}
+                    </>
+                  ) : p}
+                </p>
+              ))}
             </motion.div>
           </div>
         </div>
@@ -193,9 +135,9 @@ const AboutClient = () => {
       <section className="relative py-16 md:py-24 overflow-hidden bg-navy text-white">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80" 
-            alt="Business Vision" 
+          <img
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+            alt="Business Vision"
             className="w-full h-full object-cover opacity-15"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy/95 to-navy/90"></div>
@@ -209,10 +151,10 @@ const AboutClient = () => {
               viewport={{ once: true }}
               variants={fadeInUp}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 uppercase tracking-wide">Visi</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 uppercase tracking-wide">{t('about_page.vision.title')}</h2>
               <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
               <p className="text-xl md:text-2xl leading-relaxed text-gray-200 font-serif italic">
-                "Menjadi mitra terpercaya bagi semua kalangan dalam Keadilan, Kepastian, Keberlanjutan melalui Ilmu, Inovasi dan Integritas yang tinggi"
+                "{t('about_page.vision.desc')}"
               </p>
             </motion.div>
           </div>
@@ -223,19 +165,19 @@ const AboutClient = () => {
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">Misi</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">{t('about_page.mission.title')}</h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
           </div>
 
-          <motion.div 
+          <motion.div
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
           >
-            {missions.map((mission, idx) => (
-              <motion.div 
+            {(t('about_page.mission.items') as unknown as any[]).map((mission: any, idx: number) => (
+              <motion.div
                 key={idx}
                 variants={fadeInUp}
                 className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:border-gold/30 transition-all duration-300 hover:-translate-y-2 group"
@@ -260,10 +202,10 @@ const AboutClient = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">Legal Scope</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">{t('about_page.legal_scope.title')}</h2>
               <div className="w-24 h-1 bg-gold mx-auto mb-6"></div>
               <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                Firma Narasumber Hukum memberikan layanan hukum yang komprehensif untuk berbagai jenis perkara dan upaya hukum. Kami siap membantu klien dalam penyelesaian perkara perdata dan pidana di seluruh Indonesia, baik melalui proses <strong>litigasi</strong> (penyelesaian di pengadilan) maupun <strong>non-litigasi</strong> (penyelesaian di luar pengadilan).
+                {t('about_page.legal_scope.subtitle')}
               </p>
             </div>
 
@@ -291,9 +233,9 @@ const AboutClient = () => {
       <section className="relative py-16 md:py-24 overflow-hidden bg-navy">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80" 
-            alt="Office Building" 
+          <img
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80"
+            alt="Office Building"
             className="w-full h-full object-cover opacity-10"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy/95 to-navy/90"></div>
@@ -301,7 +243,7 @@ const AboutClient = () => {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-white">Partner Kami</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-white">{t('partners.title')}</h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
           </div>
 
@@ -310,38 +252,56 @@ const AboutClient = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
+            className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto"
           >
             {/* Narasumber Hukum Logo */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
-              className="bg-white/10 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
             >
-              <div className="bg-white rounded-xl p-6 mb-6 flex items-center justify-center min-h-[120px]">
-                <img 
-                    src="/logo-narasumber-hukum.png" 
-                    alt="Firma Narasumber Hukum" 
-                    className="h-16 md:h-20 object-contain transition-all duration-500" 
-                  />
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px]">
+                <img
+                  src="/logo.png"
+                  alt={t('partners.narasumber')}
+                  className="h-12 md:h-16 object-contain transition-all duration-500"
+                />
               </div>
-              <h3 className="text-xl font-bold text-center text-gold font-serif">Firma Narasumber Hukum</h3>
-              <p className="text-gray-300 text-sm text-center mt-2 uppercase tracking-widest">Advocate, Intercessor & Legal Consultant</p>
+              <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.narasumber')}</h3>
+              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest">Advocate, Intercessor & Legal Consultant</p>
+            </motion.div>
+
+            {/* SLECO Project Logo */}
+            <motion.div
+              variants={fadeInUp}
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
+            >
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px]">
+                <img
+                  src="/logo-sleco.png"
+                  alt={t('partners.sleco')}
+                  className="h-12 md:h-16 object-contain transition-all duration-500"
+                />
+              </div>
+              <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.sleco')}</h3>
+              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest">Sustainable Solutions & Project Management</p>
             </motion.div>
 
             {/* MTI Talenstory Logo */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
-              className="bg-white/10 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
             >
-              <div className="bg-white rounded-xl p-6 mb-6 flex items-center justify-center min-h-[120px]">
-                <img 
-                  src="/logo-mti-talenstory.jpg" 
-                  alt="MTI Talenstory" 
-                  className="max-w-full h-auto max-h-24 object-contain transition-all duration-500"
-                />
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px]">
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/logo-mti-talenstory.jpg"
+                    alt={t('partners.mti')}
+                    className="max-w-full h-auto max-h-16 object-contain transition-all duration-500"
+                  />
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-center text-gold font-serif">PT Teira Dwan Indonesia</h3>
-              <p className="text-gray-300 text-sm text-center mt-2 uppercase tracking-widest">(MTI-Talenstory)</p>
+              <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.mti')}</h3>
+              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest">{t('partners.mti_sub')}</p>
             </motion.div>
           </motion.div>
         </div>

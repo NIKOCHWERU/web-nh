@@ -4,8 +4,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingWA from "@/components/FloatingWA";
 import ScrollToTop from "@/components/ScrollToTop";
+import FloatingLanguage from "@/components/FloatingLanguage";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export const metadata: Metadata = {
+  // ... existing metadata ...
   title: {
     template: "%s | Narasumber Hukum",
     default: "Sentral Edukasi Dan Solusi | Narasumber Hukum",
@@ -53,49 +56,52 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth">
-      <body className="antialiased font-sans">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "Narasumber Hukum",
-                "url": "https://www.narasumberhukum.com",
-                "logo": "https://www.narasumberhukum.com/logo.png",
-                "contactPoint": {
-                  "@type": "ContactPoint",
-                  "telephone": "+62 822-1102-0022",
-                  "contactType": "customer service",
-                  "areaServed": "ID",
-                  "availableLanguage": "Indonesian"
+    <LanguageProvider>
+      <html lang="id" className="scroll-smooth">
+        <body className="antialiased font-sans">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify([
+                {
+                  "@context": "https://schema.org",
+                  "@type": "Organization",
+                  "name": "Narasumber Hukum",
+                  "url": "https://www.narasumberhukum.com",
+                  "logo": "https://www.narasumberhukum.com/logo.png",
+                  "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+62 822-1102-0022",
+                    "contactType": "customer service",
+                    "areaServed": "ID",
+                    "availableLanguage": "Indonesian"
+                  },
+                  "sameAs": [
+                    "https://www.instagram.com/narasumberhukum/",
+                    "https://www.linkedin.com/company/kantor-narasumber-hukum/"
+                  ]
                 },
-                "sameAs": [
-                  "https://www.instagram.com/narasumberhukum/",
-                  "https://www.linkedin.com/company/kantor-narasumber-hukum/"
-                ]
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "name": "Narasumber Hukum",
-                "url": "https://www.narasumberhukum.com"
-              }
-            ])
-          }}
-        />
-        <ScrollToTop />
-        <div className="flex flex-col min-h-screen bg-gray-50 text-navy">
-          <Navbar />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-          <FloatingWA />
-        </div>
-      </body>
-    </html>
+                {
+                  "@context": "https://schema.org",
+                  "@type": "WebSite",
+                  "name": "Narasumber Hukum",
+                  "url": "https://www.narasumberhukum.com"
+                }
+              ])
+            }}
+          />
+          <ScrollToTop />
+          <div className="flex flex-col min-h-screen bg-gray-50 text-navy">
+            <Navbar />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+            <FloatingWA />
+            <FloatingLanguage />
+          </div>
+        </body>
+      </html>
+    </LanguageProvider>
   );
 }
