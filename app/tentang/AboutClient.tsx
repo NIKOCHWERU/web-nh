@@ -176,7 +176,7 @@ const AboutClient = () => {
             viewport={{ once: true }}
             variants={staggerContainer}
           >
-            {(t('about_page.mission.items') as unknown as any[]).map((mission: any, idx: number) => (
+            {missions.map((mission: any, idx: number) => (
               <motion.div
                 key={idx}
                 variants={fadeInUp}
