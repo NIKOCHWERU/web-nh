@@ -76,7 +76,7 @@ const ServicesClient = () => {
                                     <div className={`h-48 ${service.color} flex items-center justify-center relative overflow-hidden`}>
                                         <div className="absolute inset-0 bg-black/10"></div>
                                         <div className="relative z-10 text-white transform group-hover:scale-110 transition duration-500">
-                                            {React.cloneElement(service.icon as React.ReactElement, { size: 64, className: "w-16 h-16" })}
+                                            {React.cloneElement(service.icon as any, { size: 64, className: "w-16 h-16" })}
                                         </div>
                                         <div className="absolute inset-0 bg-navy/20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
                                             <span className="p-3 bg-gold rounded-full text-navy transform scale-0 group-hover:scale-100 transition delay-100 duration-300">
