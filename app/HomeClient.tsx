@@ -162,7 +162,7 @@ const HomeClient = () => {
                 <div className="mb-6 text-gold group-hover:scale-110 transition-transform">
                   <CheckCircle size={40} />
                 </div>
-                <h3 className="text-xl font-bold mb-4 uppercase tracking-wide font-serif">{item.title}</h3>
+                <h3 className="text-xl font-bold mb-4 uppercase tracking-wide font-serif text-navy">{item.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed font-light">{item.desc}</p>
               </motion.div>
             ))}
