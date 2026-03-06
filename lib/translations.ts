@@ -26,7 +26,7 @@ export const translations = {
             mission: {
                 title: "Misi Kami",
                 items: [
-                    { title: "Pelayanan Terbaik", desc: "Menyediakan layanan hukum berkualitas tinggi yang mendahulukan kepentingan klien dengan memberikan solusi tepat, responsif, dan inovatif." },
+                    { title: "Pelayanan Terbaik", desc: "Menyediakan layanan hukum berkualitas tinggi yang mendahulukan kepentingan klien dengan memberikan solusi tepat, responsif, and inovatif." },
                     { title: "Keadilan dan Kepastian Hukum", desc: "Mengadvokasi keadilan dan kepastian hukum sebagai landasan utama dalam setiap tindakan hukum yang kami ambil, dengan memastikan bahwa hak dan kepentingan klien dijaga dengan cermat." },
                     { title: "Kemitraan yang Berkelanjutan", desc: "Mengembangkan hubungan jangka panjang yang saling menguntungkan dengan klien kami, dengan fokus pada dukungan berkelanjutan dalam mencapai tujuan hukum dan bisnis mereka." },
                     { title: "Inovasi dan Pengetahuan", desc: "Terus mengembangkan pengetahuan dan teknologi dalam hukum untuk memberikan solusi yang paling muktahir dan efektif kepada klien kami." },
@@ -66,15 +66,15 @@ export const translations = {
             cta_custom_desc: "Jika Anda memiliki kebutuhan hukum yang spesifik dan tidak tercantum di atas, hubungi kami untuk mendiskusikan solusi yang tepat.",
             legal: {
                 title: "Bidang Hukum",
-                desc: "Kami siap mendampingi, memberikan pertimbangan, serta melakukan segala bentuk upaya hukum di Indonesia, baik pembelaan di dalam maupun di luar Pengadilan (Litigasi & Non-Litigasi).",
+                desc: "Kami merupakan mitra hukum terpercaya yang berdedikasi untuk memberikan pembelaan hukum terbaik, baik di dalam maupun di luar pengadilan.",
             },
             licensing: {
-                title: "Bidang Perizinan, Legalitas, Perpajakan, Keimigrasian & Pertanahan",
-                desc: "Solusi praktis perlindungan aset dan legalitas bisnis. Kami mendampingi dari investasi awal hingga operasional, mencakup pengurusan izin di 18 Kementerian sesuai regulasi terbaru.",
+                title: "Perizinan & Legalitas",
+                desc: "Kami menyediakan solusi komprehensif untuk perlindungan aset dan legalitas bisnis di berbagai sektor kementerian di Indonesia.",
             },
             hr: {
-                title: "Pengembangan & Pelatihan Sumber Daya Manusia",
-                desc: "Kami berdedikasi merancang langkah perubahan berdampak bagi individu dan perusahaan melalui metode pelatihan SDM terbaru yang relevan dan inovatif.",
+                title: "Pengembangan SDM",
+                desc: "Kami merancang program pelatihan sumber daya manusia yang inovatif untuk meningkatkan kapabilitas dan profesionalisme tim Anda.",
             },
             not_found: "Layanan Tidak Ditemukan",
             back_to_services: "Kembali ke Layanan",
@@ -108,8 +108,8 @@ export const translations = {
             mti_sub: "(MTI-Talenstory)"
         },
         values: {
-            title: "Nilai-nilai Kami",
-            subtitle: "Prinsip utama yang menjadi landasan setiap langkah kami dalam melayani Anda.",
+            title: "Nilai Utama Kami",
+            subtitle: "Prinsip-prinsip profesional yang menjadi landasan setiap langkah kami dalam melayani Anda.",
             items: [
                 { title: "Kepuasan Klien", desc: "Kepuasan klien adalah prioritas utama kami. Kami berkomitmen untuk memenuhi dan melampaui harapan klien." },
                 { title: "Ketelitian", desc: "Kami menekankan pada ketelitian dalam setiap tindakan, sehingga setiap klien mendapatkan hasil terbaik dalam penyelesaian." },
@@ -119,8 +119,8 @@ export const translations = {
             ]
         },
         testimonials: {
-            title: "Testimoni Klien",
-            subtitle: "Dedikasi kami tercermin dalam setiap kesuksesan yang diraih oleh klien kami.",
+            title: "Ulasan Klien",
+            subtitle: "Kepercayaan klien adalah bukti nyata dari dedikasi dan profesionalisme kami.",
             items: [
                 { name: "Anwar Muksin", role: "Klien", text: "Tim Narasumber Hukum memiliki pemahaman yang mendalam tentang hukum, perizinan dan legalitas yang ada di Indonesia. Kami bersyukur semua permasalahan dalam usaha saya dapat ditangani dengan baik dan efisien oleh tim Narasumber Hukum" },
                 { name: "Ani Handayani", role: "Klien", text: "Ibu Debora dan tim melakukan pekerjaan yang sangat baik dan praktis. Mereka memberikan penjelasan yang jelas untuk membantu kami mengambil keputusan. Terimakasih kepada seluruh tim Narasumber Hukum" },
@@ -129,8 +129,8 @@ export const translations = {
             ]
         },
         process: {
-            title: "Alur Penanganan Perkara",
-            subtitle: "Langkah-langkah strategis kami dalam memastikan setiap perkara ditangani secara profesional.",
+            title: "Prosedur Penanganan",
+            subtitle: "Langkah-langkah strategis kami dalam menangani perkara secara profesional dan terukur.",
             items: [
                 { step: "01", title: "Konsultasi & Analisis", desc: "Pendalaman materi perkara dan identifikasi posisi hukum klien secara menyeluruh." },
                 { step: "02", title: "Strategi Hukum", desc: "Penyusunan langkah-langkah hukum praktis dan efektif sesuai dengan target yang ingin dicapai." },
@@ -140,7 +140,7 @@ export const translations = {
         },
         faq: {
             title: "Pertanyaan Populer",
-            subtitle: "Jawaban singkat untuk pertanyaan yang sering ditanyakan mengenai layanan kami.",
+            subtitle: "Informasi ringkas mengenai layanan dan prosedur hukum narasumber kami.",
             items: [
                 { q: "Bagaimana cara memulai konsultasi hukum?", a: "Anda dapat menghubungi kami melalui tombol WhatsApp yang tersedia di website ini atau mengisi formulir kontak di halaman Hubungi Kami. Tim kami akan segera merespons permintaan Anda." },
                 { q: "Berapa biaya jasa hukum di Narasumber Hukum?", a: "Biaya jasa hukum kami bervariasi tergantung pada kompleksitas dan jenis perkara. Kami selalu mengedepankan transparansi dan akan memberikan estimasi biaya setelah sesi konsultasi awal." },
@@ -149,238 +149,238 @@ export const translations = {
             ]
         },
         cta_contact: {
-            title_quote: "Jangan Ditunda Dan Dipendam,",
-            title_gold: "Segera Selesaikan.",
+            title_quote: "Jangan biarkan masalah berlarut-larut,",
+            title_gold: "Segera Temukan Solusinya.",
             title: "Siap Berdiskusi Mengenai Kasus Anda?",
             subtitle: "Tim ahli kami siap memberikan solusi hukum terbaik untuk Anda. Hubungi kami sekarang untuk konsultasi awal.",
             button: "Hubungi Kami Sekarang",
-            free_consult: "Konsultasi Gratis"
+            free_consult: "Konsultasi Sekarang"
         },
         contact_page: {
             title: "Hubungi Kami",
-            description: "\"Kami siap mendengarkan dan mendampingi setiap perkara Anda dengan profesionalisme tinggi.\"",
+            description: "\"Kami hadir untuk mendengarkan dan mendampingi Anda melalui setiap tantangan hukum dengan integritas tinggi.\"",
             profile_link: "Pelajari Profil Narasumber Hukum",
-            email_label: "Email Resmi",
+            email_label: "Email Korespondensi",
         },
         contact_form: {
             name_label: "Nama Lengkap",
             name_placeholder: "Masukkan nama Anda",
-            email_label: "Email Aktif",
-            email_placeholder: "name@example.com",
+            email_label: "Alamat Email",
+            email_placeholder: "nama@perusahaan.com",
             phone_label: "Nomor WhatsApp",
             phone_placeholder: "0812xxxx",
-            subject_label: "Subjek",
-            subject_placeholder: "Apa yang ingin Anda bicarakan?",
-            message_label: "Pesan",
-            message_placeholder: "Tuliskan detail pertanyaan atau masalah Anda...",
-            submit_button: "Kirim Pesan Sekarang",
-            sending: "Mengirim...",
+            subject_label: "Perihal",
+            subject_placeholder: "Topik yang ingin didiskusikan",
+            message_label: "Pesan Anda",
+            message_placeholder: "Tuliskan ringkasan masalah atau kebutuhan Anda di sini...",
+            submit_button: "Kirim Pesan",
+            sending: "Sedang Mengirim...",
             success_title: "Pesan Terkirim!",
-            success_message: "Terima kasih telah menghubungi kami. Tim kami akan segera merespon pesan Anda.",
-            error_message: "Terjadi kesalahan. Silakan coba beberapa saat lagi atau hubungi kami via WhatsApp."
+            success_message: "Terima kasih. Pesan Anda telah kami terima dan akan segera ditinjau oleh tim konsultan kami.",
+            error_message: "Terjadi kesalahan sistem. Mohon coba sesaat lagi atau hubungi kami melalui WhatsApp."
         },
         footer: {
-            desc: "Merupakan tempat berkumpulnya para Aktivis Handal dibidang Hukum, Perizinan, Legalitas, Pengembangan dan Pelatihan SDM yang telah terkoneksi dalam satu pintu untuk dapat melayani kebutuhan Klien kami di Seluruh Indonesia.",
-            services_title: "Layanan Kami",
-            office_title: "Kantor Kami",
+            desc: "Narasumber Hukum merupakan pusat keahlian bagi para praktisi hukum, perizinan, dan pengembangan SDM yang berdedikasi melayani klien di seluruh wilayah Indonesia.",
+            services_title: "Layanan Strategis",
+            office_title: "Lokasi Kantor",
             contact_title: "Hubungi Kami",
             rights: "All Rights Reserved.",
-            office_1: { name: "Kantor I", addr: "Jl.M.H Thamrin No. 9 Lt 12, Kebon Sirih Menteng, DKI Jakarta, 10340" },
-            office_2: { name: "Kantor II", addr: "Jl. Sunset Road No. 77, Lt.3, Kuta, Kec. Kuta, Badung, Bali, 80361" },
-            office_3: { name: "Kantor III", addr: "Jl. Kertabumi No 1 Ruko Kertabumi Blok A No.9 Lantai 2 Kelurahan Karawang Kulon, Kecamatan Karawang Barat, Kabupaten Karawang, Provinsi Jawa Barat" },
-            monday_friday: "Melayani konsultasi Senin - Jumat (09.00 - 17.00 WIB)"
+            office_1: { name: "Kantor Pusat I", addr: "Jl.M.H Thamrin No. 9 Lt 12, Kebon Sirih Menteng, Jakarta Pusat, 10340" },
+            office_2: { name: "Kantor Cabang II", addr: "Jl. Sunset Road No. 77, Lt.3, Kuta, Badung, Bali, 80361" },
+            office_3: { name: "Kantor Operasional III", addr: "Jl. Kertabumi No 1 Ruko Kertabumi Blok A No.9 Lantai 2, Karawang Kulon, Karawang Barat, Jawa Barat" },
+            monday_friday: "Jam Pelayanan: Senin - Jumat (09.00 - 17.00 WIB)"
         }
     },
     en: {
         nav: {
             home: "Home",
-            about: "About Us",
+            about: "About",
             services: "Services",
             articles: "Articles",
             contact: "Contact",
-            cta: "Contact Us",
-            tagline: "Education & Solutions Center",
+            cta: "Counseling",
+            tagline: "Center for Legal Education & Bespoke Solutions",
         },
         about_page: {
-            title: "About",
-            title_gold: "Us",
+            title: "Executive",
+            title_gold: "Profile",
             tagline: "Legal Certainty, Constructive Solutions, Empowering Your Legal Journey",
             description: [
-                "NARASUMBER HUKUM currently consists of Legal Experts working in collaboration with PT Sedana Legal Consultant (SELECO), SLECO Project and PT Teira Dwan Indonesia (MTI-Talenstory). This makes us a unified service unit in the Law, Permit, and Legality sectors, accompanied by Human Resources Development and Training.",
-                "We apply the maximum knowledge, skill, and creativity to achieve mutual goals with our clients. We are available to provide legal, permit, legality, and HR development and training services effectively, efficiently, and precisely.",
-                "The establishment of NARASUMBER HUKUM was motivated by an understanding of the importance of service quality and a commitment to client satisfaction. We believe that providing complete and high-quality services is the right solution to provide various conveniences and relief for our clients.",
-                "We are confident that collaboration within our team produces maximum performance in handling and resolving our clients' needs, as our team is experienced, trained, and accustomed to facing various cases or projects with a high level of expertise."
+                "NARASUMBER HUKUM represents a distinguished consortium of legal experts working in strategic partnership with PT Sedana Legal Consultant (SELECO), SLECO Project, and PT Teira Dwan Indonesia (MTI-Talenstory). Our collective provides comprehensive legal advisory, regulatory procurement, and professional human capital development.",
+                "We leverage specialized expertise, astute analytical skills, and proactive advocacy to achieve critical objectives for our clientele. Our firm delivers efficient legal representation and corporate advisory services within the primary jurisdictions of Indonesia.",
+                "The foundation of NARASUMBER HUKUM is built upon a definitive mandate for service excellence and client-centric advocacy. We provide high-caliber legal frameworks and solutions designed to mitigate risk and facilitate sustainable business operations.",
+                "Our collaborative team structure ensures optimized performance in managing complex litigation and corporate projects. Our practitioners are highly trained specialists who maintain rigorous professional standards in all aspects of legal practice."
             ],
             vision: {
-                title: "Our Vision",
-                desc: "To be a trusted partner for all circles in Justice, Certainty, and Sustainability through high Knowledge, Innovation and Integrity."
+                title: "Visionary Perspective",
+                desc: "To be the premier trusted partner in delivering integrity-driven, innovative legal solutions that foster business growth and ensure definitive legal certainty for our clients."
             },
             mission: {
-                title: "Our Mission",
+                title: "Strategic Mandate",
                 items: [
-                    { title: "Excellence in Service", desc: "Providing high-quality legal services that prioritize client interests by providing appropriate, responsive, and innovative solutions." },
-                    { title: "Justice and Legal Certainty", desc: "Advocating for justice and legal certainty as the main foundation in every legal action we take, ensuring that client rights and interests are carefully guarded." },
-                    { title: "Sustainable Partnership", desc: "Developing mutually beneficial long-term relationships with our clients, focusing on ongoing support in achieving their legal and business goals." },
-                    { title: "Innovation and Knowledge", desc: "Continuously developing legal knowledge and technology to provide the most up-to-date and effective solutions to our clients." },
-                    { title: "Integrity and Ethics", desc: "Upholding the highest standards in legal integrity and ethics, making honesty and justice the main principles in every action we take." },
-                    { title: "Support for Business Growth", desc: "Assisting clients in facing complex legal challenges and ensuring the sustainable growth of their businesses." }
+                    { title: "Excellence in Advocacy", desc: "Delivering high-caliber legal counsel that prioritizes client objectives through precise, responsive, and forward-thinking solutions." },
+                    { title: "Justice and Rule of Law", desc: "Upholding the principles of justice and legal certainty as our foremost foundation, ensuring rigorous protection of client interests and rights." },
+                    { title: "Strategic Partnerships", desc: "Cultivating enduring, high-value professional relationships through continuous support in achieving complex legal and commercial goals." },
+                    { title: "Legal Innovation", desc: "Integrating advanced legal knowledge with modern technological frameworks to deliver sophisticated and effective outcomes." },
+                    { title: "Professional Integrity", desc: "Adhering to the highest ethical benchmarks and maintaining unwavering integrity as the primary principle in all professional engagements." },
+                    { title: "Corporate Growth Catalyst", desc: "Facilitating sustainable growth by navigating complex regulatory landscapes and providing robust legal safeguarding for enterprises." }
                 ]
             },
             legal_scope: {
-                title: "Scope of Case Handling",
-                subtitle: "Narasumber Hukum Law Firm provides comprehensive legal services for various types of cases and legal efforts. We are ready to assist clients in resolving civil and criminal cases throughout Indonesia, both through litigation (court settlement) and non-litigation (out-of-court settlement).",
+                title: "Practice Areas & Jurisdictional Scope",
+                subtitle: "The Firm provides comprehensive legal representation across diverse civil and criminal jurisdictions. We represent clients in both Litigation (tribunal proceedings) and Non-Litigation (alternative dispute resolution) throughout the Republic of Indonesia.",
                 items: [
-                    "Citizenship Cases", "Marriage Cases", "Adoption or Child Custody Cases", "Property or Asset Ownership Cases",
-                    "Business Rights Cases", "Engagement/Obligation Cases", "Associations and Partnerships Cases", "Buying and Selling, Exchange, Renting, Borrowing and Lending Cases",
-                    "Debt and Receivable Cases", "Inheritance or Grant Cases", "Patent or Intellectual Property Rights Cases", "Defamation Cases",
-                    "Name or Identity Change Cases", "Breach of Contract (Wanprestasi) Cases", "Unlawful Acts (PMH) Cases", "Asset Separation Cases",
-                    "Business or Employment Agreement Cases", "Theft or Robbery Cases", "Murder Cases", "Fraud Cases",
-                    "Extortion Cases", "Assault/Maltreatment Cases", "Rape Cases", "Corruption Cases",
-                    "Tax Evasion Cases", "Document Forgery Cases", "Adultery Cases", "Domestic Violence Cases",
-                    "Narcotics Cases", "Public Order Violation Cases", "Counterfeiting Cases", "Fraudulent Acts Cases",
-                    "Abuse of Office Cases and Other Criminal Cases"
+                    "Citizenship & Immigration", "Family Law & Marital Affairs", "Adoption & Custodial Rights", "Asset & Real Estate Title Cases",
+                    "Commercial Title Disputes", "Contractual Obligations & Liabilities", "Corporate Entity Disputes", "Commercial Transactions & Leases", "Asset & Project Finance",
+                    "Debt Securitization & Recovery", "Succession & Probate Law", "Intellectual Property & Patents", "Defamation & Media Law",
+                    "Identity & Civil Status Rectification", "Breach of Contract (Wanprestasi)", "Unlawful Acts (PMH) & Tort Claims", "Marital Asset Liquidation",
+                    "Employment Law & Industrial Relations", "Property Crimes & Financial Theft", "Felonious Offenses", "Fraud & Misrepresentation",
+                    "Extortion & Racketeering", "Physical Assault & Victim Representation", "Sexual Offenses & Crimes against Persons", "Anti-Corruption & White-Collar Crime",
+                    "Tax Avoidance & Fiscal Offenses", "Instrumental Forgery & Counterfeiting", "Moral Offenses & Adultery", "Domestic Violence & Advocacy",
+                    "Narcotics & Controlled Substances", "Public Order Violations", "Financial Counterfeiting", "Commercial Deception",
+                    "Abuse of Authority & Specialized Criminal Offenses"
                 ]
             }
         },
         hero: {
-            title: "Legal Education & Solutions Center",
-            subtitle: "We provide professional legal assistance with an educational approach for just and sustainable solutions.",
-            cta_services: "Our Services",
-            cta_consult: "Consult Now",
+            title: "Premier Legal Education & Solutions Center",
+            subtitle: "Delivering professional legal counsel and educational advocacy to secure just and sustainable resolutions for our clientele.",
+            cta_services: "Explore Practice Areas",
+            cta_consult: "Request Consultation",
             tagline: "Legal Certainty, Constructive Solutions, Empowering Your Legal Journey",
         },
         services: {
-            title: "Featured Services",
-            subtitle: "Comprehensive legal solutions tailored to your needs.",
-            view_all: "View Our Legal Services",
-            view_detail: "View Detail",
-            cta_custom_title: "Need Special Services?",
-            cta_custom_desc: "If you have specific legal needs not listed above, contact us to discuss the right solution.",
+            title: "Core Practice Areas",
+            subtitle: "Sophisticated legal frameworks and advisory services tailored to your strategic needs.",
+            view_all: "View All Legal Practices",
+            view_detail: "View Practice Details",
+            cta_custom_title: "Bespoke Legal Requirements?",
+            cta_custom_desc: "Should your legal requirements fall outside our standard practice areas, please contact our counsel to discuss specialized advisory options.",
             legal: {
-                title: "Legal Affairs",
-                desc: "We are ready to assist, provide considerations, and carry out all forms of legal action in Indonesia, through both Litigation (in-court) and Non-Litigation (out-of-court) defense.",
+                title: "Legal Counsel & Litigation",
+                desc: "We provide authoritative legal representation and strategic counseling across Indonesian jurisdictions, specializing in both Litigation and alternative advocacy.",
             },
             licensing: {
-                title: "Licensing, Legalities, Taxation, Immigration & Land Affairs",
-                desc: "Practical solutions for asset protection and business legality. We assist from initial investment to operation, covering permit processing across 18 Ministries in accordance with current regulations.",
+                title: "Regulatory Compliance & Corporate Legalities",
+                desc: "Comprehensive solutions for asset protection and corporate procurement, facilitating regulatory liaison across all primary Indonesian ministries.",
             },
             hr: {
-                title: "Human Resources Development & Training",
-                desc: "We are dedicated to designing impactful change for individuals and companies through the latest relevant and innovative HR training methods.",
+                title: "Human Capital Development & Professional Training",
+                desc: "Designing transformative development programs for corporate personnel through innovative pedagogical methods and professional behavioral frameworks.",
             },
-            not_found: "Service Not Found",
-            back_to_services: "Back to Services",
-            cta_title: "Need Legal Assistance?",
-            cta_desc: "Don't hesitate to discuss your issues with our expert team. We are ready to provide the best solutions.",
+            not_found: "Counsel Area Not Found",
+            back_to_services: "Return to Services Overview",
+            cta_title: "In Need of Expertise?",
+            cta_desc: "Secure your interests by consulting with our dedicated experts. We deliver astute solutions for complex legal challenges.",
             hukum: {
-                content: "<p>We are ready to assist, provide considerations, and carry out all forms of legal action in Indonesia, through both Litigation (in-court) and Non-Litigation (out-of-court) defense.</p><p>Our services cover various aspects of civil and criminal law, ensuring your legal rights are protected with the right and ethical strategies.</p>"
+                content: "<p>The Firm provides authoritative legal representation and strategic counseling across Indonesian jurisdictions, specializing in both Litigation (tribunal proceedings) and Non-Litigation (alternative advocacy).</p><p>Our practice encompasses diverse aspects of civil and criminal law, ensuring your rights are safeguarded through ethical strategies and professional excellence.</p>"
             },
             perizinan: {
-                content: "<p>Practical solutions for asset protection and business legality. We assist from initial investment to operation, covering permit processing across 18 Ministries in accordance with current regulations.</p><p>We ensure all your company's legality documents are complete and valid, so you can focus on growing your business without legal concerns.</p>"
+                content: "<p>We deliver comprehensive solutions for asset protection and corporate procurement, facilitating regulatory liaison across all primary Indonesian ministries in accordance with current legal frameworks.</p><p>Our team ensures all corporate documentation is rigorously verified and compliant, allowing you to focus on growth with absolute legal peace of mind.</p>"
             },
             sdm: {
-                content: "<p>We are dedicated to designing impactful change for individuals and companies through the latest relevant and innovative HR training methods.</p><p>Our programs are designed to increase the productivity, integrity, and professionalism of your workforce through an educational and solutive approach.</p>"
+                content: "<p>We design transformative development programs for corporate personnel through innovative pedagogical methods and professional behavioral frameworks.</p><p>Our curriculum is engineered to optimize human capital productivity, integrity, and professional standards through an educational and solutions-oriented approach.</p>"
             }
         },
         why_us: {
-            title: "Why Choose Us?",
-            subtitle: "We care, we are experienced, and we are experts. With us, you are no longer alone in facing legal issues.",
+            title: "Why Select Our Firm?",
+            subtitle: "Expertise, experience, and unwavering commitment. We provide robust legal safeguarding to ensure you never navigate legal challenges in isolation.",
             items: [
-                { title: "Commitment to Excellence", desc: "Trust and quality are key. We are fully committed to providing the best service for you." },
-                { title: "Individuals & Corporations", desc: "Legal solutions without limits. Ready to serve needs for both individuals and corporations." },
-                { title: "Experienced Team", desc: "Skilled, tough team accustomed to facing various legal challenges to the maximum." },
-                { title: "Agile Strategy", desc: "Measured, efficient, and responsible strategies for effective problem resolution." }
+                { title: "Service Excellence", desc: "Quality and trust represent our primary mandates. We are committed to delivering high-caliber results for every client." },
+                { title: "Bespoke Advocacy", desc: "Whether representing individuals or conglomerates, we provide tailored solutions for all legal complexities." },
+                { title: "Distinguished Practitioners", desc: "Our firm comprises a formidable team of experts experienced in navigating high-stakes legal challenges." },
+                { title: "Strategic Precision", desc: "Utilizing efficient and responsible legal strategies to achieve optimal outcomes for our clients." }
             ]
         },
         partners: {
-            title: "Our Partners",
+            title: "Strategic Partners",
             sleco: "Sleco Project",
             narasumber: "Narasumber Hukum Law Firm",
             mti: "PT Teira Dwan Indonesia",
             mti_sub: "(MTI-Talenstory)"
         },
         values: {
-            title: "Our Values",
-            subtitle: "Core principles that form the foundation of every step we take in serving you.",
+            title: "Core Values",
+            subtitle: "The professional principles that define our firm's conduct and service delivery.",
             items: [
-                { title: "Client Satisfaction", desc: "Client satisfaction is our top priority. We are committed to meeting and exceeding client expectations." },
-                { title: "Precision", desc: "We emphasize precision in every action, ensuring every client gets the best results in resolution." },
-                { title: "Innovation", desc: "We always look for innovative and creative solutions to solve every challenge on the journey towards mutual goals with clients." },
-                { title: "Commitment", desc: "We have a strong commitment to providing the best service and supporting clients in achieving every agreed goal." },
-                { title: "Integrity", desc: "We uphold high integrity and ethics as core principles in every step and action we take." }
+                { title: "Client Centricity", desc: "Client satisfaction is our primary priority. We strive to consistently exceed professional expectations." },
+                { title: "Analytical Rigor", desc: "We emphasize precision in every legal action, ensuring meticulous resolution of all matters." },
+                { title: "Innovative Strategy", desc: "Continually seeking creative and effective legal methodologies to overcome complex obstacles." },
+                { title: "Integrity", desc: "Maintaining the highest ethical benchmarks and professional transparency in all engagements." },
+                { title: "Absolute Commitment", desc: "A definitive resolve to support our clients in achieving their established legal and commercial objectives." }
             ]
         },
         testimonials: {
-            title: "Client Testimonials",
-            subtitle: "Our dedication is reflected in every success achieved by our clients.",
+            title: "Client Perspectives",
+            subtitle: "Our professional standing is reflected in the success and satisfaction of our global clientele.",
             items: [
-                { name: "Anwar Muksin", role: "Client", text: "The Narasumber Hukum team has a deep understanding of the law, licensing, and legalities in Indonesia. We are grateful that all the problems in my business were handled well and efficiently by the team." },
-                { name: "Ani Handayani", role: "Client", text: "Ms. Debora and the team did a very good and practical job. They provided clear explanations to help us make decisions. Thank you to the entire Narasumber Hukum team." },
-                { name: "Ridwan Hanafi", role: "Client", text: "This team is reliable and responsive. I am very satisfied with the team's performance, integrity, and willingness to consider alternative costs to maintain client satisfaction." },
-                { name: "Meliana Iskandar", role: "Client", text: "The Narasumber Hukum team arranged everything carefully, and everything happened as anticipated and explained to us. Very, very helpful and useful, thank you very much Narasumber Hukum team." }
+                { name: "Anwar Muksin", role: "Corporate Client", text: "Narasumber Hukum demonstrates a profound mastery of Indonesian law and regulatory compliance. Their team efficiently resolved my corporate challenges with high professional standard." },
+                { name: "Ani Handayani", role: "Individual Client", text: "The firm's counsel provided practical and decisive guidance that was instrumental in our decision-making process. Their professionalism is truly exceptional." },
+                { name: "Ridwan Hanafi", role: "Business Owner", text: "This team is distinguished by their responsiveness and integrity. They offer transparent fee structures while maintaining a high level of professional expertise." },
+                { name: "Meliana Iskandar", role: "Client", text: "The firm meticulously managed our legal requirements, ensuring all outcomes aligned with our strategic objectives. Highly professional and indispensable counsel." }
             ]
         },
         process: {
-            title: "Legal Process Flow",
-            subtitle: "Our strategic steps in ensuring every case is handled professionally.",
+            title: "Case Management Workflow",
+            subtitle: "A structured, results-oriented framework for managing legal matters with professional precision.",
             items: [
-                { step: "01", title: "Consultation & Analysis", desc: "Deepening the case material and identifying the client's legal position thoroughly." },
-                { step: "02", title: "Legal Strategy", desc: "Formulating practical and effective legal steps according to the desired goals." },
-                { step: "03", title: "Action Execution", desc: "Implementing legal steps through both litigation and out-of-court negotiations." },
-                { step: "04", title: "Evaluation & Solution", desc: "Resolving cases with optimal and just results for the client's future." }
+                { step: "01", title: "Assessment & Advisory", desc: "Conducting an exhaustive analysis of legal materials to establish a definitive jurisdictional position." },
+                { step: "02", title: "Strategic Formulation", desc: "Developing pragmatic and effective legal frameworks focused on achieving specific client targets." },
+                { step: "03", title: "Execution & Advocacy", desc: "Implementing formal legal actions through either tribunal representation or alternative negotiation." },
+                { step: "04", title: "Resolution & Review", desc: "Concluding matters with optimal results that ensure justice and future commercial security." }
             ]
         },
         faq: {
-            title: "Popular Questions",
-            subtitle: "Brief answers to frequently asked questions about our services.",
+            title: "Professional FAQ",
+            subtitle: "Essential information regarding the firm's engagement procedures and specialized services.",
             items: [
-                { q: "How do I start a legal consultation?", a: "You can contact us via the WhatsApp button available on this website or by filling out the contact form on our Contact Us page. Our team will respond to your request immediately." },
-                { q: "What are the legal fees at Narasumber Hukum?", a: "Our legal fees vary depending on the complexity and type of case. We always prioritize transparency and will provide cost estimates after the initial consultation session." },
-                { q: "Does Narasumber Hukum only serve in Jakarta?", a: "Although our head office is in a specific location, we serve clients and handle cases throughout Indonesia (Nationwide)." },
-                { q: "What services are available?", a: "We provide comprehensive services from Litigation & Non-Litigation, Business Licensing, Corporate Legality, to HR Development." }
+                { q: "What is the procedure for legal engagement?", a: "You may initiate contact via the official WhatsApp channel or by completing our confidential inquiry form. A consultant will respond within 24 business hours." },
+                { q: "How are professional fees structured?", a: "Fee arrangements are determined based on case complexity and jurisdictional requirements. We maintain a policy of absolute financial transparency." },
+                { q: "Does the firm provide nationwide representation?", a: "While headquartered in Jakarta, our firm provides expert legal representation and advisory across all territories of the Republic of Indonesia." },
+                { q: "What is the breadth of your services?", a: "Our practice encompasses Litigation, Dispute Resolution, Corporate Compliance, Regulatory Liaison, and Human Capital Training." }
             ]
         },
         cta_contact: {
-            title_quote: "Don't Hesitate and Repress,",
-            title_gold: "Resolve it Immediately.",
-            title: "Ready to Discuss Your Case?",
-            subtitle: "Our team of experts is ready to provide the best legal solutions for you. Contact us now for an initial consultation.",
-            button: "Contact Us Now",
-            free_consult: "Free Consultation"
+            title_quote: "Ensure your legal issues are not left unresolved,",
+            title_gold: "Secure Your Solution Now.",
+            title: "Prepared for Counsel?",
+            subtitle: "Our expert practitioners are ready to deliver definitive legal outcomes. Contact us today for a preliminary consultation.",
+            button: "Consult with Our Counsel",
+            free_consult: "Request Now"
         },
         contact_page: {
-            title: "Contact Us",
-            description: "\"We are ready to listen and accompany each of your cases with high professionalism.\"",
-            profile_link: "Learn Narasumber Hukum's Profile",
-            email_label: "Official Email",
+            title: "Contact Our Office",
+            description: "\"We are dedicated to providing robust legal support characterized by integrity and professional excellence.\"",
+            profile_link: "Review the Firm's Professional Profile",
+            email_label: "Official Correspondence",
         },
         contact_form: {
             name_label: "Full Name",
-            name_placeholder: "Enter your name",
-            email_label: "Email Address",
-            email_placeholder: "name@example.com",
-            phone_label: "WhatsApp Number",
+            name_placeholder: "Enter full name",
+            email_label: "Professional Email",
+            email_placeholder: "name@company.com",
+            phone_label: "Contact Number (WhatsApp)",
             phone_placeholder: "0812xxxx",
-            subject_label: "Subject",
-            subject_placeholder: "What would you like to discuss?",
-            message_label: "Message",
-            message_placeholder: "Write the details of your question or issue...",
-            submit_button: "Send Message Now",
-            sending: "Sending...",
-            success_title: "Message Sent!",
-            success_message: "Thank you for contacting us. Our team will respond to your message shortly.",
-            error_message: "An error occurred. Please try again later or contact us via WhatsApp."
+            subject_label: "Inquiry Subject",
+            subject_placeholder: "Select the legal matter for discussion",
+            message_label: "Summary of Requirement",
+            message_placeholder: "Please provide a brief overview of your legal requirements or current situation...",
+            submit_button: "Submit Inquiry",
+            sending: "Processing Submission...",
+            success_title: "Inquiry Successfully Logged",
+            success_message: "Your inquiry has been received. Our legal consultants will review the submission and contact you shortly.",
+            error_message: "System encountered an error. Please re-submit or contact us directly via our WhatsApp channel."
         },
         footer: {
-            desc: "A gathering place for reliable activists in the fields of Law, Licensing, Legalities, and HR Development & Training, connected through a single gateway to serve our clients throughout Indonesia.",
-            services_title: "Our Services",
-            office_title: "Our Offices",
-            contact_title: "Contact Us",
+            desc: "Narasumber Hukum is a center of excellence for legal practitioners and regulatory experts, dedicated to serving domestic and international clients throughout Indonesia.",
+            services_title: "Strategic Practice Areas",
+            office_title: "Global Office Network",
+            contact_title: "Correspondence",
             rights: "All Rights Reserved.",
-            office_1: { name: "Office I", addr: "Jl.M.H Thamrin No. 9 Lt 12, Kebon Sirih Menteng, DKI Jakarta, 10340" },
-            office_2: { name: "Office II", addr: "Jl. Sunset Road No. 77, Lt.3, Kuta, Kec. Kuta, Badung, Bali, 80361" },
-            office_3: { name: "Office III", addr: "Jl. Kertabumi No 1 Ruko Kertabumi Blok A No.9 Lantai 2 Kelurahan Karawang Kulon, Kecamatan Karawang Barat, Kabupaten Karawang, Provinsi Jawa Barat" },
-            monday_friday: "Serving consultations Monday - Friday (09.00 - 17.00 WIB)"
+            office_1: { name: "Headquarters I", addr: "Jl.M.H Thamrin No. 9, 12th Floor, Menteng, Central Jakarta, 10340" },
+            office_2: { name: "Regional Office II", addr: "Jl. Sunset Road No. 77, 3rd Floor, Kuta, Badung Regency, Bali, 80361" },
+            office_3: { name: "Operational Office III", addr: "Jl. Kertabumi No 1, Kertabumi Ruko Block A No.9, Karawang, West Java" },
+            monday_friday: "Business Hours: Monday - Friday (09:00 - 17:00 GMT+7)"
         }
     }
 };

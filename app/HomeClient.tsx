@@ -251,11 +251,6 @@ const HomeClient = () => {
                 className="bg-gray-50 p-6 md:p-10 rounded-[1.5rem] md:rounded-[2rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:shadow-2xl hover:border-gold/30 transition-all duration-500 transform hover:-translate-y-3 group"
               >
                 <div>
-                  <div className="flex text-gold mb-4 md:mb-8 gap-1.5">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <StarIcon key={i} size={20} fill="currentColor" stroke="none" />
-                    ))}
-                  </div>
                   <p className="text-gray-600 italic text-base md:text-xl leading-relaxed mb-6 md:mb-10 font-serif">
                     "{review.text}"
                   </p>

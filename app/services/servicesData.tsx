@@ -9,6 +9,7 @@ export const servicesData = [
         icon: <Scale className="w-12 h-12" />,
         color: "bg-blue-600",
         path: "/services/hukum",
+        image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80",
         content: []
     },
     {
@@ -18,6 +19,7 @@ export const servicesData = [
         icon: <FileCheck className="w-12 h-12" />,
         color: "bg-emerald-600",
         path: "/services/perizinan",
+        image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80",
         content: []
     },
     {
@@ -27,6 +29,7 @@ export const servicesData = [
         icon: <Lightbulb className="w-12 h-12" />,
         color: "bg-amber-600",
         path: "/services/sdm",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
         content: []
     }
 ];
