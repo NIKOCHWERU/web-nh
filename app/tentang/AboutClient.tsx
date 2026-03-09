@@ -257,7 +257,7 @@ const AboutClient = () => {
             {/* Narasumber Hukum Logo */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white p-6 md:p-8 rounded-2xl border border-white/20 shadow-xl hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
             >
               <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
                 <img
@@ -266,29 +266,26 @@ const AboutClient = () => {
                   className="w-full h-auto object-contain transition-all duration-500"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center text-navy font-serif">{t('partners.narasumber')}</h3>
-              <p className="text-gray-500 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Advocate, Intercessor & Legal Consultant</p>
+              <h3 className="text-lg font-bold text-center text-white font-serif">{t('partners.narasumber')}</h3>
+              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Advocate, Intercessor & Legal Consultant</p>
             </motion.div>
 
-            {/* SLECO Project Logo */}
+            {/* SLECO Project Card */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white p-6 md:p-8 rounded-2xl border border-white/20 shadow-xl hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
             >
               <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
-                {/* No Photo as requested */}
-                <div className="w-full h-full flex items-center justify-center text-gray-300 italic text-sm">
-                  {/* Photo removed */}
-                </div>
+                {/* Photo removed as requested */}
               </div>
-              <h3 className="text-lg font-bold text-center text-navy font-serif">{t('partners.sleco')}</h3>
-              <p className="text-gray-500 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Sustainable Solutions & Project Management</p>
+              <h3 className="text-lg font-bold text-center text-white font-serif">{t('partners.sleco')}</h3>
+              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Sustainable Solutions & Project Management</p>
             </motion.div>
 
-            {/* MTI Talenstory Logo */}
+            {/* MTI Talenstory Card */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white p-6 md:p-8 rounded-2xl border border-white/20 shadow-xl hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
+              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
             >
               <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
                 <img
@@ -297,8 +294,8 @@ const AboutClient = () => {
                   className="w-full h-auto max-h-16 object-contain transition-all duration-500"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center text-navy font-serif">{t('partners.mti')}</h3>
-              <p className="text-gray-500 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">{t('partners.mti_sub')}</p>
+              <h3 className="text-lg font-bold text-center text-white font-serif">{t('partners.mti')}</h3>
+              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">{t('partners.mti_sub')}</p>
             </motion.div>
           </motion.div>
         </div>
