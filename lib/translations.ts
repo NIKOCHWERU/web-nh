@@ -103,7 +103,7 @@ export const translations = {
         partners: {
             title: "Partner Kami",
             sleco: "Sleco Project",
-            narasumber: "Firma Narasumber Hukum",
+            narasumber: "Narasumber Hukum Law Firm",
             mti: "PT Teira Dwan Indonesia",
             mti_sub: "(MTI-Talenstory)"
         },
