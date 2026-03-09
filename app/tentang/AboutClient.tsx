@@ -230,20 +230,15 @@ const AboutClient = () => {
       </section>
 
       {/* PARTNERS SECTION */}
-      <section className="relative py-16 md:py-24 overflow-hidden bg-navy">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80"
-            alt="Office Building"
-            className="w-full h-full object-cover opacity-10"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy/95 to-navy/90"></div>
+      <section className="relative py-16 md:py-24 overflow-hidden bg-white">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-white">{t('partners.title')}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">{t('partners.title')}</h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
           </div>
 
@@ -257,49 +252,49 @@ const AboutClient = () => {
             {/* Narasumber Hukum Logo */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gold/30 transition-all duration-300 hover:-translate-y-2 group"
             >
-              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-50 group-hover:border-gold/20 transition-all duration-300">
                 <img
                   src="/logo-narasumber-hukum.png"
                   alt={t('partners.narasumber')}
                   className="w-full h-auto object-contain transition-all duration-500"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.narasumber')}</h3>
-              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest">Advocate, Intercessor & Legal Consultant</p>
+              <h3 className="text-lg font-bold text-center text-navy font-serif">{t('partners.narasumber')}</h3>
+              <p className="text-gray-500 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Advocate, Intercessor & Legal Consultant</p>
             </motion.div>
 
             {/* SLECO Project Logo */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
+              className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gold/30 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
             >
-              <div className="bg-navy rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gold/20">
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-50 group-hover:border-gold/20 transition-all duration-300">
                 <img
                   src="/logo.png"
                   alt={t('partners.sleco')}
-                  className="h-16 w-auto object-contain transition-all duration-500 opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100"
+                  className="h-16 w-auto object-contain transition-all duration-500"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.sleco')}</h3>
-              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest">Sustainable Solutions & Project Management</p>
+              <h3 className="text-lg font-bold text-center text-navy font-serif">{t('partners.sleco')}</h3>
+              <p className="text-gray-500 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Sustainable Solutions & Project Management</p>
             </motion.div>
 
             {/* MTI Talenstory Logo */}
             <motion.div
               variants={fadeInUp}
-              className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
+              className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gold/30 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
             >
-              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full">
+              <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-50 group-hover:border-gold/20 transition-all duration-300">
                 <img
                   src="/logo-mti-talenstory.jpg"
                   alt={t('partners.mti')}
                   className="w-full h-auto max-h-16 object-contain transition-all duration-500"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center text-gold font-serif">{t('partners.mti')}</h3>
-              <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest">{t('partners.mti_sub')}</p>
+              <h3 className="text-lg font-bold text-center text-navy font-serif">{t('partners.mti')}</h3>
+              <p className="text-gray-500 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">{t('partners.mti_sub')}</p>
             </motion.div>
           </motion.div>
         </div>
