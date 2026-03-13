@@ -5,9 +5,9 @@ import ServiceDetailClient from './ServiceDetailClient';
 export function generateStaticParams() {
   // Optional: Pre-render these paths at build time
   return [
-    { slug: 'bidang-hukum' },
-    { slug: 'bidang-perizinan-perpajakan-keimigrasian-legalitas' },
-    { slug: 'bidang-pengembangan-pelatihan-sdm' }
+    { slug: 'hukum' },
+    { slug: 'perizinan' },
+    { slug: 'pelatihan-sdm' }
   ];
 }
 
