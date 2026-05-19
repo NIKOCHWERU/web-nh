@@ -40,31 +40,31 @@ const nextConfig: NextConfig = {
       // WordPress Category/Tag Archives
       {
         source: '/category/:slug',
-        destination: '/articles',
+        destination: '/artikel',
         permanent: true,
       },
       {
         source: '/tag/:slug',
-        destination: '/articles',
+        destination: '/artikel',
         permanent: true,
       },
 
       // WordPress Author Pages
       {
         source: '/author/:slug',
-        destination: '/about',
+        destination: '/tentang',
         permanent: true,
       },
 
       // WordPress Date Archives
       {
         source: '/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug',
-        destination: '/articles',
+        destination: '/artikel',
         permanent: true,
       },
       {
         source: '/:year(\\d{4})/:month(\\d{2})/:slug',
-        destination: '/articles',
+        destination: '/artikel',
         permanent: true,
       },
     ];

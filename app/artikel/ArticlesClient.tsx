@@ -72,7 +72,7 @@ const ArticlesClient = () => {
              variants={staggerContainer}
            >
              {articles.map((article) => (
-               <Link href={`/articles/${article.slug}`} key={article.id}>
+               <Link href={`/artikel/${article.slug}`} key={article.id}>
                  <motion.article 
                    variants={fadeInUp} 
                    className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group flex flex-col h-full border border-gray-100 cursor-pointer"

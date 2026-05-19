@@ -59,7 +59,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           className="mb-8"
         >
           <Link 
-            href="/articles" 
+            href="/artikel" 
             className="inline-flex items-center text-navy hover:text-gold transition-colors font-bold uppercase tracking-widest text-xs gap-2"
           >
             <ArrowLeft size={16} /> Kembali ke Artikel
