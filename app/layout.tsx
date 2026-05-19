@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   // ... existing metadata ...
   title: {
     template: "%s | Narasumber Hukum",
-    default: "Sentral Edukasi Dan Solusi | Narasumber Hukum",
+    default: "Kantor Narasumber Hukum | Sentral Edukasi & Solusi",
   },
   description: "Kantor Narasumber Hukum memberikan pendampingan hukum profesional dengan pendekatan edukatif untuk solusi yang berkeadilan, resmi, dan terpercaya.",
   metadataBase: new URL("https://www.narasumberhukum.com"),
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Narasumber Hukum | Kantor Hukum & Solusi Edukatif",
+    title: "Kantor Narasumber Hukum | Sentral Edukasi & Solusi",
     description: "Kantor Narasumber Hukum: Pendampingan hukum profesional dengan pendekatan edukatif untuk solusi yang berkeadilan.",
     url: "https://www.narasumberhukum.com",
     siteName: "Narasumber Hukum",
