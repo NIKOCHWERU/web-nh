@@ -109,51 +109,56 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           />
         </motion.div>
 
-        {/* Content Section */}
-        <motion.article 
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="prose prose-lg md:prose-xl max-w-none text-gray-900 leading-relaxed font-normal mb-16 prose-p:mb-6 prose-p:text-justify prose-headings:font-serif prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 prose-li:marker:text-gray-900"
-        >
-          <div 
-            dangerouslySetInnerHTML={{ __html: processContent(article.content) }} 
-            className="article-content"
-          />
-        </motion.article>
+        {/* Newspaper Layout Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Main Article Content */}
+          <div className={`${article.supporting_images && article.supporting_images.length > 0 ? 'lg:col-span-8' : 'lg:col-span-12'}`}>
+            <motion.article 
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUp}
+              className="prose prose-lg md:prose-xl max-w-none text-gray-900 leading-relaxed font-normal mb-16 prose-p:mb-6 prose-p:text-justify prose-headings:font-serif prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 prose-li:marker:text-gray-900"
+            >
+              <div 
+                dangerouslySetInnerHTML={{ __html: processContent(article.content) }} 
+                className="article-content"
+              />
+            </motion.article>
+          </div>
 
-        {/* Supporting Images Gallery */}
-        {article.supporting_images && article.supporting_images.length > 0 && (
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="mb-16"
-          >
-            <h3 className="text-2xl font-bold text-navy mb-6 font-serif border-l-4 border-gold pl-4">Galeri Dokumentasi</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {/* Newspaper Sidebar for Supporting Images */}
+          {article.supporting_images && article.supporting_images.length > 0 && (
+            <div className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-gray-200 pt-8 lg:pt-0 lg:pl-8 flex flex-col gap-8">
               {article.supporting_images.map((item: any, index: number) => {
                 const imagePath = typeof item === 'string' ? item : item.image;
                 const caption = typeof item === 'string' ? null : item.caption;
                 
                 return (
-                  <div key={index} className="group cursor-pointer" onClick={() => openLightbox(getImageUrl(imagePath))}>
-                    <div className="rounded-lg overflow-hidden shadow-md aspect-square hover:shadow-xl transition-all duration-300 relative">
+                  <div key={index} className="flex flex-col gap-3 group">
+                    <div 
+                      className="cursor-pointer overflow-hidden rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-all duration-300 relative aspect-video animate-fade-in"
+                      onClick={() => openLightbox(getImageUrl(imagePath))}
+                    >
                       <img 
                         src={getImageUrl(imagePath)}
                         alt={caption || `Supporting image ${index + 1}`}
-                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      {/* Overlay on hover */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
+                    {caption && (
+                      <p className="text-xs text-gray-500 italic font-sans text-center px-2">
+                        {caption}
+                      </p>
+                    )}
+                    {/* Divider line like a newspaper */}
+                    <div className="w-full border-b border-gray-200 mt-2" />
                   </div>
                 );
               })}
             </div>
-          </motion.div>
-        )}
+          )}
+        </div>
 
         {/* Consultation CTA */}
         <ConsultationCTA />
