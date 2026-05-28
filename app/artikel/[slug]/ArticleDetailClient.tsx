@@ -1,9 +1,11 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import ConsultationCTA from '@/components/ConsultationCTA';
+import { useLanguage } from '@/context/LanguageContext';
+import { translateArticle } from '@/lib/translationService';
 
 const fadeInUp: any = {
   hidden: { opacity: 0, y: 20 },
@@ -11,6 +13,33 @@ const fadeInUp: any = {
 };
 
 const ArticleDetailClient = ({ article }: { article: any }) => {
+  const { locale, t } = useLanguage();
+  const [displayArticle, setDisplayArticle] = useState<any>(article);
+  const [translating, setTranslating] = useState(false);
+
+  useEffect(() => {
+    const handleTranslation = async () => {
+      if (!article) return;
+      
+      if (locale === 'en') {
+        setTranslating(true);
+        try {
+          const translated = await translateArticle(article, 'en', 'id');
+          setDisplayArticle(translated);
+        } catch (error) {
+          console.error('Error auto-translating article details:', error);
+          setDisplayArticle(article);
+        } finally {
+          setTranslating(false);
+        }
+      } else {
+        setDisplayArticle(article);
+      }
+    };
+
+    handleTranslation();
+  }, [locale, article]);
+
   // Helper to construct image URL
   const getImageUrl = (path: any) => {
     if (!path) return 'https://via.placeholder.com/1200x675?text=No+Image';
@@ -49,6 +78,17 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
     setLightboxOpen(true);
   };
 
+  if (translating) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white gap-4">
+        <Loader2 className="animate-spin text-navy" size={48} />
+        <span className="text-sm font-bold tracking-widest uppercase text-navy/70 animate-pulse">
+          Translating Article...
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-24 pb-20 bg-white min-h-screen">
       <div className="container mx-auto px-4 max-w-[90%] md:max-w-6xl">
@@ -62,7 +102,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
             href="/artikel" 
             className="inline-flex items-center text-navy hover:text-gold transition-colors font-bold uppercase tracking-widest text-xs gap-2"
           >
-            <ArrowLeft size={16} /> Kembali ke Artikel
+            <ArrowLeft size={16} /> {t('articles_page.back_to_articles')}
           </Link>
         </motion.div>
 
@@ -75,21 +115,27 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
         >
           <div className="flex items-center gap-2 mb-4">
             <span className="bg-gold text-navy text-[10px] font-bold px-3 py-1 uppercase tracking-[0.2em] rounded-full">
-              {article.category?.name || 'Hukum'}
+              {displayArticle.category?.name || t('articles_page.category_default')}
             </span>
           </div>
           <h1 className="text-3xl md:text-5xl font-bold text-navy mb-8 font-serif leading-tight">
-            {article.title}
+            {displayArticle.title}
           </h1>
           
           <div className="flex flex-wrap items-center gap-6 text-gray-400 text-sm border-b border-gray-100 pb-8">
             <div className="flex items-center gap-2">
               <Calendar size={16} className="text-gold" />
-              <span>{new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <span>
+                {new Date(displayArticle.published_at).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', { 
+                  day: 'numeric', 
+                  month: 'long', 
+                  year: 'numeric' 
+                })}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <User size={16} className="text-gold" />
-              <span>Admin</span>
+              <span>{t('articles_page.admin')}</span>
             </div>
           </div>
         </motion.header>
@@ -100,11 +146,11 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
           className="mb-12 rounded-3xl overflow-hidden shadow-2xl aspect-video cursor-pointer"
-          onClick={() => openLightbox(getImageUrl(article.image))}
+          onClick={() => openLightbox(getImageUrl(displayArticle.image))}
         >
           <img 
-            src={getImageUrl(article.image)} 
-            alt={article.title}
+            src={getImageUrl(displayArticle.image)} 
+            alt={displayArticle.title}
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
           />
         </motion.div>
@@ -112,7 +158,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
         {/* Newspaper Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Main Article Content */}
-          <div className={`${article.supporting_images && article.supporting_images.length > 0 ? 'lg:col-span-8' : 'lg:col-span-12'}`}>
+          <div className={`${displayArticle.supporting_images && displayArticle.supporting_images.length > 0 ? 'lg:col-span-8' : 'lg:col-span-12'}`}>
             <motion.article 
               initial="hidden"
               animate="visible"
@@ -120,16 +166,16 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
               className="prose prose-lg md:prose-xl max-w-none text-gray-900 leading-relaxed font-normal mb-16 prose-p:mb-6 prose-p:text-justify prose-headings:font-serif prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 prose-li:marker:text-gray-900"
             >
               <div 
-                dangerouslySetInnerHTML={{ __html: processContent(article.content) }} 
+                dangerouslySetInnerHTML={{ __html: processContent(displayArticle.content) }} 
                 className="article-content"
               />
             </motion.article>
           </div>
 
           {/* Newspaper Sidebar for Supporting Images */}
-          {article.supporting_images && article.supporting_images.length > 0 && (
+          {displayArticle.supporting_images && displayArticle.supporting_images.length > 0 && (
             <div className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-gray-200 pt-8 lg:pt-0 lg:pl-8 flex flex-col gap-8">
-              {article.supporting_images.map((item: any, index: number) => {
+              {displayArticle.supporting_images.map((item: any, index: number) => {
                 const imagePath = typeof item === 'string' ? item : item.image;
                 const caption = typeof item === 'string' ? null : item.caption;
                 
@@ -172,7 +218,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
         >
           <div className="flex items-center gap-2">
             <Tag size={18} className="text-gold" />
-            <span className="text-sm text-gray-500">{article.category?.name || 'Umum'}</span>
+            <span className="text-sm text-gray-500">{displayArticle.category?.name || t('articles_page.category_default')}</span>
           </div>
         </motion.footer>
 
