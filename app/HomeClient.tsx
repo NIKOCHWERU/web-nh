@@ -23,6 +23,7 @@ const staggerContainer: any = {
 
 const HomeClient = () => {
   const { t } = useLanguage();
+  const [activeValue, setActiveValue] = useState<number>(0);
 
   return (
     <div>
@@ -181,44 +182,61 @@ const HomeClient = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8">
-            {(t('values.items') as any).map((value: any, idx: number) => {
-              const images = [
-                "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
-                "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
-                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-                "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
-                "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80"
-              ];
-              return (
-                <motion.div
-                  key={idx}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeInUp}
-                  className="relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.333rem)] h-80 flex-shrink-0"
-                >
-                  {/* Background Image */}
-                  <div className="absolute inset-0">
-                    <img
-                      src={images[idx]}
-                      alt={value.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-navy/80 group-hover:bg-navy/70 transition-colors duration-500"></div>
-                  </div>
+          <div className="max-w-5xl mx-auto">
+            {/* The initials R I C C I E P */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-12">
+              {(t('values.items') as any).map((value: any, idx: number) => {
+                const titleParts = value.title.split(' - ');
+                const initial = titleParts[0]; // R
+                const name = titleParts.length > 1 ? titleParts[1] : value.title;
+                const isActive = activeValue === idx;
+                
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveValue(idx)}
+                    className={`group relative flex flex-col items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full border-2 transition-all duration-300 ${
+                      isActive 
+                        ? 'bg-navy border-navy text-gold scale-110 shadow-lg shadow-navy/20' 
+                        : 'bg-white border-gray-200 text-navy hover:border-gold hover:text-gold'
+                    }`}
+                  >
+                    <span className="text-2xl md:text-3xl font-black font-serif">{initial}</span>
+                    <span className={`text-[9px] md:text-[10px] font-bold uppercase tracking-widest mt-1 text-center px-2 leading-tight ${isActive ? 'opacity-100 text-white' : 'opacity-0 group-hover:opacity-100'} transition-opacity`}>
+                      {name.split(' ')[0]} 
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
 
-                  {/* Content */}
-                  <div className="relative z-10 p-8 flex flex-col h-full justify-center text-center">
-                    <h3 className="text-2xl font-bold mb-4 text-gold font-serif tracking-wide transform group-hover:-translate-y-1 transition-transform">{value.title}</h3>
-                    <p className="text-gray-200 text-sm leading-relaxed">
-                      {value.desc}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {/* The content area */}
+            <div className="bg-gray-50 rounded-3xl p-8 md:p-12 border border-gray-100 relative overflow-hidden min-h-[250px] flex items-center shadow-inner">
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-gold/10 rounded-full blur-3xl"></div>
+              <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
+              
+              <div className="relative z-10 w-full text-center">
+                {(t('values.items') as any).map((value: any, idx: number) => {
+                  const isActive = activeValue === idx;
+                  const titleParts = value.title.split(' - ');
+                  const name = titleParts.length > 1 ? titleParts[1] : value.title;
+                  
+                  return isActive && (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <h3 className="text-2xl md:text-4xl font-bold mb-6 text-navy font-serif tracking-wide">{name}</h3>
+                      <p className="text-gray-600 text-base md:text-xl leading-relaxed max-w-3xl mx-auto font-light">
+                        {value.desc}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </section>

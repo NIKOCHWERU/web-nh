@@ -111,11 +111,13 @@ export const translations = {
             title: "Nilai-nilai Kami",
             subtitle: "Prinsip utama yang menjadi landasan setiap langkah kami dalam melayani Anda.",
             items: [
-                { title: "Kepuasan Klien", desc: "Kepuasan klien adalah prioritas utama kami. Kami berkomitmen untuk memenuhi dan melampaui harapan klien." },
-                { title: "Ketelitian", desc: "Kami menekankan pada ketelitian dalam setiap tindakan, sehingga setiap klien mendapatkan hasil terbaik dalam penyelesaian." },
-                { title: "Inovasi", desc: "Kami selalu mencari solusi inovatif and kreatif untuk memecahkan setiap tantangan dalam perjalanan menuju tujuan bersama klien." },
-                { title: "Komitmen", desc: "Kami memiliki komitmen kuat untuk memberikan pelayanan terbaik dan mendukung klien mencapai setiap tujuan yang disepakati." },
-                { title: "Integritas", desc: "Kami menjunjung tinggi integritas dan etika sebagai prinsip utama dalam setiap langkah serta tindakan kami." }
+                { title: "R - RESPONSIVE (Responsif)", desc: "\"Action Today, Not Tomorrow.\" Menanggapi setiap komunikasi atau rekan kerja maksimal dalam hitungan jam, bukan hari." },
+                { title: "I - INFORMATIVE (Informatif)", desc: "\"Clarity is Power.\" Menyajikan data yang akurat, transparan, dan mudah dipahami dalam setiap laporan atau dokumen." },
+                { title: "C - COMMUNICATIVE (Komunikatif)", desc: "\"Listen First, Solve Better.\" Membangun dialog dua arah yang jujur dan menjaga alur informasi tetap mengalir tanpa hambatan." },
+                { title: "C - CREATIVE (Kreatif)", desc: "\"Think Beyond Boundaries.\" Berani menawarkan sudut pandang baru dan solusi inovatif untuk setiap tantangan yang dihadapi." },
+                { title: "I - INITIATIVE (Inisiatif)", desc: "\"Lead the Way.\" Bertindak proaktif untuk mencegah kendala sebelum terjadi dan memberikan nilai tambah tanpa harus diminta." },
+                { title: "E - EFFECTIVE (Efektif)", desc: "\"Result-Oriented Action.\" Bekerja dengan fokus pada tujuan akhir dan memastikan setiap langkah memberikan dampak nyata bagi keberhasilan." },
+                { title: "P - POSITIVE (Positif)", desc: "\"Optimism in Every Challenge.\" Menjaga energi positif dalam tim dan memberikan rasa aman serta optimisme kepada setiap pihak yang kita layani." }
             ]
         },
         testimonials: {
@@ -327,11 +329,13 @@ export const translations = {
             title: "Our Values",
             subtitle: "Main principles that become the foundation of every of our steps in serving you.",
             items: [
-                { title: "Client Satisfaction", desc: "Client satisfaction is our main priority. We are committed to meeting and exceeding client expectations." },
-                { title: "Accuracy", desc: "We emphasize accuracy in every action, so every client gets the best results in settlement." },
-                { title: "Innovation", desc: "We always look for innovative and creative solutions to solve every challenge in the journey towards common goals with clients." },
-                { title: "Commitment", desc: "We have a strong commitment to provide best service and support clients achieving every agreed target." },
-                { title: "Integrity", desc: "We uphold integrity and ethics as main principles in every of our steps and actions." }
+                { title: "R - RESPONSIVE", desc: "\"Action Today, Not Tomorrow.\" Responding to every communication or coworker maximally within hours, not days." },
+                { title: "I - INFORMATIVE", desc: "\"Clarity is Power.\" Presenting accurate, transparent, and easily understood data in every report or document." },
+                { title: "C - COMMUNICATIVE", desc: "\"Listen First, Solve Better.\" Building honest two-way dialogue and keeping the information flow uninterrupted." },
+                { title: "C - CREATIVE", desc: "\"Think Beyond Boundaries.\" Daring to offer new perspectives and innovative solutions for every challenge faced." },
+                { title: "I - INITIATIVE", desc: "\"Lead the Way.\" Acting proactively to prevent obstacles before they occur and providing added value without being asked." },
+                { title: "E - EFFECTIVE", desc: "\"Result-Oriented Action.\" Working with a focus on the end goal and ensuring every step makes a real impact on success." },
+                { title: "P - POSITIVE", desc: "\"Optimism in Every Challenge.\" Maintaining positive energy in the team and providing a sense of security and optimism to every party we serve." }
             ]
         },
         testimonials: {

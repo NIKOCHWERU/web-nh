@@ -158,19 +158,12 @@ const ArticlesClient = () => {
 
       {/* ════ HERO ════ */}
       <section className="bg-navy text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-24 -left-24 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
-          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
-          {/* subtle grid lines */}
-          <div className="absolute inset-0 opacity-5"
-            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
-        </div>
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <span className="inline-block bg-gold/10 border border-gold/30 text-gold text-[10px] font-black uppercase tracking-[0.35em] px-4 py-2 rounded-full mb-6">
+            <span className="inline-block bg-gold/20 text-gold text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full mb-6">
               {locale === 'id' ? 'Sentral Hukum & Edukasi' : 'Legal & Education Center'}
             </span>
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-[0.1em] mb-5 font-serif">
+            <h1 className="text-4xl md:text-5xl font-bold mb-5 font-sans">
               {t('articles_page.title')}
             </h1>
             <div className="w-16 h-1 bg-gold mx-auto mb-5 rounded-full" />
@@ -225,7 +218,7 @@ const ArticlesClient = () => {
                     {readTime(featuredArticle.content)} min read
                   </span>
                 </div>
-                <h2 className="text-2xl md:text-[1.75rem] font-black font-serif text-navy mb-5 leading-tight group-hover:text-gold transition-colors duration-300">
+                <h2 className="text-2xl md:text-[1.75rem] font-bold font-sans text-navy mb-5 leading-tight group-hover:text-gold transition-colors duration-300">
                   {featuredArticle.title}
                 </h2>
                 <p className="text-gray-500 text-sm leading-relaxed mb-8 line-clamp-4">
@@ -327,7 +320,7 @@ const ArticlesClient = () => {
                           </div>
 
                           {/* Title */}
-                          <h2 className="font-black text-base sm:text-lg text-navy leading-snug mb-2 group-hover:text-gold transition-colors duration-300 font-serif line-clamp-2">
+                          <h2 className="font-bold text-base sm:text-lg text-navy leading-snug mb-2 group-hover:text-gold transition-colors duration-300 font-sans line-clamp-2">
                             {article.title}
                           </h2>
 
@@ -353,7 +346,7 @@ const ArticlesClient = () => {
                 className="text-center py-20 bg-white rounded-2xl border border-gray-100"
               >
                 <Search className="text-gray-200 mx-auto mb-4" size={40} />
-                <h3 className="text-xl font-black text-navy mb-2 font-serif">{t('articles_page.no_results_title')}</h3>
+                <h3 className="text-xl font-bold text-navy mb-2 font-sans">{t('articles_page.no_results_title')}</h3>
                 <p className="text-gray-500 text-sm">{t('articles_page.no_results_desc')}</p>
               </motion.div>
             )}
