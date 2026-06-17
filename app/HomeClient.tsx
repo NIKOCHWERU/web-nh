@@ -171,19 +171,24 @@ const HomeClient = () => {
       </section>
 
       {/* OUR VALUES SECTION */}
-      <section className="py-16 md:py-24 relative overflow-hidden bg-white">
+      <section className="py-16 md:py-32 relative overflow-hidden bg-gray-50">
         {/* Decorative Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] mix-blend-multiply"></div>
         </div>
         
         {/* Colorful Glows to fill the empty space */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold/20 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-navy/10 rounded-full blur-[100px] pointer-events-none transform -translate-x-1/3 translate-y-1/3"></div>
-        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[150px] pointer-events-none transform -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[120px] pointer-events-none transform translate-x-1/4 -translate-y-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-navy/5 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/4 translate-y-1/4"></div>
+        <div className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] bg-gold/5 rounded-full blur-[150px] pointer-events-none transform -translate-x-1/2 -translate-y-1/2"></div>
+        
+        {/* Watermark Logo/Text in Background */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20rem] font-black text-navy/[0.02] pointer-events-none font-serif tracking-tighter whitespace-nowrap z-0">
+          RICCIEP
+        </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <h2 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-wider text-navy">{t('values.title')}</h2>
             <div className="w-24 h-1.5 bg-gold mx-auto mb-8"></div>
             <p className="text-gray-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
@@ -191,11 +196,11 @@ const HomeClient = () => {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto py-10 relative">
+          <div className="max-w-7xl mx-auto py-10 relative">
             {/* Central Trunk (Line) */}
             <div className="absolute left-12 md:left-1/2 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gold/10 via-gold/50 to-gold/10 transform md:-translate-x-1/2 rounded-full"></div>
 
-            <div className="flex flex-col gap-12 md:gap-16">
+            <div className="flex flex-col gap-12 md:gap-20">
               {(t('values.items') as any).map((value: any, idx: number) => {
                 const titleParts = value.title.split(' - ');
                 const initial = titleParts[0]; // R
@@ -215,14 +220,14 @@ const HomeClient = () => {
                     <div className="hidden md:block w-1/2"></div>
                     
                     {/* Center Node (Letter) */}
-                    <div className="absolute left-12 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-16 h-16 md:w-24 md:h-24 bg-navy border-4 border-gold text-white rounded-full z-10 shadow-xl shadow-navy/20 group hover:scale-110 transition-transform duration-300">
-                      <div className="absolute inset-0 bg-gold/20 rounded-full animate-ping opacity-20"></div>
-                      <span className="text-2xl md:text-4xl font-black font-serif text-gold group-hover:text-white transition-colors">{initial}</span>
+                    <div className="absolute left-12 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-16 h-16 md:w-28 md:h-28 bg-navy border-[6px] border-white ring-4 ring-gold/30 text-white rounded-full z-10 shadow-2xl group hover:scale-110 transition-transform duration-500">
+                      <div className="absolute inset-0 bg-gold/20 rounded-full animate-ping opacity-30"></div>
+                      <span className="text-2xl md:text-5xl font-black font-serif text-gold group-hover:text-white transition-colors">{initial}</span>
                     </div>
 
                     {/* Content Card */}
-                    <div className={`w-full pl-28 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-20 text-left md:text-right' : 'md:pl-20 text-left'}`}>
-                      <div className="bg-white p-6 md:p-10 rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-gold/40 transition-all duration-500 group relative overflow-hidden">
+                    <div className={`w-full pl-28 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-24 text-left md:text-right' : 'md:pl-24 text-left'}`}>
+                      <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gold/40 transition-all duration-500 group relative overflow-hidden">
                         {/* Decorative background element */}
                         <div className={`absolute top-0 w-32 h-32 bg-gold/5 rounded-full blur-2xl ${isLeft ? 'right-0' : 'left-0'}`}></div>
                         
