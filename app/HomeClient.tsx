@@ -23,7 +23,6 @@ const staggerContainer: any = {
 
 const HomeClient = () => {
   const { t } = useLanguage();
-  const [activeValue, setActiveValue] = useState<number>(0);
 
   return (
     <div>
@@ -182,60 +181,48 @@ const HomeClient = () => {
             </p>
           </div>
 
-          <div className="max-w-5xl mx-auto">
-            {/* The initials R I C C I E P */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-12">
+          <div className="max-w-6xl mx-auto py-10 relative">
+            {/* Central Trunk (Line) */}
+            <div className="absolute left-12 md:left-1/2 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gold/10 via-gold/50 to-gold/10 transform md:-translate-x-1/2 rounded-full"></div>
+
+            <div className="flex flex-col gap-12 md:gap-16">
               {(t('values.items') as any).map((value: any, idx: number) => {
                 const titleParts = value.title.split(' - ');
                 const initial = titleParts[0]; // R
                 const name = titleParts.length > 1 ? titleParts[1] : value.title;
-                const isActive = activeValue === idx;
-                
+                const isLeft = idx % 2 === 0;
+
                 return (
-                  <button
+                  <motion.div 
                     key={idx}
-                    onClick={() => setActiveValue(idx)}
-                    className={`group relative flex flex-col items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full border-2 transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-navy border-navy text-gold scale-110 shadow-lg shadow-navy/20' 
-                        : 'bg-white border-gray-200 text-navy hover:border-gold hover:text-gold'
-                    }`}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    className={`relative flex items-center w-full ${isLeft ? 'md:flex-row-reverse' : 'md:flex-row'}`}
                   >
-                    <span className="text-2xl md:text-3xl font-black font-serif">{initial}</span>
-                    <span className={`text-[9px] md:text-[10px] font-bold uppercase tracking-widest mt-1 text-center px-2 leading-tight ${isActive ? 'opacity-100 text-white' : 'opacity-0 group-hover:opacity-100'} transition-opacity`}>
-                      {name.split(' ')[0]} 
-                    </span>
-                  </button>
+                    {/* Empty half for desktop alignment */}
+                    <div className="hidden md:block w-1/2"></div>
+                    
+                    {/* Center Node (Letter) */}
+                    <div className="absolute left-12 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-16 h-16 md:w-24 md:h-24 bg-navy border-4 border-gold text-white rounded-full z-10 shadow-xl shadow-navy/20 group hover:scale-110 transition-transform duration-300">
+                      <div className="absolute inset-0 bg-gold/20 rounded-full animate-ping opacity-20"></div>
+                      <span className="text-2xl md:text-4xl font-black font-serif text-gold group-hover:text-white transition-colors">{initial}</span>
+                    </div>
+
+                    {/* Content Card */}
+                    <div className={`w-full pl-28 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-20 text-left md:text-right' : 'md:pl-20 text-left'}`}>
+                      <div className="bg-white p-6 md:p-10 rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-gold/40 transition-all duration-500 group relative overflow-hidden">
+                        {/* Decorative background element */}
+                        <div className={`absolute top-0 w-32 h-32 bg-gold/5 rounded-full blur-2xl ${isLeft ? 'right-0' : 'left-0'}`}></div>
+                        
+                        <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4 text-navy font-serif group-hover:text-gold transition-colors relative z-10">{name}</h3>
+                        <p className="text-gray-600 text-sm md:text-lg leading-relaxed font-light relative z-10">{value.desc}</p>
+                      </div>
+                    </div>
+                  </motion.div>
                 );
               })}
-            </div>
-
-            {/* The content area */}
-            <div className="bg-gray-50 rounded-3xl p-8 md:p-12 border border-gray-100 relative overflow-hidden min-h-[250px] flex items-center shadow-inner">
-              <div className="absolute -top-24 -right-24 w-64 h-64 bg-gold/10 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
-              
-              <div className="relative z-10 w-full text-center">
-                {(t('values.items') as any).map((value: any, idx: number) => {
-                  const isActive = activeValue === idx;
-                  const titleParts = value.title.split(' - ');
-                  const name = titleParts.length > 1 ? titleParts[1] : value.title;
-                  
-                  return isActive && (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <h3 className="text-2xl md:text-4xl font-bold mb-6 text-navy font-serif tracking-wide">{name}</h3>
-                      <p className="text-gray-600 text-base md:text-xl leading-relaxed max-w-3xl mx-auto font-light">
-                        {value.desc}
-                      </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </div>
