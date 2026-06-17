@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { ArrowRight, Scale, FileText, ShieldCheck, Lightbulb, Phone, Mail, MapPin, CheckCircle, ChevronDown, ChevronUp, StarIcon, Heart, Search, Zap, Lock } from 'lucide-react';
+import { ArrowRight, Scale, FileText, ShieldCheck, Lightbulb, Phone, Mail, MapPin, CheckCircle, ChevronDown, ChevronUp, StarIcon, Heart, Search, Zap, Lock, MessageCircle, Rocket, Target } from 'lucide-react';
 import { Variants, motion } from 'framer-motion';
 import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
@@ -172,15 +172,15 @@ const HomeClient = () => {
 
       {/* OUR VALUES SECTION */}
       <section className="py-16 md:py-32 relative overflow-hidden bg-navy text-white">
-        {/* Full Section Background Image */}
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=1920&q=80"
-            alt="Values Background"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-navy/95 via-navy to-navy/95"></div>
-        </div>
+        {/* Animated Full Pattern Background */}
+        <div className="absolute inset-0 bg-navy"></div>
+        <motion.div 
+          className="absolute inset-0 opacity-20"
+          style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cubes.png')" }}
+          animate={{ backgroundPosition: ["0px 0px", "100px 100px"] }}
+          transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/80 pointer-events-none"></div>
         
         {/* Colorful Glows */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[120px] pointer-events-none transform translate-x-1/4 -translate-y-1/4"></div>
@@ -210,6 +210,16 @@ const HomeClient = () => {
                 const initial = titleParts[0]; // R
                 const name = titleParts.length > 1 ? titleParts[1] : value.title;
                 const isLeft = idx % 2 === 0;
+                
+                // Map icons based on the letter
+                let IconComponent = Zap;
+                if (initial === 'R') IconComponent = Zap;
+                if (initial === 'I' && idx === 1) IconComponent = FileText;
+                if (initial === 'C' && idx === 2) IconComponent = MessageCircle;
+                if (initial === 'C' && idx === 3) IconComponent = Lightbulb;
+                if (initial === 'I' && idx === 4) IconComponent = Rocket;
+                if (initial === 'E') IconComponent = Target;
+                if (initial === 'P') IconComponent = Heart;
 
                 return (
                   <motion.div 
@@ -231,12 +241,20 @@ const HomeClient = () => {
 
                     {/* Content Card */}
                     <div className={`w-full pl-28 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-24 text-left md:text-right' : 'md:pl-24 text-left'}`}>
-                      <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gold/40 transition-all duration-500 group relative overflow-hidden">
+                      <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gold/40 transition-all duration-500 group relative overflow-hidden flex flex-col md:flex-row items-center gap-6 md:gap-8">
                         {/* Decorative background element */}
                         <div className={`absolute top-0 w-32 h-32 bg-gold/5 rounded-full blur-2xl ${isLeft ? 'right-0' : 'left-0'}`}></div>
                         
-                        <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4 text-navy font-serif group-hover:text-gold transition-colors relative z-10">{name}</h3>
-                        <p className="text-gray-600 text-sm md:text-lg leading-relaxed font-light relative z-10">{value.desc}</p>
+                        {/* Icon */}
+                        <div className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-navy/5 text-gold rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-inner ${isLeft ? 'md:order-2' : ''}`}>
+                          <IconComponent size={36} className="md:w-10 md:h-10" />
+                        </div>
+
+                        {/* Text */}
+                        <div className={`flex-1 relative z-10 ${isLeft ? 'md:order-1' : ''}`}>
+                          <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4 text-navy font-serif group-hover:text-gold transition-colors">{name}</h3>
+                          <p className="text-gray-600 text-sm md:text-lg leading-relaxed font-light">{value.desc}</p>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
