@@ -171,14 +171,16 @@ const HomeClient = () => {
       </section>
 
       {/* OUR VALUES SECTION */}
-      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+      <section className="py-16 md:py-24 relative overflow-hidden bg-white">
         {/* Decorative Background Pattern */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] mix-blend-multiply"></div>
         </div>
-        {/* Subtle Glows */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold/10 rounded-full blur-[120px] pointer-events-none transform translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-navy/5 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/2 translate-y-1/2"></div>
+        
+        {/* Colorful Glows to fill the empty space */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold/20 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-navy/10 rounded-full blur-[100px] pointer-events-none transform -translate-x-1/3 translate-y-1/3"></div>
+        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[150px] pointer-events-none transform -translate-x-1/2 -translate-y-1/2"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
