@@ -171,27 +171,31 @@ const HomeClient = () => {
       </section>
 
       {/* OUR VALUES SECTION */}
-      <section className="py-16 md:py-32 relative overflow-hidden bg-gray-50">
-        {/* Decorative Background Pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] mix-blend-multiply"></div>
+      <section className="py-16 md:py-32 relative overflow-hidden bg-navy text-white">
+        {/* Full Section Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=1920&q=80"
+            alt="Values Background"
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-navy/95 via-navy to-navy/95"></div>
         </div>
         
-        {/* Colorful Glows to fill the empty space */}
+        {/* Colorful Glows */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[120px] pointer-events-none transform translate-x-1/4 -translate-y-1/4"></div>
-        <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-navy/5 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/4 translate-y-1/4"></div>
-        <div className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] bg-gold/5 rounded-full blur-[150px] pointer-events-none transform -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/4 translate-y-1/4"></div>
         
         {/* Watermark Logo/Text in Background */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20rem] font-black text-navy/[0.02] pointer-events-none font-serif tracking-tighter whitespace-nowrap z-0">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20rem] font-black text-white/[0.02] pointer-events-none font-serif tracking-tighter whitespace-nowrap z-0">
           RICCIEP
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-wider text-navy">{t('values.title')}</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-wider text-white">{t('values.title')}</h2>
             <div className="w-24 h-1.5 bg-gold mx-auto mb-8"></div>
-            <p className="text-gray-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+            <p className="text-gray-300 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed font-light">
               {t('values.subtitle')}
             </p>
           </div>
