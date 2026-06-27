@@ -4,7 +4,7 @@ import ArticleDetailClient from '@/app/artikel/[slug]/ArticleDetailClient';
 
 async function getArticle(slug: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/${slug}`, { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${slug}`, { 
       cache: 'no-store' 
     });
     

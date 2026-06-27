@@ -134,7 +134,15 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <User size={16} className="text-gold" />
+              {displayArticle.author?.profile_photo_url ? (
+                <img 
+                  src={displayArticle.author.profile_photo_url} 
+                  alt={displayArticle.author.name} 
+                  className="w-6 h-6 rounded-full object-cover shadow-sm border border-gold/30"
+                />
+              ) : (
+                <User size={16} className="text-gold" />
+              )}
               <span>{displayArticle.author?.name || t('articles_page.admin')}</span>
             </div>
           </div>

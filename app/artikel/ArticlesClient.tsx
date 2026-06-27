@@ -44,7 +44,7 @@ const ArticlesClient = () => {
   /* ── Fetch ── */
   const fetchArticles = async (page = 1) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles?page=${page}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles?page=${page}`);
       const data = await res.json();
       const fetched = data.data || [];
       
