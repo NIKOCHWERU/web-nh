@@ -135,7 +135,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
             </div>
             <div className="flex items-center gap-2">
               <User size={16} className="text-gold" />
-              <span>{t('articles_page.admin')}</span>
+              <span>{displayArticle.author?.name || t('articles_page.admin')}</span>
             </div>
           </div>
         </motion.header>
@@ -146,10 +146,10 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
           className="mb-12 rounded-3xl overflow-hidden shadow-2xl aspect-video cursor-pointer"
-          onClick={() => openLightbox(getImageUrl(displayArticle.image))}
+          onClick={() => openLightbox(displayArticle.image_url || getImageUrl(displayArticle.image))}
         >
           <img 
-            src={getImageUrl(displayArticle.image)} 
+            src={displayArticle.image_url || getImageUrl(displayArticle.image)} 
             alt={displayArticle.title}
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
           />

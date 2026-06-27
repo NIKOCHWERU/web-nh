@@ -4,7 +4,7 @@ import ArticleDetailClient from '@/app/artikel/[slug]/ArticleDetailClient';
 
 async function getArticle(slug: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${slug}`, { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/${slug}`, { 
       cache: 'no-store' 
     });
     
@@ -46,9 +46,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       modifiedTime: article.updated_at,
       images: [
         {
-          url: article.image
+          url: article.image_url || (article.image
             ? (article.image.startsWith('http') ? article.image : `https://www.narasumberhukum.com/storage/${article.image}`)
-            : 'https://www.narasumberhukum.com/logo.png',
+            : 'https://www.narasumberhukum.com/logo.png'),
         }
       ],
     }

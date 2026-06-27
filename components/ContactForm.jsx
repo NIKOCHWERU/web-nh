@@ -15,13 +15,15 @@ const ContactForm = () => {
     subject: '',
     message: ''
   });
+  const [validationErrors, setValidationErrors] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
 
     try {
-      const response = await fetch('/api/contact', {
+      setValidationErrors(null);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,6 +31,14 @@ const ContactForm = () => {
         },
         body: JSON.stringify(formData),
       });
+
+      if (response.status === 422) {
+        const errorData = await response.json();
+        setValidationErrors(errorData.errors || errorData.message);
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 7000);
+        return;
+      }
 
       if (!response.ok) {
         throw new Error('Failed to send message');
@@ -163,10 +173,19 @@ const ContactForm = () => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-2 text-red-500 text-xs font-medium justify-center"
+                className="flex flex-col items-center gap-2 text-red-500 text-xs font-medium justify-center mt-4 bg-red-50 p-3 rounded-xl border border-red-100"
               >
-                <AlertCircle size={14} />
-                {t('contact_form.error_message')}
+                <div className="flex items-center gap-2">
+                  <AlertCircle size={14} />
+                  {validationErrors && typeof validationErrors === 'string' ? validationErrors : t('contact_form.error_message')}
+                </div>
+                {validationErrors && typeof validationErrors === 'object' && (
+                  <ul className="list-disc text-left pl-4 w-full">
+                    {Object.values(validationErrors).flat().map((err, i) => (
+                      <li key={i}>{err}</li>
+                    ))}
+                  </ul>
+                )}
               </motion.div>
             )}
           </motion.form>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Loader2, Search, SlidersHorizontal, Calendar, Tag, Clock } from 'lucide-react';
+import { ArrowRight, Loader2, Calendar, Tag, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
@@ -9,12 +9,12 @@ import ConsultationCTA from '@/components/ConsultationCTA';
 
 const fadeInUp: any = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
 const stagger: any = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
 };
 
 // Strip HTML tags to get plain text excerpt
@@ -23,7 +23,6 @@ const stripHtml = (html: string) => {
   return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 };
 
-// Estimate read time
 const readTime = (html: string) => {
   const words = stripHtml(html).split(' ').length;
   return Math.max(1, Math.round(words / 200));
@@ -33,29 +32,40 @@ const ArticlesClient = () => {
   const { locale, t } = useLanguage();
   const [originalArticles, setOriginalArticles] = useState<any[]>([]);
   const [articles, setArticles] = useState<any[]>([]);
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [loading, setLoading] = useState(true);
   const [translating, setTranslating] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('newest');
 
   /* ── Fetch ── */
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`);
-        const data = await res.json();
-        const fetched = data.data || [];
+  const fetchArticles = async (page = 1) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles?page=${page}`);
+      const data = await res.json();
+      const fetched = data.data || [];
+      
+      if (page === 1) {
         setOriginalArticles(fetched);
-        setArticles(fetched);
-      } catch (err) {
-        console.error('Failed to fetch articles:', err);
-      } finally {
-        setLoading(false);
+      } else {
+        setOriginalArticles(prev => [...prev, ...fetched]);
       }
-    };
-    fetchArticles();
+      
+      setCurrentPage(data.current_page || 1);
+      setLastPage(data.last_page || 1);
+    } catch (err) {
+      console.error('Failed to fetch articles:', err);
+    } finally {
+      setLoading(false);
+      setIsLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticles(1);
   }, []);
 
   /* ── Auto-translate ── */
@@ -81,8 +91,17 @@ const ArticlesClient = () => {
     handleTranslation();
   }, [locale, originalArticles]);
 
+  const handleLoadMore = () => {
+    if (currentPage < lastPage) {
+      setIsLoadingMore(true);
+      fetchArticles(currentPage + 1);
+    }
+  };
+
   /* ── Helpers ── */
-  const getImageUrl = (path: any) => {
+  const getImageUrl = (art: any) => {
+    if (art.image_url) return art.image_url;
+    const path = art.image;
     if (!path) return 'https://placehold.co/800x500/1a2744/c9a96e?text=NH';
     if (typeof path !== 'string') return 'https://placehold.co/800x500/1a2744/c9a96e?text=NH';
     if (path.startsWith('http')) return path;
@@ -94,54 +113,29 @@ const ArticlesClient = () => {
 
   const formatDate = (dateStr: string) =>
     new Date(dateStr).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
-      day: 'numeric', month: 'long', year: 'numeric'
+      day: 'numeric', month: 'short', year: 'numeric'
     });
 
-  /* ── Categories computed from ORIGINAL articles (not filtered) ── */
+  /* ── Categories computed from ORIGINAL articles ── */
   const uniqueCategories: string[] = Array.from(
     new Set(originalArticles.map((a) => a.category?.name).filter(Boolean))
   );
 
-  const categoryCounts = originalArticles.reduce((acc: any, art: any) => {
-    const name = art.category?.name;
-    if (name) acc[name] = (acc[name] || 0) + 1;
-    return acc;
-  }, {});
-
-  /* ── Filter + Sort ── */
+  /* ── Filter ── */
   const processedArticles = (() => {
     let result = [...articles];
     if (selectedCategory !== 'all') {
       result = result.filter((a) => (a.category?.name || '') === selectedCategory);
     }
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (a) =>
-          a.title.toLowerCase().includes(q) ||
-          stripHtml(a.content || '').toLowerCase().includes(q)
-      );
-    }
-    if (sortBy === 'newest')
-      result.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
-    else if (sortBy === 'oldest')
-      result.sort((a, b) => new Date(a.published_at).getTime() - new Date(b.published_at).getTime());
-    else if (sortBy === 'az')
-      result.sort((a, b) => a.title.localeCompare(b.title));
     return result;
   })();
 
-  const isFiltering = selectedCategory !== 'all' || searchQuery !== '';
-  const featuredArticle = !isFiltering && processedArticles.length > 0 ? processedArticles[0] : null;
-  const listArticles = featuredArticle ? processedArticles.slice(1) : processedArticles;
-
-  /* Recent posts from original (not filtered) */
-  const recentPosts = [...originalArticles]
-    .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
-    .slice(0, 4);
+  const featuredArticle = processedArticles.length > 0 ? processedArticles[0] : null;
+  const gridArticles = processedArticles.slice(1, 4);
+  const listArticles = processedArticles.slice(4);
 
   /* ── Loading ── */
-  if (loading || translating) {
+  if (loading && currentPage === 1) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white gap-4">
         <Loader2 className="animate-spin text-navy" size={44} />
@@ -154,319 +148,213 @@ const ArticlesClient = () => {
 
   /* ── Render ── */
   return (
-    <div className="pt-20 bg-[#f8f7f4] min-h-screen pb-24">
+    <div className="pt-24 bg-white min-h-screen pb-24 font-sans text-gray-800">
+      
+      {/* 1. TOP SECTION (Hero & Featured) */}
+      <section className="container mx-auto px-4 max-w-7xl mb-16">
+        <div className="flex flex-col lg:flex-row gap-10 items-stretch">
+          
+          {/* Left: Titles & Info */}
+          <div className="lg:w-1/3 flex flex-col justify-center py-8">
+            <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
+              <h4 className="text-navy font-black tracking-[0.2em] uppercase text-xs mb-4">
+                {locale === 'id' ? 'Sentral Edukasi Hukum' : 'Legal Education Center'}
+              </h4>
+              <h1 className="text-5xl lg:text-6xl font-black mb-6 text-navy leading-tight uppercase font-serif">
+                {t('articles_page.title') || "Artikel Kami"}
+              </h1>
+              <p className="text-gray-500 mb-8 leading-relaxed max-w-md text-lg">
+                {t('articles_page.subtitle')}
+              </p>
+              {featuredArticle && (
+                <Link 
+                  href={`/artikel/${featuredArticle.slug}`}
+                  className="inline-flex items-center gap-3 bg-[#4BA3C3] hover:bg-navy text-white px-8 py-4 text-sm font-bold tracking-widest uppercase transition-colors rounded-sm w-fit shadow-lg shadow-[#4BA3C3]/20"
+                >
+                  {t('articles_page.read_more')}
+                </Link>
+              )}
+            </motion.div>
+          </div>
 
-      {/* ════ HERO ════ */}
-      <section className="bg-navy text-white py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-            <span className="inline-block bg-gold/20 text-gold text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full mb-6">
-              {locale === 'id' ? 'Sentral Hukum & Edukasi' : 'Legal & Education Center'}
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-5 font-sans">
-              {t('articles_page.title')}
-            </h1>
-            <div className="w-16 h-1 bg-gold mx-auto mb-5 rounded-full" />
-            <p className="text-gray-300 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
-              {t('articles_page.subtitle')}
-            </p>
-          </motion.div>
+          {/* Right: Featured Article Image (Video Player equivalent in design) */}
+          <div className="lg:w-2/3">
+            {featuredArticle ? (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}
+                className="w-full h-full min-h-[300px] lg:min-h-[450px] bg-gray-100 rounded-sm overflow-hidden relative group cursor-pointer shadow-xl"
+              >
+                <Link href={`/artikel/${featuredArticle.slug}`}>
+                  <img src={getImageUrl(featuredArticle)} alt={featuredArticle.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0" />
+                  <div className="absolute inset-0 bg-navy/30 group-hover:bg-navy/20 transition-colors"></div>
+                  
+                  {/* Floating badge for Featured */}
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-sm shadow-xl transform group-hover:-translate-y-2 transition-transform duration-500">
+                      <div className="text-[#4BA3C3] text-xs font-black tracking-widest uppercase mb-2">
+                        {featuredArticle.category?.name || "Featured"}
+                      </div>
+                      <h3 className="text-xl md:text-3xl font-bold text-navy line-clamp-2 leading-tight font-serif">
+                        {featuredArticle.title}
+                      </h3>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ) : (
+              <div className="w-full h-full min-h-[400px] bg-gray-100 flex items-center justify-center rounded-sm">
+                <span className="text-gray-400">Tidak ada artikel tersedia.</span>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
-      {/* ════ FEATURED ARTICLE ════ */}
-      {featuredArticle && (
-        <section className="container mx-auto px-4 -mt-10 relative z-20 mb-14">
-          <Link href={`/artikel/${featuredArticle.slug}`}>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="group relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 flex flex-col lg:flex-row cursor-pointer hover:shadow-navy/10 transition-shadow duration-500"
-            >
-              {/* Image */}
-              <div className="relative lg:w-[58%] min-h-[260px] lg:min-h-[440px] overflow-hidden">
-                <img
-                  src={getImageUrl(featuredArticle.image)}
-                  alt={featuredArticle.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-navy/40 via-transparent to-transparent" />
-                <div className="absolute top-6 left-6">
-                  <span className="bg-gold text-navy text-[10px] font-black px-4 py-2 uppercase tracking-[0.2em] rounded-full shadow-lg">
-                    ★ {t('articles_page.featured_label')}
-                  </span>
+      {/* 2. MIDDLE SECTION (3-Column Grid) */}
+      <section className="container mx-auto px-4 max-w-7xl mb-16">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-10"
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}
+        >
+          {gridArticles.map((article: any) => (
+            <motion.div key={article.id} variants={fadeInUp} className="flex flex-col group h-full">
+              <Link href={`/artikel/${article.slug}`} className="flex flex-col h-full bg-white transition-transform duration-300">
+                {/* Image Box */}
+                <div className="w-full h-56 bg-gray-100 mb-6 overflow-hidden rounded-sm relative shadow-sm">
+                  <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
                 </div>
-                {featuredArticle.category?.name && (
-                  <div className="absolute bottom-6 left-6">
-                    <span className="bg-white/15 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest rounded-full border border-white/25">
-                      {featuredArticle.category.name}
-                    </span>
+                
+                {/* Category/Tag (Matches "PERMOS DOLOROS" in design) */}
+                <div className="text-[#4BA3C3] text-xs font-black tracking-widest uppercase mb-3 line-clamp-1">
+                  {article.category?.name || "Article"}
+                </div>
+                
+                {/* Title */}
+                <h3 className="text-xl font-bold text-navy mb-3 line-clamp-2 uppercase font-serif group-hover:text-[#4BA3C3] transition-colors leading-snug">
+                  {article.title}
+                </h3>
+                
+                {/* Excerpt */}
+                <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6">
+                  {stripHtml(article.content)}
+                </p>
+                
+                {/* Meta */}
+                <div className="mt-auto flex items-center gap-4 text-xs text-gray-400 font-semibold uppercase tracking-wider pt-4 border-t border-gray-100">
+                  <span className="flex items-center gap-1.5"><Calendar size={14}/> {formatDate(article.published_at)}</span>
+                  <span className="flex items-center gap-1.5"><Clock size={14}/> {readTime(article.content)} min</span>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* Divider */}
+      <div className="container mx-auto px-4 max-w-7xl mb-16">
+        <div className="w-full border-t border-gray-200"></div>
+      </div>
+
+      {/* 3. BOTTOM SECTION (Company Advantages equivalent) */}
+      <section className="bg-[#F8F9FA] py-16 md:py-24 border-t border-gray-100">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="flex flex-col lg:flex-row gap-16">
+            
+            {/* Left: Article List (2-column grid of smaller items) */}
+            <div className="lg:w-2/3">
+              <h2 className="text-3xl font-black text-navy uppercase font-serif mb-10 tracking-wide flex items-center gap-4">
+                {locale === 'id' ? 'Artikel Lainnya' : 'More Articles'}
+                <div className="h-0.5 bg-navy/10 flex-1"></div>
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-12">
+                {listArticles.map((article: any) => (
+                  <Link href={`/artikel/${article.slug}`} key={article.id} className="flex gap-5 group items-start">
+                    {/* Small Square Image (Matches the empty squares in design) */}
+                    <div className="w-24 h-24 shrink-0 bg-white border border-gray-200 rounded-sm overflow-hidden shadow-sm">
+                      <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                    {/* Content */}
+                    <div className="flex flex-col justify-start">
+                      <h4 className="text-sm font-bold text-navy uppercase mb-2 group-hover:text-[#4BA3C3] transition-colors line-clamp-2 leading-relaxed">
+                        {article.title}
+                      </h4>
+                      <p className="text-gray-500 text-xs line-clamp-3 leading-relaxed">
+                        {stripHtml(article.content)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+                
+                {listArticles.length === 0 && (
+                  <div className="col-span-full text-gray-400 italic text-sm">
+                    {locale === 'id' ? 'Belum ada artikel lainnya.' : 'No more articles.'}
                   </div>
                 )}
               </div>
 
-              {/* Content */}
-              <div className="lg:w-[42%] p-8 md:p-12 flex flex-col justify-center">
-                <div className="flex items-center gap-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-5">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar size={11} />
-                    {formatDate(featuredArticle.published_at)}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock size={11} />
-                    {readTime(featuredArticle.content)} min read
-                  </span>
+              {/* Load More Button */}
+              {currentPage < lastPage && (
+                <div className="mt-14 text-center md:text-left">
+                  <button 
+                    onClick={handleLoadMore}
+                    disabled={isLoadingMore}
+                    className="bg-navy hover:bg-[#4BA3C3] text-white px-10 py-4 text-sm font-bold uppercase tracking-widest rounded-sm transition-colors disabled:opacity-50 inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-300"
+                  >
+                    {isLoadingMore && <Loader2 size={16} className="animate-spin" />}
+                    {locale === 'id' ? 'Muat Lebih Banyak' : 'Load More'}
+                  </button>
                 </div>
-                <h2 className="text-2xl md:text-[1.75rem] font-bold font-sans text-navy mb-5 leading-tight group-hover:text-gold transition-colors duration-300">
-                  {featuredArticle.title}
-                </h2>
-                <p className="text-gray-500 text-sm leading-relaxed mb-8 line-clamp-4">
-                  {stripHtml(featuredArticle.content)}
-                </p>
-                <div className="flex items-center gap-2 text-navy group-hover:text-gold font-black text-xs uppercase tracking-[0.2em] transition-colors duration-300 mt-auto">
-                  {t('articles_page.read_more')}
-                  <ArrowRight size={15} className="group-hover:translate-x-2 transition-transform duration-300" />
-                </div>
-              </div>
-            </motion.div>
-          </Link>
-        </section>
-      )}
-
-      {/* ════ MAIN CONTENT ════ */}
-      <section className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-
-          {/* ── LEFT: Blog List ── */}
-          <div className="lg:col-span-8">
-
-            {/* Filter bar */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-8 flex flex-col sm:flex-row sm:items-center gap-4">
-              {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={t('articles_page.search_placeholder')}
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 rounded-xl text-sm border border-gray-100 outline-none focus:border-gold focus:bg-white transition-all placeholder-gray-400"
-                />
-              </div>
-              {/* Sort */}
-              <div className="flex items-center gap-2 shrink-0">
-                <SlidersHorizontal className="text-gray-400" size={14} />
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-gray-50 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest text-navy border border-gray-100 outline-none focus:border-gold cursor-pointer"
-                >
-                  <option value="newest">{t('articles_page.sort_newest')}</option>
-                  <option value="oldest">{t('articles_page.sort_oldest')}</option>
-                  <option value="az">{t('articles_page.sort_az')}</option>
-                </select>
-              </div>
+              )}
             </div>
 
-            {/* Search result label */}
-            {isFiltering && searchQuery && (
-              <p className="text-sm text-gray-500 mb-6">
-                {t('articles_page.search_results')}: <span className="font-bold text-navy">"{searchQuery}"</span>
-                {' '}—{' '}
-                <span className="text-gold font-bold">{processedArticles.length} artikel</span>
-              </p>
-            )}
+            {/* Right: Categories Block (Tags overlaid on block) */}
+            <div className="lg:w-1/3">
+              <div className="bg-[#94A3B8] p-10 rounded-sm h-full relative overflow-hidden min-h-[300px] flex flex-col shadow-xl">
+                {/* Subtle pattern background for the category block */}
+                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-multiply"></div>
+                
+                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-8 relative z-10 border-b border-white/20 pb-4">
+                  {locale === 'id' ? 'Kategori' : 'Categories'}
+                </h3>
 
-            {/* Blog List */}
-            {listArticles.length > 0 ? (
-              <motion.div
-                className="flex flex-col gap-0"
-                initial="hidden"
-                animate="visible"
-                variants={stagger}
-              >
-                {listArticles.map((article, idx) => (
-                  <motion.div key={article.id} variants={fadeInUp}>
-                    <Link href={`/artikel/${article.slug}`}>
-                      <article className={`group flex gap-6 py-7 cursor-pointer ${idx < listArticles.length - 1 ? 'border-b border-gray-200' : ''}`}>
-                        {/* Thumbnail */}
-                        <div className="shrink-0 w-40 h-28 sm:w-52 sm:h-36 rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                          <img
-                            src={getImageUrl(article.image)}
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          />
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1 min-w-0 flex flex-col justify-center">
-                          {/* Category + Date */}
-                          <div className="flex flex-wrap items-center gap-3 mb-2.5">
-                            {article.category?.name && (
-                              <span className="inline-flex items-center gap-1.5 text-[10px] text-gold font-black uppercase tracking-widest">
-                                <Tag size={9} />
-                                {article.category.name}
-                              </span>
-                            )}
-                            <span className="inline-flex items-center gap-1.5 text-[10px] text-gray-400 font-semibold">
-                              <Calendar size={9} />
-                              {formatDate(article.published_at)}
-                            </span>
-                            <span className="hidden sm:inline-flex items-center gap-1.5 text-[10px] text-gray-400 font-semibold">
-                              <Clock size={9} />
-                              {readTime(article.content)} min
-                            </span>
-                          </div>
-
-                          {/* Title */}
-                          <h2 className="font-bold text-base sm:text-lg text-navy leading-snug mb-2 group-hover:text-gold transition-colors duration-300 font-sans line-clamp-2">
-                            {article.title}
-                          </h2>
-
-                          {/* Excerpt */}
-                          <p className="text-gray-500 text-xs sm:text-sm leading-relaxed line-clamp-2 mb-3">
-                            {stripHtml(article.content)}
-                          </p>
-
-                          {/* Read more */}
-                          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-navy group-hover:text-gold transition-colors duration-300 mt-auto">
-                            {t('articles_page.read_more')}
-                            <ArrowRight size={12} className="group-hover:translate-x-1.5 transition-transform" />
-                          </div>
-                        </div>
-                      </article>
-                    </Link>
-                  </motion.div>
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                initial="hidden" animate="visible" variants={fadeInUp}
-                className="text-center py-20 bg-white rounded-2xl border border-gray-100"
-              >
-                <Search className="text-gray-200 mx-auto mb-4" size={40} />
-                <h3 className="text-xl font-bold text-navy mb-2 font-sans">{t('articles_page.no_results_title')}</h3>
-                <p className="text-gray-500 text-sm">{t('articles_page.no_results_desc')}</p>
-              </motion.div>
-            )}
-
-            {/* CTA */}
-            <ConsultationCTA />
-          </div>
-
-          {/* ── RIGHT: Sidebar ── */}
-          <div className="lg:col-span-4 flex flex-col gap-7">
-
-            {/* Categories */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h4 className="text-[11px] font-black text-navy uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
-                <span className="w-1 h-4 bg-gold rounded-full inline-block" />
-                {t('articles_page.categories_label')}
-              </h4>
-              <div className="flex flex-col gap-1">
-                {/* All */}
-                <button
-                  onClick={() => setSelectedCategory('all')}
-                  className={`flex items-center justify-between w-full py-2.5 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                    selectedCategory === 'all'
-                      ? 'bg-navy text-white'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-navy'
-                  }`}
-                >
-                  <span>{t('articles_page.all_categories')}</span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${selectedCategory === 'all' ? 'bg-white/20' : 'bg-navy/5 text-navy'}`}>
-                    {originalArticles.length}
-                  </span>
-                </button>
-                {/* Dynamic categories */}
-                {uniqueCategories.length > 0 ? (
-                  uniqueCategories.map((cat) => (
+                <div className="relative z-10 flex flex-wrap gap-3">
+                  <button
+                    onClick={() => setSelectedCategory('all')}
+                    className={`px-5 py-2.5 text-xs font-black uppercase tracking-widest rounded-sm transition-all shadow-md border ${
+                      selectedCategory === 'all' 
+                        ? 'bg-navy border-navy text-white scale-105' 
+                        : 'bg-white border-white text-navy hover:bg-gray-100 hover:scale-105'
+                    }`}
+                  >
+                    ALL
+                  </button>
+                  {uniqueCategories.map((cat) => (
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`flex items-center justify-between w-full py-2.5 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                        selectedCategory === cat
-                          ? 'bg-navy text-white'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-navy'
+                      className={`px-5 py-2.5 text-xs font-black uppercase tracking-widest rounded-sm transition-all shadow-md border ${
+                        selectedCategory === cat 
+                          ? 'bg-navy border-navy text-white scale-105' 
+                          : 'bg-[#1E293B] border-[#1E293B] text-white hover:bg-navy hover:scale-105'
                       }`}
                     >
-                      <span>{cat}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${selectedCategory === cat ? 'bg-white/20' : 'bg-navy/5 text-navy'}`}>
-                        {categoryCounts[cat] || 0}
-                      </span>
+                      {cat}
                     </button>
-                  ))
-                ) : (
-                  <p className="text-xs text-gray-400 px-3 py-2 italic">
-                    {locale === 'id' ? 'Belum ada kategori' : 'No categories yet'}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Recent Posts */}
-            {recentPosts.length > 0 && (
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h4 className="text-[11px] font-black text-navy uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
-                  <span className="w-1 h-4 bg-gold rounded-full inline-block" />
-                  {t('articles_page.recent_posts')}
-                </h4>
-                <div className="flex flex-col gap-5">
-                  {recentPosts.map((post) => (
-                    <Link href={`/artikel/${post.slug}`} key={post.id} className="flex gap-3 group cursor-pointer">
-                      <div className="w-16 h-16 min-w-[64px] rounded-xl overflow-hidden border border-gray-100">
-                        <img
-                          src={getImageUrl(post.image)}
-                          alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="flex flex-col justify-center min-w-0">
-                        {post.category?.name && (
-                          <span className="text-[9px] text-gold font-black uppercase tracking-widest block mb-0.5">
-                            {post.category.name}
-                          </span>
-                        )}
-                        <h5 className="font-bold text-xs text-navy line-clamp-2 leading-snug group-hover:text-gold transition-colors duration-300">
-                          {post.title}
-                        </h5>
-                        <span className="text-[9px] text-gray-400 mt-1">
-                          {formatDate(post.published_at)}
-                        </span>
-                      </div>
-                    </Link>
                   ))}
                 </div>
               </div>
-            )}
-
-            {/* About Widget */}
-            <div className="bg-navy rounded-2xl p-6 shadow-sm text-white relative overflow-hidden">
-              <div className="absolute -top-8 -right-8 w-32 h-32 bg-gold/10 rounded-full blur-2xl" />
-              <div className="relative z-10">
-                <div className="w-10 h-10 bg-gold/20 rounded-xl flex items-center justify-center mb-4 border border-gold/30">
-                  <span className="text-gold font-black text-sm">NH</span>
-                </div>
-                <h4 className="text-sm font-black uppercase tracking-widest mb-2">Narasumber Hukum</h4>
-                <p className="text-gray-400 text-xs leading-relaxed mb-5">
-                  {locale === 'id'
-                    ? 'Platform edukasi hukum terpercaya. Artikel informatif dari para ahli hukum berpengalaman.'
-                    : 'Trusted legal education platform. Informative articles from experienced legal experts.'}
-                </p>
-                <Link
-                  href="/tentang"
-                  className="inline-flex items-center gap-2 text-gold text-[10px] font-black uppercase tracking-widest hover:gap-3 transition-all duration-300"
-                >
-                  {locale === 'id' ? 'Tentang Kami' : 'About Us'}
-                  <ArrowRight size={12} />
-                </Link>
-              </div>
             </div>
-
           </div>
         </div>
       </section>
+
+      {/* CTA Footer */}
+      <div className="container mx-auto px-4 max-w-7xl mt-20">
+        <ConsultationCTA />
+      </div>
+
     </div>
   );
 };
