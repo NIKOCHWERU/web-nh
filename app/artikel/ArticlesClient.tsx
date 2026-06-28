@@ -9,12 +9,12 @@ import ConsultationCTA from '@/components/ConsultationCTA';
 
 const fadeInUp: any = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
 };
 
 const stagger: any = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
 };
 
 // Strip HTML tags to get plain text excerpt
@@ -160,7 +160,7 @@ const ArticlesClient = () => {
               <h4 className="text-navy font-black tracking-[0.2em] uppercase text-xs mb-4">
                 {locale === 'id' ? 'Sentral Edukasi Hukum' : 'Legal Education Center'}
               </h4>
-              <h1 className="text-5xl lg:text-6xl font-black mb-6 text-navy leading-tight uppercase font-serif">
+              <h1 className="text-5xl lg:text-6xl font-black mb-6 text-navy leading-tight uppercase font-sans">
                 {t('articles_page.title') || "Artikel Kami"}
               </h1>
               <p className="text-gray-500 mb-8 leading-relaxed max-w-md text-lg">
@@ -181,20 +181,20 @@ const ArticlesClient = () => {
           <div className="lg:w-2/3">
             {featuredArticle ? (
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}
+                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}
                 className="w-full h-full min-h-[300px] lg:min-h-[450px] bg-gray-100 rounded-sm overflow-hidden relative group cursor-pointer shadow-xl"
               >
                 <Link href={`/artikel/${featuredArticle.slug}`}>
-                  <img src={getImageUrl(featuredArticle)} alt={featuredArticle.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0" />
+                  <img src={getImageUrl(featuredArticle)} alt={featuredArticle.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 absolute inset-0" />
                   <div className="absolute inset-0 bg-navy/30 group-hover:bg-navy/20 transition-colors"></div>
                   
                   {/* Floating badge for Featured */}
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-sm shadow-xl transform group-hover:-translate-y-2 transition-transform duration-500">
+                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-sm shadow-xl transform group-hover:-translate-y-2 transition-transform duration-300">
                       <div className="text-[#4BA3C3] text-xs font-black tracking-widest uppercase mb-2">
                         {featuredArticle.category?.name || "Featured"}
                       </div>
-                      <h3 className="text-xl md:text-3xl font-bold text-navy line-clamp-2 leading-tight font-serif">
+                      <h3 className="text-xl md:text-3xl font-bold text-navy line-clamp-2 leading-tight font-sans">
                         {featuredArticle.title}
                       </h3>
                     </div>
@@ -214,14 +214,14 @@ const ArticlesClient = () => {
       <section className="container mx-auto px-4 max-w-7xl mb-16">
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-3 gap-10"
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
         >
           {gridArticles.map((article: any) => (
             <motion.div key={article.id} variants={fadeInUp} className="flex flex-col group h-full">
               <Link href={`/artikel/${article.slug}`} className="flex flex-col h-full bg-white transition-transform duration-300">
                 {/* Image Box */}
                 <div className="w-full h-56 bg-gray-100 mb-6 overflow-hidden rounded-sm relative shadow-sm">
-                  <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
                 </div>
                 
@@ -231,7 +231,7 @@ const ArticlesClient = () => {
                 </div>
                 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-navy mb-3 line-clamp-2 uppercase font-serif group-hover:text-[#4BA3C3] transition-colors leading-snug">
+                <h3 className="text-xl font-bold text-navy mb-3 line-clamp-2 uppercase font-sans group-hover:text-[#4BA3C3] transition-colors leading-snug">
                   {article.title}
                 </h3>
                 
@@ -263,7 +263,7 @@ const ArticlesClient = () => {
             
             {/* Left: Article List (2-column grid of smaller items) */}
             <div className="lg:w-2/3">
-              <h2 className="text-3xl font-black text-navy uppercase font-serif mb-10 tracking-wide flex items-center gap-4">
+              <h2 className="text-3xl font-black text-navy uppercase font-sans mb-10 tracking-wide flex items-center gap-4">
                 {locale === 'id' ? 'Artikel Lainnya' : 'More Articles'}
                 <div className="h-0.5 bg-navy/10 flex-1"></div>
               </h2>
@@ -273,7 +273,7 @@ const ArticlesClient = () => {
                   <Link href={`/artikel/${article.slug}`} key={article.id} className="flex gap-5 group items-start">
                     {/* Small Square Image (Matches the empty squares in design) */}
                     <div className="w-24 h-24 shrink-0 bg-white border border-gray-200 rounded-sm overflow-hidden shadow-sm">
-                      <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                      <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     {/* Content */}
                     <div className="flex flex-col justify-start">

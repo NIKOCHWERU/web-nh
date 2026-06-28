@@ -69,7 +69,7 @@ const AboutClient = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed italic font-serif"
+            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed italic font-sans"
           >
             "{t('about_page.tagline')}"
           </motion.p>
@@ -153,7 +153,7 @@ const AboutClient = () => {
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6 uppercase tracking-wide">{t('about_page.vision.title')}</h2>
               <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
-              <p className="text-xl md:text-2xl leading-relaxed text-gray-200 font-serif italic">
+              <p className="text-xl md:text-2xl leading-relaxed text-gray-200 font-sans italic">
                 "{t('about_page.vision.desc')}"
               </p>
             </motion.div>
@@ -185,7 +185,7 @@ const AboutClient = () => {
                 <div className="w-16 h-16 bg-navy/5 rounded-xl flex items-center justify-center text-gold mb-6 group-hover:bg-navy group-hover:text-gold transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm group-hover:shadow-gold/20">
                   {mission.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-navy font-serif">{mission.title}</h3>
+                <h3 className="text-xl font-bold mb-4 text-navy font-sans">{mission.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{mission.desc}</p>
               </motion.div>
             ))}
@@ -266,7 +266,7 @@ const AboutClient = () => {
                   className="w-full h-auto object-contain transition-all duration-500"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center text-white font-serif">{t('partners.narasumber')}</h3>
+              <h3 className="text-lg font-bold text-center text-white font-sans">{t('partners.narasumber')}</h3>
               <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Advocate, Intercessor & Legal Consultant</p>
             </motion.div>
 
@@ -278,7 +278,7 @@ const AboutClient = () => {
               <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
                 {/* Photo removed as requested */}
               </div>
-              <h3 className="text-lg font-bold text-center text-white font-serif">{t('partners.sleco')}</h3>
+              <h3 className="text-lg font-bold text-center text-white font-sans">{t('partners.sleco')}</h3>
               <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Sustainable Solutions & Project Management</p>
             </motion.div>
 
@@ -294,7 +294,7 @@ const AboutClient = () => {
                   className="w-full h-auto max-h-16 object-contain transition-all duration-500"
                 />
               </div>
-              <h3 className="text-lg font-bold text-center text-white font-serif">{t('partners.mti')}</h3>
+              <h3 className="text-lg font-bold text-center text-white font-sans">{t('partners.mti')}</h3>
               <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">{t('partners.mti_sub')}</p>
             </motion.div>
           </motion.div>

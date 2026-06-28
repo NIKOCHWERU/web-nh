@@ -162,7 +162,7 @@ const HomeClient = () => {
                 <div className="mb-6 text-gold group-hover:scale-110 transition-transform">
                   <CheckCircle size={40} />
                 </div>
-                <h3 className="text-xl font-bold mb-4 uppercase tracking-wide font-serif text-navy">{item.title}</h3>
+                <h3 className="text-xl font-bold mb-4 uppercase tracking-wide font-sans text-navy">{item.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed font-light">{item.desc}</p>
               </motion.div>
             ))}
@@ -187,7 +187,7 @@ const HomeClient = () => {
         <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/4 translate-y-1/4"></div>
         
         {/* Watermark Logo/Text in Background */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20rem] font-black text-white/[0.02] pointer-events-none font-serif tracking-tighter whitespace-nowrap z-0">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20rem] font-black text-white/[0.02] pointer-events-none font-sans tracking-tighter whitespace-nowrap z-0">
           RICCIEP
         </div>
         
@@ -236,7 +236,7 @@ const HomeClient = () => {
                     {/* Center Node (Letter) */}
                     <div className="absolute left-12 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-16 h-16 md:w-28 md:h-28 bg-navy border-[6px] border-white ring-4 ring-gold/30 text-white rounded-full z-10 shadow-2xl group hover:scale-110 transition-transform duration-500">
                       <div className="absolute inset-0 bg-gold/20 rounded-full animate-ping opacity-30"></div>
-                      <span className="text-2xl md:text-5xl font-black font-serif text-gold group-hover:text-white transition-colors">{initial}</span>
+                      <span className="text-2xl md:text-5xl font-black font-sans text-gold group-hover:text-white transition-colors">{initial}</span>
                     </div>
 
                     {/* Content Card */}
@@ -252,7 +252,7 @@ const HomeClient = () => {
 
                         {/* Text */}
                         <div className={`flex-1 relative z-10 ${isLeft ? 'md:order-1' : ''}`}>
-                          <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4 text-navy font-serif group-hover:text-gold transition-colors">{name}</h3>
+                          <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4 text-navy font-sans group-hover:text-gold transition-colors">{name}</h3>
                           <p className="text-gray-600 text-sm md:text-lg leading-relaxed font-light">{value.desc}</p>
                         </div>
                       </div>
@@ -293,7 +293,7 @@ const HomeClient = () => {
                 className="bg-gray-50 p-6 md:p-10 rounded-[1.5rem] md:rounded-[2rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:shadow-2xl hover:border-gold/30 transition-all duration-500 transform hover:-translate-y-3 group"
               >
                 <div>
-                  <p className="text-gray-600 italic text-base md:text-xl leading-relaxed mb-6 md:mb-10 font-serif">
+                  <p className="text-gray-600 italic text-base md:text-xl leading-relaxed mb-6 md:mb-10 font-sans">
                     "{review.text}"
                   </p>
                 </div>
@@ -327,7 +327,7 @@ const HomeClient = () => {
                   {item.step}
                 </div>
                 <div className="relative z-10">
-                  <h3 className="text-xl font-bold mb-4 text-navy font-serif">{item.title}</h3>
+                  <h3 className="text-xl font-bold mb-4 text-navy font-sans">{item.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
                 </div>
                 {idx < 3 && (
@@ -370,7 +370,7 @@ const HomeClient = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-2xl md:text-5xl font-bold mb-8 uppercase tracking-widest leading-tight font-serif">
+            <h2 className="text-2xl md:text-5xl font-bold mb-8 uppercase tracking-widest leading-tight font-sans">
               "{t('cta_contact.title_quote')} <br /> <span className="text-gold">{t('cta_contact.title_gold')}</span>"
             </h2>
             <Link

@@ -10,7 +10,7 @@ export default function KontakPage() {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-navy mb-4">
+            <h1 className="text-4xl md:text-5xl font-sans font-bold text-navy mb-4">
               {t('contact_page.title')}
             </h1>
             <p className="text-lg text-gray-600">

@@ -118,7 +118,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
               {displayArticle.category?.name || t('articles_page.category_default')}
             </span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-navy mb-8 font-serif leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-navy mb-8 font-sans leading-tight">
             {displayArticle.title}
           </h1>
           
@@ -171,7 +171,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
               initial="hidden"
               animate="visible"
               variants={fadeInUp}
-              className="prose prose-lg md:prose-xl max-w-none text-gray-900 leading-relaxed font-normal mb-16 prose-p:mb-6 prose-p:text-justify prose-headings:font-serif prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 prose-li:marker:text-gray-900"
+              className="prose prose-lg md:prose-xl max-w-none text-gray-900 leading-relaxed font-normal mb-16 prose-p:mb-6 prose-p:text-justify prose-headings:font-sans prose-headings:text-navy prose-a:text-gold prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 prose-li:marker:text-gray-900"
             >
               <div 
                 dangerouslySetInnerHTML={{ __html: processContent(displayArticle.content) }} 

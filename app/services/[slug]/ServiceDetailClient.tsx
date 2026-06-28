@@ -43,7 +43,7 @@ const ServiceDetailClient = ({ slug }: { slug: string }) => {
                         <div className="w-16 h-16 bg-gold/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-gold mb-6 border border-gold/20">
                             {React.cloneElement(service.icon as any, { size: 32 })}
                         </div>
-                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-serif max-w-4xl leading-tight">
+                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-sans max-w-4xl leading-tight">
                             {t(service.titleKey)}
                         </h1>
                     </motion.div>
@@ -60,7 +60,7 @@ const ServiceDetailClient = ({ slug }: { slug: string }) => {
                     className="max-w-5xl mx-auto"
                 >
                     <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-gray-100 -mt-32">
-                        <div className="prose prose-lg max-w-none text-gray-600 prose-headings:text-navy prose-headings:font-serif prose-a:text-gold hover:prose-a:text-navy leading-loose">
+                        <div className="prose prose-lg max-w-none text-gray-600 prose-headings:text-navy prose-headings:font-sans prose-a:text-gold hover:prose-a:text-navy leading-loose">
                             {/* Render translation content safely from servicesData mapping */}
                             <div dangerouslySetInnerHTML={{ __html: service.content[locale as keyof typeof service.content] || service.content.id }} />
                         </div>
@@ -81,7 +81,7 @@ const ServiceDetailClient = ({ slug }: { slug: string }) => {
                         <div className="w-20 h-20 bg-gold/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-gold mb-6 border border-gold/20 mx-auto">
                             <Phone size={32} />
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold mb-4 font-serif">{t('services.cta_title')}</h3>
+                        <h3 className="text-3xl md:text-4xl font-bold mb-4 font-sans">{t('services.cta_title')}</h3>
                         <p className="text-gray-300 mb-8 text-lg leading-relaxed max-w-2xl mx-auto">
                             {t('services.cta_desc')}
                         </p>

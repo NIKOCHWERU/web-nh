@@ -92,7 +92,7 @@ const ServicesClient = () => {
                                         </div>
                                     </div>
                                     <div className="p-8 flex flex-col flex-grow">
-                                        <h3 className="text-2xl font-bold mb-4 text-navy group-hover:text-gold transition-colors font-serif">
+                                        <h3 className="text-2xl font-bold mb-4 text-navy group-hover:text-gold transition-colors font-sans">
                                             {t(service.titleKey)}
                                         </h3>
                                         <p className="text-gray-600 mb-8 line-clamp-3 leading-relaxed">
