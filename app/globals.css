@@ -8,7 +8,7 @@
   --color-navbar: #0A0A0B;
   
   --font-sans: 'Inter', var(--font-geist-sans);
-  --font-sans: 'Playfair Display', serif;
+  --font-serif: 'Playfair Display', serif;
 }
 
 :root {
