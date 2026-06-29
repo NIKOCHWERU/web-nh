@@ -49,11 +49,11 @@ const ConsultationCTA = () => {
           <MessageCircle className="text-gold w-8 h-8" />
         </div>
 
-        <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 font-serif">
+        <h2 className="text-xl md:text-2xl font-bold text-white mb-4 uppercase tracking-widest font-sans">
           {c.title}
         </h2>
 
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-gray-300 text-sm md:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
           {c.desc}
         </p>
 

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Loader2, Calendar, Tag, Clock } from 'lucide-react';
+import { ArrowRight, Loader2, Calendar, Tag, Clock, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
@@ -48,10 +48,16 @@ const ArticlesClient = () => {
       const data = await res.json();
       const fetched = data.data || [];
       
+      // Ensure articles are sorted by newest first
+      fetched.sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+
       if (page === 1) {
         setOriginalArticles(fetched);
       } else {
-        setOriginalArticles(prev => [...prev, ...fetched]);
+        setOriginalArticles(prev => {
+          const combined = [...prev, ...fetched];
+          return combined.sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+        });
       }
       
       setCurrentPage(data.current_page || 1);
@@ -137,9 +143,9 @@ const ArticlesClient = () => {
   /* ── Loading ── */
   if (loading && currentPage === 1) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-navy gap-4">
-        <Loader2 className="animate-spin text-gold" size={44} />
-        <span className="text-xs font-black tracking-[0.3em] uppercase text-gold/60 animate-pulse">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white gap-4">
+        <Loader2 className="animate-spin text-navy" size={44} />
+        <span className="text-xs font-black tracking-[0.3em] uppercase text-navy/60 animate-pulse">
           {locale === 'en' ? 'Loading Articles...' : 'Memuat Artikel...'}
         </span>
       </div>
@@ -148,7 +154,7 @@ const ArticlesClient = () => {
 
   /* ── Render ── */
   return (
-    <div className="pt-24 bg-navy min-h-screen pb-24 font-sans text-white">
+    <div className="pt-24 bg-white min-h-screen pb-24 font-sans text-gray-800">
       
       {/* 1. TOP SECTION (Hero & Featured) */}
       <section className="container mx-auto px-4 max-w-7xl mb-16">
@@ -160,16 +166,16 @@ const ArticlesClient = () => {
               <h4 className="text-gold font-black tracking-[0.2em] uppercase text-xs mb-4">
                 {locale === 'id' ? 'Sentral Edukasi Hukum' : 'Legal Education Center'}
               </h4>
-              <h1 className="text-5xl lg:text-6xl font-black mb-6 text-white leading-tight uppercase font-sans">
+              <h1 className="text-5xl lg:text-6xl font-black mb-6 text-navy leading-tight uppercase font-sans">
                 {t('articles_page.title') || "Artikel Kami"}
               </h1>
-              <p className="text-gray-300 mb-8 leading-relaxed max-w-md text-lg">
+              <p className="text-gray-500 mb-8 leading-relaxed max-w-md text-lg">
                 {t('articles_page.subtitle')}
               </p>
               {featuredArticle && (
                 <Link 
                   href={`/artikel/${featuredArticle.slug}`}
-                  className="inline-flex items-center gap-3 bg-gold hover:bg-white text-navy px-8 py-4 text-sm font-bold tracking-widest uppercase transition-colors rounded-sm w-fit shadow-lg shadow-gold/20"
+                  className="inline-flex items-center gap-3 bg-navy hover:bg-gold text-white px-8 py-4 text-sm font-bold tracking-widest uppercase transition-colors rounded-sm w-fit shadow-lg shadow-navy/20"
                 >
                   {t('articles_page.read_more')}
                 </Link>
@@ -182,27 +188,40 @@ const ArticlesClient = () => {
             {featuredArticle ? (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}
-                className="w-full h-full min-h-[300px] lg:min-h-[450px] bg-white/5 rounded-sm overflow-hidden relative group cursor-pointer shadow-xl border border-white/10"
+                className="w-full h-full min-h-[300px] lg:min-h-[450px] bg-gray-100 rounded-sm overflow-hidden relative group cursor-pointer shadow-xl border border-gray-100"
               >
                 <Link href={`/artikel/${featuredArticle.slug}`}>
                   <img src={getImageUrl(featuredArticle)} alt={featuredArticle.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 absolute inset-0" />
-                  <div className="absolute inset-0 bg-navy/50 group-hover:bg-navy/30 transition-colors"></div>
+                  <div className="absolute inset-0 bg-navy/30 group-hover:bg-navy/10 transition-colors"></div>
                   
                   {/* Floating badge for Featured */}
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="bg-navy/95 border border-gold/30 backdrop-blur-sm p-6 rounded-sm shadow-xl transform group-hover:-translate-y-2 transition-transform duration-300">
-                      <div className="text-gold text-xs font-black tracking-widest uppercase mb-2">
-                        {featuredArticle.category?.name || "Featured"}
+                    <div className="bg-white/95 border border-gold/30 backdrop-blur-sm p-6 rounded-sm shadow-xl transform group-hover:-translate-y-2 transition-transform duration-300">
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="text-gold text-xs font-black tracking-widest uppercase">
+                          {featuredArticle.category?.name || "Featured"}
+                        </div>
                       </div>
-                      <h3 className="text-xl md:text-3xl font-bold text-white line-clamp-2 leading-tight font-sans">
+                      <h3 className="text-xl md:text-3xl font-bold text-navy line-clamp-2 leading-tight font-sans mb-4">
                         {featuredArticle.title}
                       </h3>
+                      <div className="flex items-center gap-3 border-t border-gray-100 pt-3">
+                        {featuredArticle.author?.profile_photo_url ? (
+                          <img src={featuredArticle.author.profile_photo_url} alt={featuredArticle.author.name} className="w-8 h-8 rounded-full object-cover border border-gold/30 shadow-sm" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400"><User size={14}/></div>
+                        )}
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-navy">{featuredArticle.author?.name || (locale === 'id' ? 'Admin NH' : 'NH Admin')}</span>
+                          <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">{formatDate(featuredArticle.published_at)}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </Link>
               </motion.div>
             ) : (
-              <div className="w-full h-full min-h-[400px] bg-white/5 flex items-center justify-center rounded-sm border border-white/10">
+              <div className="w-full h-full min-h-[400px] bg-gray-50 flex items-center justify-center rounded-sm border border-gray-100">
                 <span className="text-gray-400">Tidak ada artikel tersedia.</span>
               </div>
             )}
@@ -218,11 +237,11 @@ const ArticlesClient = () => {
         >
           {gridArticles.map((article: any) => (
             <motion.div key={article.id} variants={fadeInUp} className="flex flex-col group h-full">
-              <Link href={`/artikel/${article.slug}`} className="flex flex-col h-full bg-white/5 border border-white/10 hover:border-gold/50 rounded-sm p-5 transition-all duration-300">
+              <Link href={`/artikel/${article.slug}`} className="flex flex-col h-full bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-gold/30 rounded-sm p-5 transition-all duration-300">
                 {/* Image Box */}
-                <div className="w-full h-56 bg-white/10 mb-6 overflow-hidden rounded-sm relative shadow-sm">
+                <div className="w-full h-56 bg-gray-50 mb-6 overflow-hidden rounded-sm relative shadow-sm">
                   <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
                 </div>
                 
                 {/* Category/Tag */}
@@ -231,19 +250,29 @@ const ArticlesClient = () => {
                 </div>
                 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 uppercase font-sans group-hover:text-gold transition-colors leading-snug">
+                <h3 className="text-xl font-bold text-navy mb-3 line-clamp-2 uppercase font-sans group-hover:text-gold transition-colors leading-snug">
                   {article.title}
                 </h3>
                 
                 {/* Excerpt */}
-                <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 mb-6">
+                <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6">
                   {stripHtml(article.content)}
                 </p>
                 
-                {/* Meta */}
-                <div className="mt-auto flex items-center gap-4 text-xs text-gray-500 font-semibold uppercase tracking-wider pt-4 border-t border-white/10">
-                  <span className="flex items-center gap-1.5"><Calendar size={14}/> {formatDate(article.published_at)}</span>
-                  <span className="flex items-center gap-1.5"><Clock size={14}/> {readTime(article.content)} min</span>
+                {/* Meta / Author */}
+                <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
+                  <div className="flex items-center gap-3">
+                    {article.author?.profile_photo_url ? (
+                      <img src={article.author.profile_photo_url} alt={article.author.name} className="w-8 h-8 rounded-full object-cover border border-gold/30 shadow-sm" />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400"><User size={14}/></div>
+                    )}
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-navy">{article.author?.name || (locale === 'id' ? 'Admin NH' : 'NH Admin')}</span>
+                      <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">{formatDate(article.published_at)}</span>
+                    </div>
+                  </div>
+                  <span className="flex items-center gap-1.5 text-gray-400 text-xs font-semibold"><Clock size={12}/> {readTime(article.content)} min</span>
                 </div>
               </Link>
             </motion.div>
@@ -253,42 +282,51 @@ const ArticlesClient = () => {
 
       {/* Divider */}
       <div className="container mx-auto px-4 max-w-7xl mb-16">
-        <div className="w-full border-t border-white/10"></div>
+        <div className="w-full border-t border-gray-100"></div>
       </div>
 
       {/* 3. BOTTOM SECTION */}
-      <section className="bg-navy py-16 md:py-24 border-t border-white/10">
+      <section className="bg-gray-50 py-16 md:py-24 border-t border-gray-100">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-16">
             
             {/* Left: Article List */}
             <div className="lg:w-2/3">
-              <h2 className="text-3xl font-black text-white uppercase font-sans mb-10 tracking-wide flex items-center gap-4">
+              <h2 className="text-3xl font-black text-navy uppercase font-sans mb-10 tracking-wide flex items-center gap-4">
                 {locale === 'id' ? 'Artikel Lainnya' : 'More Articles'}
-                <div className="h-0.5 bg-white/10 flex-1"></div>
+                <div className="h-0.5 bg-gray-200 flex-1"></div>
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-12">
                 {listArticles.map((article: any) => (
-                  <Link href={`/artikel/${article.slug}`} key={article.id} className="flex gap-5 group items-start p-3 -m-3 rounded-sm hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                  <Link href={`/artikel/${article.slug}`} key={article.id} className="flex gap-5 group items-start bg-white p-4 rounded-sm border border-gray-100 shadow-sm hover:shadow-md hover:border-gold/30 transition-all duration-300">
                     {/* Small Square Image */}
-                    <div className="w-24 h-24 shrink-0 bg-white/10 border border-white/10 rounded-sm overflow-hidden shadow-sm">
+                    <div className="w-24 h-24 shrink-0 bg-gray-50 border border-gray-100 rounded-sm overflow-hidden shadow-sm relative">
                       <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     {/* Content */}
-                    <div className="flex flex-col justify-start">
-                      <h4 className="text-sm font-bold text-white uppercase mb-2 group-hover:text-gold transition-colors line-clamp-2 leading-relaxed">
+                    <div className="flex flex-col justify-start flex-1">
+                      <div className="text-gold text-[10px] font-black tracking-widest uppercase mb-1">
+                        {article.category?.name || "Article"}
+                      </div>
+                      <h4 className="text-sm font-bold text-navy uppercase mb-2 group-hover:text-gold transition-colors line-clamp-2 leading-relaxed">
                         {article.title}
                       </h4>
-                      <p className="text-gray-400 text-xs line-clamp-3 leading-relaxed">
-                        {stripHtml(article.content)}
-                      </p>
+                      
+                      <div className="mt-auto flex items-center gap-2 pt-2 border-t border-gray-50">
+                        {article.author?.profile_photo_url ? (
+                          <img src={article.author.profile_photo_url} alt={article.author.name} className="w-5 h-5 rounded-full object-cover shadow-sm border border-gold/30" />
+                        ) : (
+                          <User size={14} className="text-gray-400" />
+                        )}
+                        <span className="text-[10px] font-bold text-navy truncate">{article.author?.name || (locale === 'id' ? 'Admin' : 'Admin')}</span>
+                      </div>
                     </div>
                   </Link>
                 ))}
                 
                 {listArticles.length === 0 && (
-                  <div className="col-span-full text-gray-500 italic text-sm">
+                  <div className="col-span-full text-gray-400 italic text-sm">
                     {locale === 'id' ? 'Belum ada artikel lainnya.' : 'No more articles.'}
                   </div>
                 )}
@@ -300,7 +338,7 @@ const ArticlesClient = () => {
                   <button 
                     onClick={handleLoadMore}
                     disabled={isLoadingMore}
-                    className="bg-gold hover:bg-white text-navy px-10 py-4 text-sm font-bold uppercase tracking-widest rounded-sm transition-colors disabled:opacity-50 inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-300"
+                    className="bg-navy hover:bg-gold text-white px-10 py-4 text-sm font-bold uppercase tracking-widest rounded-sm transition-colors disabled:opacity-50 inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-300"
                   >
                     {isLoadingMore && <Loader2 size={16} className="animate-spin" />}
                     {locale === 'id' ? 'Muat Lebih Banyak' : 'Load More'}
@@ -311,7 +349,7 @@ const ArticlesClient = () => {
 
             {/* Right: Categories Block */}
             <div className="lg:w-1/3">
-              <div className="bg-[#161618] border border-white/10 p-10 rounded-sm h-full relative overflow-hidden min-h-[300px] flex flex-col shadow-xl">
+              <div className="bg-navy border border-navy p-10 rounded-sm h-full relative overflow-hidden min-h-[300px] flex flex-col shadow-xl">
                 {/* Subtle pattern background for the category block */}
                 <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-screen"></div>
                 
