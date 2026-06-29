@@ -137,9 +137,9 @@ const ArticlesClient = () => {
   /* ── Loading ── */
   if (loading && currentPage === 1) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white gap-4">
-        <Loader2 className="animate-spin text-navy" size={44} />
-        <span className="text-xs font-black tracking-[0.3em] uppercase text-navy/60 animate-pulse">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-navy gap-4">
+        <Loader2 className="animate-spin text-gold" size={44} />
+        <span className="text-xs font-black tracking-[0.3em] uppercase text-gold/60 animate-pulse">
           {locale === 'en' ? 'Loading Articles...' : 'Memuat Artikel...'}
         </span>
       </div>
@@ -148,7 +148,7 @@ const ArticlesClient = () => {
 
   /* ── Render ── */
   return (
-    <div className="pt-24 bg-white min-h-screen pb-24 font-sans text-gray-800">
+    <div className="pt-24 bg-navy min-h-screen pb-24 font-sans text-white">
       
       {/* 1. TOP SECTION (Hero & Featured) */}
       <section className="container mx-auto px-4 max-w-7xl mb-16">
@@ -157,19 +157,19 @@ const ArticlesClient = () => {
           {/* Left: Titles & Info */}
           <div className="lg:w-1/3 flex flex-col justify-center py-8">
             <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-              <h4 className="text-navy font-black tracking-[0.2em] uppercase text-xs mb-4">
+              <h4 className="text-gold font-black tracking-[0.2em] uppercase text-xs mb-4">
                 {locale === 'id' ? 'Sentral Edukasi Hukum' : 'Legal Education Center'}
               </h4>
-              <h1 className="text-5xl lg:text-6xl font-black mb-6 text-navy leading-tight uppercase font-sans">
+              <h1 className="text-5xl lg:text-6xl font-black mb-6 text-white leading-tight uppercase font-sans">
                 {t('articles_page.title') || "Artikel Kami"}
               </h1>
-              <p className="text-gray-500 mb-8 leading-relaxed max-w-md text-lg">
+              <p className="text-gray-300 mb-8 leading-relaxed max-w-md text-lg">
                 {t('articles_page.subtitle')}
               </p>
               {featuredArticle && (
                 <Link 
                   href={`/artikel/${featuredArticle.slug}`}
-                  className="inline-flex items-center gap-3 bg-[#4BA3C3] hover:bg-navy text-white px-8 py-4 text-sm font-bold tracking-widest uppercase transition-colors rounded-sm w-fit shadow-lg shadow-[#4BA3C3]/20"
+                  className="inline-flex items-center gap-3 bg-gold hover:bg-white text-navy px-8 py-4 text-sm font-bold tracking-widest uppercase transition-colors rounded-sm w-fit shadow-lg shadow-gold/20"
                 >
                   {t('articles_page.read_more')}
                 </Link>
@@ -177,24 +177,24 @@ const ArticlesClient = () => {
             </motion.div>
           </div>
 
-          {/* Right: Featured Article Image (Video Player equivalent in design) */}
+          {/* Right: Featured Article Image */}
           <div className="lg:w-2/3">
             {featuredArticle ? (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}
-                className="w-full h-full min-h-[300px] lg:min-h-[450px] bg-gray-100 rounded-sm overflow-hidden relative group cursor-pointer shadow-xl"
+                className="w-full h-full min-h-[300px] lg:min-h-[450px] bg-white/5 rounded-sm overflow-hidden relative group cursor-pointer shadow-xl border border-white/10"
               >
                 <Link href={`/artikel/${featuredArticle.slug}`}>
                   <img src={getImageUrl(featuredArticle)} alt={featuredArticle.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 absolute inset-0" />
-                  <div className="absolute inset-0 bg-navy/30 group-hover:bg-navy/20 transition-colors"></div>
+                  <div className="absolute inset-0 bg-navy/50 group-hover:bg-navy/30 transition-colors"></div>
                   
                   {/* Floating badge for Featured */}
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-sm shadow-xl transform group-hover:-translate-y-2 transition-transform duration-300">
-                      <div className="text-[#4BA3C3] text-xs font-black tracking-widest uppercase mb-2">
+                    <div className="bg-navy/95 border border-gold/30 backdrop-blur-sm p-6 rounded-sm shadow-xl transform group-hover:-translate-y-2 transition-transform duration-300">
+                      <div className="text-gold text-xs font-black tracking-widest uppercase mb-2">
                         {featuredArticle.category?.name || "Featured"}
                       </div>
-                      <h3 className="text-xl md:text-3xl font-bold text-navy line-clamp-2 leading-tight font-sans">
+                      <h3 className="text-xl md:text-3xl font-bold text-white line-clamp-2 leading-tight font-sans">
                         {featuredArticle.title}
                       </h3>
                     </div>
@@ -202,7 +202,7 @@ const ArticlesClient = () => {
                 </Link>
               </motion.div>
             ) : (
-              <div className="w-full h-full min-h-[400px] bg-gray-100 flex items-center justify-center rounded-sm">
+              <div className="w-full h-full min-h-[400px] bg-white/5 flex items-center justify-center rounded-sm border border-white/10">
                 <span className="text-gray-400">Tidak ada artikel tersedia.</span>
               </div>
             )}
@@ -218,30 +218,30 @@ const ArticlesClient = () => {
         >
           {gridArticles.map((article: any) => (
             <motion.div key={article.id} variants={fadeInUp} className="flex flex-col group h-full">
-              <Link href={`/artikel/${article.slug}`} className="flex flex-col h-full bg-white transition-transform duration-300">
+              <Link href={`/artikel/${article.slug}`} className="flex flex-col h-full bg-white/5 border border-white/10 hover:border-gold/50 rounded-sm p-5 transition-all duration-300">
                 {/* Image Box */}
-                <div className="w-full h-56 bg-gray-100 mb-6 overflow-hidden rounded-sm relative shadow-sm">
+                <div className="w-full h-56 bg-white/10 mb-6 overflow-hidden rounded-sm relative shadow-sm">
                   <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
                 </div>
                 
-                {/* Category/Tag (Matches "PERMOS DOLOROS" in design) */}
-                <div className="text-[#4BA3C3] text-xs font-black tracking-widest uppercase mb-3 line-clamp-1">
+                {/* Category/Tag */}
+                <div className="text-gold text-xs font-black tracking-widest uppercase mb-3 line-clamp-1">
                   {article.category?.name || "Article"}
                 </div>
                 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-navy mb-3 line-clamp-2 uppercase font-sans group-hover:text-[#4BA3C3] transition-colors leading-snug">
+                <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 uppercase font-sans group-hover:text-gold transition-colors leading-snug">
                   {article.title}
                 </h3>
                 
                 {/* Excerpt */}
-                <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6">
+                <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 mb-6">
                   {stripHtml(article.content)}
                 </p>
                 
                 {/* Meta */}
-                <div className="mt-auto flex items-center gap-4 text-xs text-gray-400 font-semibold uppercase tracking-wider pt-4 border-t border-gray-100">
+                <div className="mt-auto flex items-center gap-4 text-xs text-gray-500 font-semibold uppercase tracking-wider pt-4 border-t border-white/10">
                   <span className="flex items-center gap-1.5"><Calendar size={14}/> {formatDate(article.published_at)}</span>
                   <span className="flex items-center gap-1.5"><Clock size={14}/> {readTime(article.content)} min</span>
                 </div>
@@ -253,34 +253,34 @@ const ArticlesClient = () => {
 
       {/* Divider */}
       <div className="container mx-auto px-4 max-w-7xl mb-16">
-        <div className="w-full border-t border-gray-200"></div>
+        <div className="w-full border-t border-white/10"></div>
       </div>
 
-      {/* 3. BOTTOM SECTION (Company Advantages equivalent) */}
-      <section className="bg-[#F8F9FA] py-16 md:py-24 border-t border-gray-100">
+      {/* 3. BOTTOM SECTION */}
+      <section className="bg-navy py-16 md:py-24 border-t border-white/10">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-16">
             
-            {/* Left: Article List (2-column grid of smaller items) */}
+            {/* Left: Article List */}
             <div className="lg:w-2/3">
-              <h2 className="text-3xl font-black text-navy uppercase font-sans mb-10 tracking-wide flex items-center gap-4">
+              <h2 className="text-3xl font-black text-white uppercase font-sans mb-10 tracking-wide flex items-center gap-4">
                 {locale === 'id' ? 'Artikel Lainnya' : 'More Articles'}
-                <div className="h-0.5 bg-navy/10 flex-1"></div>
+                <div className="h-0.5 bg-white/10 flex-1"></div>
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-12">
                 {listArticles.map((article: any) => (
-                  <Link href={`/artikel/${article.slug}`} key={article.id} className="flex gap-5 group items-start">
-                    {/* Small Square Image (Matches the empty squares in design) */}
-                    <div className="w-24 h-24 shrink-0 bg-white border border-gray-200 rounded-sm overflow-hidden shadow-sm">
+                  <Link href={`/artikel/${article.slug}`} key={article.id} className="flex gap-5 group items-start p-3 -m-3 rounded-sm hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                    {/* Small Square Image */}
+                    <div className="w-24 h-24 shrink-0 bg-white/10 border border-white/10 rounded-sm overflow-hidden shadow-sm">
                       <img src={getImageUrl(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     {/* Content */}
                     <div className="flex flex-col justify-start">
-                      <h4 className="text-sm font-bold text-navy uppercase mb-2 group-hover:text-[#4BA3C3] transition-colors line-clamp-2 leading-relaxed">
+                      <h4 className="text-sm font-bold text-white uppercase mb-2 group-hover:text-gold transition-colors line-clamp-2 leading-relaxed">
                         {article.title}
                       </h4>
-                      <p className="text-gray-500 text-xs line-clamp-3 leading-relaxed">
+                      <p className="text-gray-400 text-xs line-clamp-3 leading-relaxed">
                         {stripHtml(article.content)}
                       </p>
                     </div>
@@ -288,7 +288,7 @@ const ArticlesClient = () => {
                 ))}
                 
                 {listArticles.length === 0 && (
-                  <div className="col-span-full text-gray-400 italic text-sm">
+                  <div className="col-span-full text-gray-500 italic text-sm">
                     {locale === 'id' ? 'Belum ada artikel lainnya.' : 'No more articles.'}
                   </div>
                 )}
@@ -300,7 +300,7 @@ const ArticlesClient = () => {
                   <button 
                     onClick={handleLoadMore}
                     disabled={isLoadingMore}
-                    className="bg-navy hover:bg-[#4BA3C3] text-white px-10 py-4 text-sm font-bold uppercase tracking-widest rounded-sm transition-colors disabled:opacity-50 inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-300"
+                    className="bg-gold hover:bg-white text-navy px-10 py-4 text-sm font-bold uppercase tracking-widest rounded-sm transition-colors disabled:opacity-50 inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-300"
                   >
                     {isLoadingMore && <Loader2 size={16} className="animate-spin" />}
                     {locale === 'id' ? 'Muat Lebih Banyak' : 'Load More'}
@@ -309,13 +309,13 @@ const ArticlesClient = () => {
               )}
             </div>
 
-            {/* Right: Categories Block (Tags overlaid on block) */}
+            {/* Right: Categories Block */}
             <div className="lg:w-1/3">
-              <div className="bg-[#94A3B8] p-10 rounded-sm h-full relative overflow-hidden min-h-[300px] flex flex-col shadow-xl">
+              <div className="bg-[#161618] border border-white/10 p-10 rounded-sm h-full relative overflow-hidden min-h-[300px] flex flex-col shadow-xl">
                 {/* Subtle pattern background for the category block */}
-                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-multiply"></div>
+                <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-screen"></div>
                 
-                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-8 relative z-10 border-b border-white/20 pb-4">
+                <h3 className="text-gold font-black uppercase tracking-widest text-lg mb-8 relative z-10 border-b border-white/10 pb-4">
                   {locale === 'id' ? 'Kategori' : 'Categories'}
                 </h3>
 
@@ -324,8 +324,8 @@ const ArticlesClient = () => {
                     onClick={() => setSelectedCategory('all')}
                     className={`px-5 py-2.5 text-xs font-black uppercase tracking-widest rounded-sm transition-all shadow-md border ${
                       selectedCategory === 'all' 
-                        ? 'bg-navy border-navy text-white scale-105' 
-                        : 'bg-white border-white text-navy hover:bg-gray-100 hover:scale-105'
+                        ? 'bg-gold border-gold text-navy scale-105' 
+                        : 'bg-transparent border-white/20 text-gray-300 hover:border-gold hover:text-gold hover:scale-105'
                     }`}
                   >
                     ALL
@@ -336,8 +336,8 @@ const ArticlesClient = () => {
                       onClick={() => setSelectedCategory(cat)}
                       className={`px-5 py-2.5 text-xs font-black uppercase tracking-widest rounded-sm transition-all shadow-md border ${
                         selectedCategory === cat 
-                          ? 'bg-navy border-navy text-white scale-105' 
-                          : 'bg-[#1E293B] border-[#1E293B] text-white hover:bg-navy hover:scale-105'
+                          ? 'bg-gold border-gold text-navy scale-105' 
+                          : 'bg-white/5 border-white/10 text-gray-300 hover:border-gold hover:text-gold hover:scale-105'
                       }`}
                     >
                       {cat}

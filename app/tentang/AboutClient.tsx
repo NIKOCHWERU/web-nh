@@ -276,7 +276,7 @@ const AboutClient = () => {
               className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 hover:border-gold/50 transition-all duration-300 hover:-translate-y-2 group flex flex-col items-center"
             >
               <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
-                {/* Photo removed as requested */}
+                <span className="text-2xl font-black text-navy tracking-[0.2em] uppercase font-sans">SLECO</span>
               </div>
               <h3 className="text-lg font-bold text-center text-white font-sans">{t('partners.sleco')}</h3>
               <p className="text-gray-300 text-[10px] text-center mt-2 uppercase tracking-widest font-medium">Sustainable Solutions & Project Management</p>
