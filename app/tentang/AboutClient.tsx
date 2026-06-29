@@ -277,7 +277,7 @@ const AboutClient = () => {
             >
               <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center min-h-[100px] w-full border border-gray-100 group-hover:border-gold/30 transition-all duration-300">
                 <img
-                  src="/logo-seleco.jpg"
+                  src="/logo-seleco.png"
                   alt={t('partners.sleco')}
                   className="w-full h-auto max-h-[80px] object-contain transition-all duration-500"
                 />
