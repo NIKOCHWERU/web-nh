@@ -11,7 +11,7 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
-import { PageBlock } from '@/lib/cmsStorage';
+import { PageBlock } from '@/lib/cmsTypes';
 
 export function BlockRendererItem({ block, isPreview = false }: { block: PageBlock; isPreview?: boolean }) {
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);

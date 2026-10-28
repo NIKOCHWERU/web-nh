@@ -49,7 +49,7 @@ import {
   CmsContactMessage,
   PageBlock,
   INITIAL_CMS_DB
-} from '@/lib/cmsStorage';
+} from '@/lib/cmsTypes';
 import { BlockRendererItem } from '@/components/CustomBlocksRenderer';
 
 type ActiveTab = 'overview' | 'articles' | 'messages' | 'builder' | 'users' | 'settings';
