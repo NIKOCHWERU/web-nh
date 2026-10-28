@@ -98,9 +98,6 @@ export interface CmsDatabase {
   };
 }
 
-const DATA_DIR = path.join(process.cwd(), 'data');
-const DB_FILE = path.join(DATA_DIR, 'cms-db.json');
-
 export const INITIAL_CMS_DB: CmsDatabase = {
   users: [
     {
