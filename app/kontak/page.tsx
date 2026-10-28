@@ -33,7 +33,7 @@ export default function KontakPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-lg mb-1">{t('footer.office_title')}</h3>
-                      <p className="text-white/80">{t('footer.office_1').addr}</p>
+                      <p className="text-white/80">{(t('footer.office_1') as any).addr}</p>
                     </div>
                   </div>
 
