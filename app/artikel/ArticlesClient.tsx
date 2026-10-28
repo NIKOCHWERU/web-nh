@@ -44,9 +44,27 @@ const ArticlesClient = () => {
   /* ── Fetch ── */
   const fetchArticles = async (page = 1) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles?page=${page}`);
-      const data = await res.json();
-      const fetched = data.data || [];
+      const localRes = await fetch(`/api/articles?page=${page}`, { cache: 'no-store' });
+      const localData = localRes.ok ? await localRes.json() : { data: [] };
+      let fetched: any[] = localData.data || [];
+
+      if (process.env.NEXT_PUBLIC_API_URL) {
+        try {
+          const extRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles?page=${page}`);
+          if (extRes.ok) {
+            const extData = await extRes.json();
+            const extArticles = extData.data || [];
+            const existingSlugs = new Set(fetched.map((a: any) => a.slug));
+            extArticles.forEach((ea: any) => {
+              if (!existingSlugs.has(ea.slug)) {
+                fetched.push(ea);
+              }
+            });
+          }
+        } catch {
+          // Use local CMS articles if external API is unreachable
+        }
+      }
       
       // Ensure articles are sorted by newest first
       fetched.sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
@@ -60,8 +78,8 @@ const ArticlesClient = () => {
         });
       }
       
-      setCurrentPage(data.current_page || 1);
-      setLastPage(data.last_page || 1);
+      setCurrentPage(localData.current_page || 1);
+      setLastPage(localData.last_page || 1);
     } catch (err) {
       console.error('Failed to fetch articles:', err);
     } finally {
@@ -110,11 +128,11 @@ const ArticlesClient = () => {
     const path = art.image;
     if (!path) return 'https://placehold.co/800x500/1a2744/c9a96e?text=NH';
     if (typeof path !== 'string') return 'https://placehold.co/800x500/1a2744/c9a96e?text=NH';
-    if (path.startsWith('http')) return path;
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
     const clean = path.startsWith('/') ? path.slice(1) : path;
     return clean.startsWith('storage/')
-      ? `${process.env.NEXT_PUBLIC_API_URL}/${clean}`
-      : `${process.env.NEXT_PUBLIC_API_URL}/storage/${clean}`;
+      ? `${process.env.NEXT_PUBLIC_API_URL || ''}/${clean}`
+      : `${process.env.NEXT_PUBLIC_API_URL || ''}/storage/${clean}`;
   };
 
   const formatDate = (dateStr: string) =>
@@ -136,9 +154,10 @@ const ArticlesClient = () => {
     return result;
   })();
 
-  const featuredArticle = processedArticles.length > 0 ? processedArticles[0] : null;
-  const gridArticles = processedArticles.slice(1, 4);
-  const listArticles = processedArticles.slice(4);
+  const featuredArticle = processedArticles.find((a) => a.featured) || (processedArticles.length > 0 ? processedArticles[0] : null);
+  const remainingArticles = processedArticles.filter((a) => a.id !== featuredArticle?.id);
+  const gridArticles = remainingArticles.slice(0, 3);
+  const listArticles = remainingArticles.slice(3);
 
   /* ── Loading ── */
   if (loading && currentPage === 1) {
@@ -256,7 +275,7 @@ const ArticlesClient = () => {
                 
                 {/* Excerpt */}
                 <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6">
-                  {stripHtml(article.content)}
+                  {article.excerpt || stripHtml(article.content)}
                 </p>
                 
                 {/* Meta / Author */}
@@ -327,7 +346,7 @@ const ArticlesClient = () => {
                 
                 {listArticles.length === 0 && (
                   <div className="col-span-full text-gray-400 italic text-sm">
-                    {locale === 'id' ? 'Belum ada artikel lainnya.' : 'No more articles.'}
+                    {locale === 'id' ? 'Menampilkan seluruh artikel edukasi hukum terbaru.' : 'Showing all latest legal education articles.'}
                   </div>
                 )}
               </div>

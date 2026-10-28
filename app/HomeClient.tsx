@@ -1,14 +1,16 @@
 "use client";
-import React, { useState } from 'react';
-import { ArrowRight, Scale, FileText, ShieldCheck, Lightbulb, Phone, Mail, MapPin, CheckCircle, ChevronDown, ChevronUp, StarIcon, Heart, Search, Zap, Lock, MessageCircle, Rocket, Target } from 'lucide-react';
-import { Variants, motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, Scale, FileText, ShieldCheck, Lightbulb, Phone, Mail, MapPin, CheckCircle, ChevronDown, ChevronUp, Heart, Zap, MessageCircle, Rocket, Target, Search } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import ContactForm from '@/components/ContactForm';
+import CustomBlocksRenderer from '@/components/CustomBlocksRenderer';
 import { useLanguage } from '@/context/LanguageContext';
 
 const fadeInUp: any = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
 };
 
 const staggerContainer: any = {
@@ -16,13 +18,36 @@ const staggerContainer: any = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2
+      staggerChildren: 0.12
     }
   }
 };
 
 const HomeClient = () => {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const router = useRouter();
+  const [homeServiceQuery, setHomeServiceQuery] = useState('');
+  const [siteSettings, setSiteSettings] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/cms', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data?.siteSettings) {
+          setSiteSettings(data.siteSettings);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleHomeServiceSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (homeServiceQuery.trim()) {
+      router.push(`/services?q=${encodeURIComponent(homeServiceQuery.trim())}#direktori`);
+    } else {
+      router.push('/services#direktori');
+    }
+  };
 
   return (
     <div>
@@ -37,10 +62,10 @@ const HomeClient = () => {
             muted
             playsInline
           >
-            <source src="https://res.cloudinary.com/dysw7tjks/video/upload/v1756377208/Desain_tanpa_judul_oeaojq.mp4" type="video/mp4" />
+            <source src={siteSettings?.heroVideoUrl || "https://res.cloudinary.com/dysw7tjks/video/upload/v1756377208/Desain_tanpa_judul_oeaojq.mp4"} type="video/mp4" />
           </video>
           {/* Dark Overlay for text readability */}
-          <div className="absolute inset-0 bg-black/70"></div>
+          <div className="absolute inset-0 bg-black/75"></div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10 pt-10">
@@ -50,19 +75,26 @@ const HomeClient = () => {
             animate="visible"
             variants={fadeInUp}
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight tracking-tight uppercase">
-              {t('hero.title').split(' ').slice(0, 2).join(' ')} <br />
-              <span className="text-gold">{t('hero.title').split(' ').slice(2).join(' ')}</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight tracking-tight uppercase">
+              {locale === 'id' && siteSettings?.heroTitle
+                ? siteSettings.heroTitle
+                : t('hero.title').split(' ').slice(0, 2).join(' ')}{' '}
+              <br />
+              <span className="text-gold">
+                {locale === 'id' && siteSettings?.heroHighlight
+                  ? siteSettings.heroHighlight
+                  : t('hero.title').split(' ').slice(2).join(' ')}
+              </span>
             </h1>
             <p className="text-base md:text-lg lg:text-xl mb-8 md:mb-10 text-gray-300 leading-relaxed border-l-4 border-gold pl-4 md:pl-6 font-light">
-              {t('hero.subtitle')}
+              {locale === 'id' && siteSettings?.heroSubtitle ? siteSettings.heroSubtitle : t('hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/services" className="bg-gold text-navy px-8 py-4 rounded font-bold transition duration-300 hover:bg-white hover:text-navy uppercase text-sm tracking-widest flex items-center justify-center gap-2 group">
                 {t('hero.cta_services')}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/kontak" className="px-8 py-4 rounded font-bold border border-white text-white hover:bg-white hover:text-navy transition duration-300 uppercase text-sm tracking-widest flex items-center justify-center">
+              <Link href="/kontak" className="px-8 py-4 rounded font-bold border border-white/80 text-white hover:bg-white hover:text-navy transition duration-300 uppercase text-sm tracking-widest flex items-center justify-center">
                 {t('hero.cta_consult')}
               </Link>
             </div>
@@ -70,86 +102,145 @@ const HomeClient = () => {
         </div>
       </section>
 
+      {/* DYNAMIC ELEMENTOR-STYLE BLOCKS FOR HOME PAGE */}
+      <CustomBlocksRenderer page="home" />
+
       {/* SERVICES PREVIEW SECTION */}
-      <section id="services-preview" className="py-16 md:py-24 bg-white">
+      <section id="services-preview" className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 text-center">
-          <div className="mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-wider text-navy">{t('services.title')}</h2>
-            <div className="w-24 h-1.5 bg-gold mx-auto mb-8"></div>
-            <p className="text-gray-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+          <div className="mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase tracking-wider text-navy">{t('services.title')}</h2>
+            <div className="w-20 h-1 bg-gold mx-auto mb-5"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
               {t('services.subtitle')}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-10 max-w-6xl mx-auto">
             {[
               {
-                icon: <Scale className="text-gold" size={40} />,
+                icon: <Scale className="text-gold" size={32} />,
                 title: t('services.legal.title'),
                 image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80",
-                desc: t('services.legal.desc')
+                desc: t('services.legal.desc'),
+                href: "/services/hukum",
+                badge: "34 Cakupan Perkara"
               },
               {
-                icon: <FileText className="text-gold" size={40} />,
+                icon: <FileText className="text-gold" size={32} />,
                 title: t('services.licensing.title'),
                 image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80",
-                desc: t('services.licensing.desc')
+                desc: t('services.licensing.desc'),
+                href: "/services/perizinan",
+                badge: "411 Layanan Izin & Pajak"
               },
               {
-                icon: <ShieldCheck className="text-gold" size={40} />,
+                icon: <ShieldCheck className="text-gold" size={32} />,
                 title: t('services.hr.title'),
                 image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
-                desc: t('services.hr.desc')
+                desc: t('services.hr.desc'),
+                href: "/services/pelatihan-sdm",
+                badge: "3 Program Utama"
               }
             ].map((service, idx) => (
-              <div
+              <Link
+                href={service.href}
                 key={idx}
-                className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 h-[350px] md:h-[450px]"
+                className="relative group overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-500 h-[340px] md:h-[400px] border border-gray-200 block"
               >
                 <div className="absolute inset-0">
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent opacity-90"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/80 to-navy/30"></div>
                 </div>
 
-                <div className="absolute inset-0 p-8 flex flex-col justify-end text-left">
-                  <div className="mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 text-gold">
+                <div className="absolute top-4 right-4 z-10">
+                  <span className="px-3 py-1 rounded-full bg-navy/85 border border-gold/40 text-gold text-[11px] font-bold tracking-wider uppercase">
+                    {service.badge}
+                  </span>
+                </div>
+
+                <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end text-left">
+                  <div className="mb-3 text-gold">
                     {service.icon}
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                  <h3 className="text-lg md:text-xl font-bold mb-2.5 text-white leading-snug group-hover:text-gold transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-150">
+                  <p className="text-gray-300 text-sm leading-relaxed">
                     {service.desc}
                   </p>
-                  <div className="w-12 h-1 bg-gold mt-6 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                  <div className="w-12 h-0.5 bg-gold mt-4 group-hover:w-20 transition-all duration-300"></div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
-          <Link href="/services" className="inline-flex items-center gap-2 text-gold font-bold uppercase tracking-widest hover:underline text-sm">
-            {t('services.view_all')} <ArrowRight size={16} />
+          {/* Interactive Directory Banner modeled after SELECO WEB ServicesSection */}
+          <div className="max-w-6xl mx-auto bg-navy text-white rounded-2xl p-6 md:p-8 border border-gold/25 shadow-xl text-left mb-8">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="max-w-xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/15 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest mb-3">
+                  <Search size={13} />
+                  {locale === 'en' ? 'Interactive Service Directory' : 'Direktori Lengkap & Pencarian Terpadu'}
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                  {locale === 'en'
+                    ? 'Explore All 448 Legal, Licensing, Tax, Immigration & Land Services'
+                    : 'Telusuri 448 Layanan Hukum, Perizinan, Pajak, Imigrasi & Pertanahan'}
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {locale === 'en'
+                    ? 'Find specific litigation/non-litigation scopes, OSS permits, tax filings, KITAS/KITAP, or BPN land certificates using our interactive search.'
+                    : 'Cari cepat layanan spesifik mulai dari perkara perdata/pidana, izin OSS, HAKI, BPOM, SPT pajak, paspor/KITAS, hingga sertipikat tanah BPN.'}
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2.5 w-full lg:w-auto lg:min-w-[430px]">
+                <form onSubmit={handleHomeServiceSearch} className="flex flex-col sm:flex-row gap-2.5 w-full">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      value={homeServiceQuery}
+                      onChange={(e) => setHomeServiceQuery(e.target.value)}
+                      placeholder={locale === 'en' ? 'Search 448 services (e.g. OSS, Tax, HAKI)...' : 'Cari layanan (misal: Wanprestasi, PBG, Pajak, KITAS)...'}
+                      className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-[#141418] border border-white/15 focus:border-gold text-white placeholder-gray-400 focus:outline-none text-sm"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-6 py-3.5 rounded-xl bg-gold text-navy hover:bg-white font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shrink-0 shadow-md"
+                  >
+                    <Search size={15} />
+                    {locale === 'en' ? 'Search' : 'Cari Layanan'}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <Link href="/services#direktori" className="inline-flex items-center gap-2 text-navy hover:text-gold font-bold uppercase tracking-widest border-b-2 border-gold pb-1 transition-colors text-xs md:text-sm">
+            {t('services.view_all')} (448 Layanan) <ArrowRight size={16} />
           </Link>
         </div>
       </section>
 
       {/* WHY CHOOSE US SECTION */}
-      <section className="py-16 md:py-24 bg-navy text-white relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[150px] transform -translate-x-1/2 translate-y-1/2"></div>
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide">{t('why_us.title')}</h2>
-            <div className="w-24 h-1.5 bg-gold mx-auto"></div>
-            <p className="mt-4 text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
+      <section className="py-16 md:py-20 bg-navy text-white relative overflow-hidden">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-12 relative z-10">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase tracking-wider">{t('why_us.title')}</h2>
+            <div className="w-20 h-1 bg-gold mx-auto mb-5"></div>
+            <p className="text-gray-300 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
               {t('why_us.subtitle')}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
             {(t('why_us.items') as any).map((item: any, idx: number) => (
               <motion.div
                 key={idx}
@@ -157,130 +248,95 @@ const HomeClient = () => {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeInUp}
-                className="bg-gray-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-gold/30 transition-all duration-300 hover:-translate-y-2 group"
+                className="bg-white p-6 rounded-xl border-t-4 border-t-gold border-x border-b border-gray-200 shadow-md hover:shadow-lg transition-all duration-300"
               >
-                <div className="mb-6 text-gold group-hover:scale-110 transition-transform">
-                  <CheckCircle size={40} />
+                <div className="mb-4 text-gold">
+                  <CheckCircle size={32} />
                 </div>
-                <h3 className="text-xl font-bold mb-4 uppercase tracking-wide font-sans text-navy">{item.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-light">{item.desc}</p>
+                <h3 className="text-base md:text-lg font-bold mb-2.5 uppercase tracking-wide font-sans text-navy">{item.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* OUR VALUES SECTION */}
-      <section className="py-16 md:py-32 relative overflow-hidden bg-navy text-white">
-        {/* Animated Full Pattern Background */}
-        <div className="absolute inset-0 bg-navy"></div>
-        <motion.div 
-          className="absolute inset-0 opacity-20"
-          style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cubes.png')" }}
-          animate={{ backgroundPosition: ["0px 0px", "100px 100px"] }}
-          transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/80 pointer-events-none"></div>
-        
-        {/* Colorful Glows */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[120px] pointer-events-none transform translate-x-1/4 -translate-y-1/4"></div>
-        <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/4 translate-y-1/4"></div>
-        
-        {/* Watermark Logo/Text in Background */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20rem] font-black text-white/[0.02] pointer-events-none font-sans tracking-tighter whitespace-nowrap z-0">
-          RICCIEP
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-wider text-white">{t('values.title')}</h2>
-            <div className="w-24 h-1.5 bg-gold mx-auto mb-8"></div>
-            <p className="text-gray-300 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed font-light">
+      {/* OUR VALUES SECTION - COMPACT & FORMAL CORPORATE GRID */}
+      <section className="py-16 md:py-20 relative overflow-hidden bg-[#111114] text-white border-t border-white/10">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          <div className="text-center mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase tracking-wider text-white">{t('values.title')}</h2>
+            <div className="w-20 h-1 bg-gold mx-auto mb-4"></div>
+            <p className="text-gray-300 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
               {t('values.subtitle')}
             </p>
           </div>
 
-          <div className="max-w-7xl mx-auto py-10 relative">
-            {/* Central Trunk (Line) */}
-            <div className="absolute left-12 md:left-1/2 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gold/10 via-gold/50 to-gold/10 transform md:-translate-x-1/2 rounded-full"></div>
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-5"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            {(t('values.items') as any).map((value: any, idx: number) => {
+              const titleParts = value.title.split(' - ');
+              const initial = titleParts[0];
+              const name = titleParts.length > 1 ? titleParts[1] : value.title;
 
-            <div className="flex flex-col gap-12 md:gap-20">
-              {(t('values.items') as any).map((value: any, idx: number) => {
-                const titleParts = value.title.split(' - ');
-                const initial = titleParts[0]; // R
-                const name = titleParts.length > 1 ? titleParts[1] : value.title;
-                const isLeft = idx % 2 === 0;
-                
-                // Map icons based on the letter
-                let IconComponent = Zap;
-                if (initial === 'R') IconComponent = Zap;
-                if (initial === 'I' && idx === 1) IconComponent = FileText;
-                if (initial === 'C' && idx === 2) IconComponent = MessageCircle;
-                if (initial === 'C' && idx === 3) IconComponent = Lightbulb;
-                if (initial === 'I' && idx === 4) IconComponent = Rocket;
-                if (initial === 'E') IconComponent = Target;
-                if (initial === 'P') IconComponent = Heart;
+              let IconComponent = Zap;
+              if (initial === 'R') IconComponent = Zap;
+              if (initial === 'I' && idx === 1) IconComponent = FileText;
+              if (initial === 'C' && idx === 2) IconComponent = MessageCircle;
+              if (initial === 'C' && idx === 3) IconComponent = Lightbulb;
+              if (initial === 'I' && idx === 4) IconComponent = Rocket;
+              if (initial === 'E') IconComponent = Target;
+              if (initial === 'P') IconComponent = Heart;
 
-                return (
-                  <motion.div 
-                    key={idx}
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    className={`relative flex items-center w-full ${isLeft ? 'md:flex-row-reverse' : 'md:flex-row'}`}
-                  >
-                    {/* Empty half for desktop alignment */}
-                    <div className="hidden md:block w-1/2"></div>
-                    
-                    {/* Center Node (Letter) */}
-                    <div className="absolute left-12 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-16 h-16 md:w-28 md:h-28 bg-navy border-[6px] border-white ring-4 ring-gold/30 text-white rounded-full z-10 shadow-2xl group hover:scale-110 transition-transform duration-500">
-                      <div className="absolute inset-0 bg-gold/20 rounded-full animate-ping opacity-30"></div>
-                      <span className="text-2xl md:text-5xl font-black font-sans text-gold group-hover:text-white transition-colors">{initial}</span>
-                    </div>
+              const colSpanClass = idx < 4 ? 'lg:col-span-3' : 'lg:col-span-4';
 
-                    {/* Content Card */}
-                    <div className={`w-full pl-28 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-24 text-left md:text-right' : 'md:pl-24 text-left'}`}>
-                      <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gold/40 transition-all duration-500 group relative overflow-hidden flex flex-col md:flex-row items-center gap-6 md:gap-8">
-                        {/* Decorative background element */}
-                        <div className={`absolute top-0 w-32 h-32 bg-gold/5 rounded-full blur-2xl ${isLeft ? 'right-0' : 'left-0'}`}></div>
-                        
-                        {/* Icon */}
-                        <div className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-navy/5 text-gold rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-inner ${isLeft ? 'md:order-2' : ''}`}>
-                          <IconComponent size={36} className="md:w-10 md:h-10" />
-                        </div>
-
-                        {/* Text */}
-                        <div className={`flex-1 relative z-10 ${isLeft ? 'md:order-1' : ''}`}>
-                          <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4 text-navy font-sans group-hover:text-gold transition-colors">{name}</h3>
-                          <p className="text-gray-600 text-sm md:text-lg leading-relaxed font-light">{value.desc}</p>
-                        </div>
+              return (
+                <motion.div
+                  key={idx}
+                  variants={fadeInUp}
+                  className={`${colSpanClass} bg-[#18181c] border border-white/10 hover:border-gold/50 rounded-xl p-5 transition-all duration-300 flex flex-col justify-between group`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-3 pb-3.5 mb-3.5 border-b border-white/10">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="w-9 h-9 rounded-lg bg-gold/15 border border-gold/40 text-gold font-bold text-base flex items-center justify-center shrink-0 group-hover:bg-gold group-hover:text-navy transition-colors">
+                          {initial}
+                        </span>
+                        <h3 className="text-sm md:text-base font-bold text-white font-sans group-hover:text-gold transition-colors leading-snug truncate">
+                          {name}
+                        </h3>
                       </div>
+                      <IconComponent size={18} className="text-gold/60 group-hover:text-gold transition-colors shrink-0" />
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
+                    <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                      {value.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
       </section>
 
       {/* TESTIMONIALS SECTION */}
-      <section id="reviews" className="py-16 md:py-24 bg-white relative overflow-hidden">
-        <div className="absolute top-1/3 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-[120px] translate-x-1/2 translate-y-1/2"></div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-left mb-20 text-navy">
-            <h2 className="text-2xl md:text-5xl font-bold mb-4 md:mb-6 uppercase tracking-wider">{t('testimonials.title')}</h2>
-            <div className="w-16 md:w-24 h-1 md:h-1.5 bg-gold mb-6 md:mb-8"></div>
-            <p className="text-gray-500 max-w-2xl text-sm md:text-xl leading-relaxed">
+      <section id="reviews" className="py-16 md:py-20 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          <div className="text-center mb-12 text-navy">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase tracking-wider">{t('testimonials.title')}</h2>
+            <div className="w-20 h-1 bg-gold mx-auto mb-5"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
               {t('testimonials.subtitle')}
             </p>
           </div>
 
           <motion.div
-            className="grid md:grid-cols-2 gap-8 lg:gap-10"
+            className="grid md:grid-cols-2 gap-6 lg:gap-8"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -290,17 +346,17 @@ const HomeClient = () => {
               <motion.div
                 key={idx}
                 variants={fadeInUp}
-                className="bg-gray-50 p-6 md:p-10 rounded-[1.5rem] md:rounded-[2rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:shadow-2xl hover:border-gold/30 transition-all duration-500 transform hover:-translate-y-3 group"
+                className="bg-gray-50 p-6 md:p-8 rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-gold flex flex-col justify-between hover:shadow-md transition-all duration-300"
               >
                 <div>
-                  <p className="text-gray-600 italic text-base md:text-xl leading-relaxed mb-6 md:mb-10 font-sans">
+                  <p className="text-gray-700 italic text-sm md:text-base leading-relaxed mb-6 font-sans">
                     "{review.text}"
                   </p>
                 </div>
-                <div className="flex items-center gap-4 md:gap-6 border-t border-gray-200 pt-6 md:pt-8">
+                <div className="flex items-center gap-4 border-t border-gray-200 pt-4">
                   <div>
-                    <h4 className="font-bold text-navy text-base md:text-xl">{review.name}</h4>
-                    <p className="text-[10px] md:text-sm text-gray-400 uppercase tracking-widest font-medium mt-0.5 md:mt-1">{review.role}</p>
+                    <h4 className="font-bold text-navy text-base">{review.name}</h4>
+                    <p className="text-xs text-gray-500 uppercase tracking-widest font-medium mt-0.5">{review.role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -310,31 +366,31 @@ const HomeClient = () => {
       </section>
 
       {/* LEGAL PROCESS SECTION */}
-      <section className="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 relative z-10">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-wider text-navy">{t('process.title')}</h2>
-            <div className="w-24 h-1.5 bg-gold mx-auto mb-8"></div>
-            <p className="text-gray-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+      <section className="py-16 md:py-20 bg-gray-50 relative overflow-hidden border-t border-gray-200">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-12 relative z-10">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase tracking-wider text-navy">{t('process.title')}</h2>
+            <div className="w-20 h-1 bg-gold mx-auto mb-5"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
               {t('process.subtitle')}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
             {(t('process.items') as any).map((item: any, idx: number) => (
-              <div key={idx} className="relative p-8 bg-white rounded-3xl shadow-lg border border-gray-100 hover:border-gold/30 transition-all duration-300 group">
-                <div className="text-6xl font-black text-gray-50 absolute top-4 right-8 group-hover:text-gold/10 transition-colors">
-                  {item.step}
+              <div key={idx} className="relative p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-gold/50 transition-all duration-300 group">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="inline-flex items-center justify-center px-3 py-1 rounded bg-navy text-gold font-bold text-xs tracking-widest">
+                    {item.step}
+                  </span>
+                  {idx < 3 && (
+                    <ArrowRight size={18} className="hidden lg:block text-gold/50" />
+                  )}
                 </div>
                 <div className="relative z-10">
-                  <h3 className="text-xl font-bold mb-4 text-navy font-sans">{item.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="text-lg font-bold mb-2.5 text-navy font-sans">{item.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
                 </div>
-                {idx < 3 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 translate-x-1/2 -translate-y-1/2 z-20 text-gold/30">
-                    <ArrowRight size={32} />
-                  </div>
-                )}
               </div>
             ))}
           </div>
@@ -342,11 +398,11 @@ const HomeClient = () => {
       </section>
 
       {/* FAQ SECTION */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4 text-center">
-          <div className="mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">{t('faq.title')}</h2>
-            <div className="w-24 h-1.5 bg-gold mx-auto"></div>
+      <section className="py-16 md:py-20 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4 text-center max-w-4xl">
+          <div className="mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">{t('faq.title')}</h2>
+            <div className="w-20 h-1 bg-gold mx-auto"></div>
           </div>
 
           <div className="max-w-3xl mx-auto text-left">
@@ -357,26 +413,22 @@ const HomeClient = () => {
         </div>
       </section>
 
-
-
       {/* CALL TO ACTION SECTION */}
-      <section className="py-20 bg-navy text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gold/10"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+      <section className="py-16 bg-navy text-white relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl md:text-5xl font-bold mb-8 uppercase tracking-widest leading-tight font-sans">
-              "{t('cta_contact.title_quote')} <br /> <span className="text-gold">{t('cta_contact.title_gold')}</span>"
+            <h2 className="text-2xl md:text-4xl font-bold mb-8 uppercase tracking-wider leading-tight font-sans">
+              "{locale === 'id' && siteSettings?.ctaQuote ? siteSettings.ctaQuote : t('cta_contact.title_quote')} <br /> <span className="text-gold">{locale === 'id' && siteSettings?.ctaGold ? siteSettings.ctaGold : t('cta_contact.title_gold')}</span>"
             </h2>
             <Link
-              href="https://wa.me/6282211020022"
+              href={`https://wa.me/${siteSettings?.whatsapp || '6282211020022'}`}
               target="_blank"
-              className="inline-flex items-center gap-3 bg-gold text-navy px-10 py-5 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-navy transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
+              className="inline-flex items-center gap-3 bg-gold text-navy px-8 py-4 rounded-lg font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-navy transition-all duration-300 shadow-lg"
             >
               <span className="flex items-center justify-center w-6 h-6 bg-navy text-gold rounded-full">
                 <Phone size={14} />
@@ -388,19 +440,16 @@ const HomeClient = () => {
       </section>
 
       {/* CONTACT SECTION */}
-      <section id="contact" className="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-[150px] translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[150px] -translate-x-1/2 translate-y-1/2"></div>
-
+      <section id="contact" className="py-16 md:py-20 bg-gray-50 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">{t('contact_page.title')}</h2>
-            <div className="w-24 h-1.5 bg-gold mx-auto mb-8"></div>
-            <p className="mt-4 text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed font-light italic">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase tracking-wide text-navy">{t('contact_page.title')}</h2>
+            <div className="w-20 h-1 bg-gold mx-auto mb-6"></div>
+            <p className="mt-4 text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed italic">
               {t('contact_page.description')}
             </p>
-            <div className="mt-8">
-              <Link href="/tentang" className="text-navy font-bold hover:text-gold transition-colors underline decoration-gold underline-offset-4">
+            <div className="mt-6">
+              <Link href="/tentang" className="text-navy font-bold hover:text-gold transition-colors underline decoration-gold underline-offset-4 text-sm uppercase tracking-wider">
                 {t('contact_page.profile_link')}
               </Link>
             </div>
@@ -408,7 +457,7 @@ const HomeClient = () => {
 
           <div className="max-w-5xl mx-auto">
             <motion.div
-              className="grid md:grid-cols-3 gap-8 mb-16"
+              className="grid md:grid-cols-3 gap-6 mb-12"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -416,22 +465,22 @@ const HomeClient = () => {
             >
               {[
                 {
-                  icon: <Phone size={24} />,
+                  icon: <Phone size={22} />,
                   label: t('footer.contact_title'),
                   value: "+62-822-1102-0022",
-                  href: `https://wa.me/6282211020022?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}`
+                  href: `https://wa.me/${siteSettings?.whatsapp || '6282211020022'}?text=${encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi mengenai layanan Anda.")}`
                 },
                 {
-                  icon: <MapPin size={24} />,
+                  icon: <MapPin size={22} />,
                   label: t('footer.office_title'),
-                  value: "Jakarta Pusat, Indonesia",
+                  value: siteSettings?.address || "Jakarta Pusat, Indonesia",
                   href: "https://maps.app.goo.gl/Z77ydQisZAQ6d1aQ9"
                 },
                 {
-                  icon: <Mail size={24} />,
+                  icon: <Mail size={22} />,
                   label: t('contact_page.email_label'),
-                  value: "hello@narasumberhukum.com",
-                  href: "mailto:hello@narasumberhukum.com"
+                  value: siteSettings?.email || "hello@narasumberhukum.com",
+                  href: `mailto:${siteSettings?.email || "hello@narasumberhukum.com"}`
                 }
               ].map((item, idx) => (
                 <motion.a
@@ -440,13 +489,13 @@ const HomeClient = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   variants={fadeInUp}
-                  className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-100 flex flex-col items-center justify-center text-center group hover:border-gold/30 transition-all duration-500 cursor-pointer"
+                  className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center group hover:border-gold transition-all duration-300 cursor-pointer"
                 >
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-navy text-gold rounded-2xl flex items-center justify-center mb-5 md:mb-6 group-hover:bg-gold group-hover:text-navy transition-all duration-500 shadow-lg">
+                  <div className="w-12 h-12 bg-navy text-gold rounded-lg flex items-center justify-center mb-4 group-hover:bg-gold group-hover:text-navy transition-all duration-300">
                     {item.icon}
                   </div>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-2">{item.label}</p>
-                  <p className="font-bold text-navy text-[11px] sm:text-xs md:text-sm">
+                  <p className="text-[11px] text-gray-500 uppercase tracking-widest font-bold mb-1">{item.label}</p>
+                  <p className="font-bold text-navy text-xs md:text-sm">
                     {item.value}
                   </p>
                 </motion.a>
@@ -454,10 +503,10 @@ const HomeClient = () => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
               className="max-w-3xl mx-auto"
             >
               <ContactForm />
@@ -473,13 +522,13 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-200 mb-4">
+    <div className="border-b border-gray-200 mb-3">
       <button
         className="flex justify-between items-center w-full py-4 text-left focus:outline-none group"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className={`font-bold text-lg text-navy group-hover:text-gold transition ${isOpen ? 'text-gold' : ''}`}>{question}</span>
-        {isOpen ? <ChevronUp className="text-gold" /> : <ChevronDown className="text-gray-400 group-hover:text-gold" />}
+        <span className={`font-bold text-base md:text-lg text-navy group-hover:text-gold transition ${isOpen ? 'text-gold' : ''}`}>{question}</span>
+        {isOpen ? <ChevronUp className="text-gold shrink-0 ml-4" /> : <ChevronDown className="text-gray-400 group-hover:text-gold shrink-0 ml-4" />}
       </button>
       <motion.div
         initial={false}
@@ -487,7 +536,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
         transition={{ duration: 0.3 }}
         className="overflow-hidden"
       >
-        <p className="pb-6 text-gray-600 leading-relaxed">
+        <p className="pb-5 text-gray-600 text-sm md:text-base leading-relaxed">
           {answer}
         </p>
       </motion.div>

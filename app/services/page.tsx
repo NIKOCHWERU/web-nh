@@ -3,7 +3,7 @@ import ServicesClient from './ServicesClient';
 
 export const metadata: Metadata = {
   title: "Layanan Hukum Terpercaya | Narasumber Hukum",
-  description: "Jelajahi berbagai layanan hukum kami mulai dari litigasi, legalitas bisnis, konsultasi edukatif, hingga hukum keluarga and pertanahan.",
+  description: "Jelajahi berbagai layanan hukum kami mulai dari litigasi, legalitas bisnis, konsultasi edukatif, hingga hukum keluarga dan pertanahan.",
 };
 
 export default function ServicesPage() {

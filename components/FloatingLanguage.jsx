@@ -2,9 +2,12 @@
 import React from 'react';
 import { Globe } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { usePathname } from 'next/navigation';
 
 const FloatingLanguage = () => {
     const { locale, setLocale } = useLanguage();
+    const pathname = usePathname();
+    if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin')) return null;
 
     const toggleLanguage = () => {
         setLocale(locale === 'id' ? 'en' : 'id');

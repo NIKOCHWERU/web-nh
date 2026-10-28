@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
-
 const ContactForm = () => {
   const { t } = useLanguage();
   const [status, setStatus] = useState('idle'); // idle, sending, success, error
@@ -23,7 +22,9 @@ const ContactForm = () => {
 
     try {
       setValidationErrors(null);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
+
+      // 1. Save to local CMS API (/api/contact) so messages are always stored in Dashboard
+      const localRes = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,15 +33,27 @@ const ContactForm = () => {
         body: JSON.stringify(formData),
       });
 
-      if (response.status === 422) {
-        const errorData = await response.json();
-        setValidationErrors(errorData.errors || errorData.message);
+      // 2. Also forward to external NEXT_PUBLIC_API_URL if configured
+      if (process.env.NEXT_PUBLIC_API_URL) {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }).catch(() => {});
+      }
+
+      if (localRes.status === 422 || localRes.status === 400) {
+        const errorData = await localRes.json();
+        setValidationErrors(errorData.errors || errorData.error || errorData.message);
         setStatus('error');
         setTimeout(() => setStatus('idle'), 7000);
         return;
       }
 
-      if (!response.ok) {
+      if (!localRes.ok) {
         throw new Error('Failed to send message');
       }
 
@@ -59,34 +72,34 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 md:p-10 rounded-[2rem] shadow-2xl border border-gray-100 relative overflow-hidden">
+    <div className="bg-white p-6 md:p-8 rounded-xl shadow-md border border-gray-200 relative overflow-hidden">
       <AnimatePresence mode="wait">
         {status === 'success' ? (
           <motion.div
             key="success"
-            className="text-center py-12"
-            initial={{ opacity: 0, scale: 0.9 }}
+            className="text-center py-10"
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            exit={{ opacity: 0, scale: 0.95 }}
           >
-            <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle size={40} />
+            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-5">
+              <CheckCircle size={32} />
             </div>
-            <h3 className="text-2xl font-bold text-navy mb-4">{t('contact_form.success_title')}</h3>
-            <p className="text-gray-500">{t('contact_form.success_message')}</p>
+            <h3 className="text-xl font-bold text-navy mb-3">{t('contact_form.success_title')}</h3>
+            <p className="text-gray-600 text-sm">{t('contact_form.success_message')}</p>
           </motion.div>
         ) : (
           <motion.form
             key="form"
             onSubmit={handleSubmit}
-            className="space-y-5"
+            className="space-y-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="grid grid-cols-1 gap-5">
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">{t('contact_form.name_label')}</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-600">{t('contact_form.name_label')}</label>
                 <input
                   required
                   type="text"
@@ -94,11 +107,11 @@ const ContactForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder={t('contact_form.name_placeholder')}
-                  className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:border-gold focus:ring-0 transition-all outline-none text-navy font-medium placeholder:text-gray-300"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:border-gold focus:bg-white focus:ring-0 transition-all outline-none text-navy text-sm font-medium placeholder:text-gray-400"
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">{t('contact_form.email_label')}</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-600">{t('contact_form.email_label')}</label>
                 <input
                   required
                   type="email"
@@ -106,14 +119,14 @@ const ContactForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder={t('contact_form.email_placeholder')}
-                  className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:border-gold focus:ring-0 transition-all outline-none text-navy font-medium placeholder:text-gray-300"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:border-gold focus:bg-white focus:ring-0 transition-all outline-none text-navy text-sm font-medium placeholder:text-gray-400"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-5">
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">{t('contact_form.phone_label')}</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-600">{t('contact_form.phone_label')}</label>
                 <input
                   required
                   type="tel"
@@ -121,11 +134,11 @@ const ContactForm = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder={t('contact_form.phone_placeholder')}
-                  className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:border-gold focus:ring-0 transition-all outline-none text-navy font-medium placeholder:text-gray-300"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:border-gold focus:bg-white focus:ring-0 transition-all outline-none text-navy text-sm font-medium placeholder:text-gray-400"
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">{t('contact_form.subject_label')}</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-600">{t('contact_form.subject_label')}</label>
                 <input
                   required
                   type="text"
@@ -133,38 +146,38 @@ const ContactForm = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder={t('contact_form.subject_placeholder')}
-                  className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:border-gold focus:ring-0 transition-all outline-none text-navy font-medium placeholder:text-gray-300"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:border-gold focus:bg-white focus:ring-0 transition-all outline-none text-navy text-sm font-medium placeholder:text-gray-400"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">{t('contact_form.message_label')}</label>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-600">{t('contact_form.message_label')}</label>
               <textarea
                 required
-                rows="3"
+                rows="4"
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
                 placeholder={t('contact_form.message_placeholder')}
-                className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:border-gold focus:ring-0 transition-all outline-none text-navy font-medium placeholder:text-gray-300 resize-none"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:border-gold focus:bg-white focus:ring-0 transition-all outline-none text-navy text-sm font-medium placeholder:text-gray-400 resize-none"
               ></textarea>
             </div>
 
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="w-full bg-navy text-white py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 hover:bg-gold hover:text-navy transition-all duration-300 shadow-xl shadow-navy/10 active:scale-95 disabled:opacity-70 mt-2"
+              className="w-full bg-navy text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2.5 hover:bg-gold hover:text-navy transition-all duration-300 shadow-md disabled:opacity-70 mt-2 cursor-pointer"
             >
               {status === 'sending' ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" />
+                  <Loader2 size={16} className="animate-spin" />
                   {t('contact_form.sending')}
                 </>
               ) : (
                 <>
                   {t('contact_form.submit_button')}
-                  <Send size={16} />
+                  <Send size={15} />
                 </>
               )}
             </button>
@@ -173,7 +186,7 @@ const ContactForm = () => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col items-center gap-2 text-red-500 text-xs font-medium justify-center mt-4 bg-red-50 p-3 rounded-xl border border-red-100"
+                className="flex flex-col items-center gap-2 text-red-600 text-xs font-medium justify-center mt-4 bg-red-50 p-3 rounded-lg border border-red-200"
               >
                 <div className="flex items-center gap-2">
                   <AlertCircle size={14} />

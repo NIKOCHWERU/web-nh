@@ -1,32 +1,49 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ArticleDetailClient from '@/app/artikel/[slug]/ArticleDetailClient';
+import { readCmsDb } from '@/lib/cmsStorage';
 
 async function getArticle(slug: string) {
+  // 1. Check local CMS DB first
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${slug}`, { 
-      cache: 'no-store' 
-    });
-    
-    if (!res.ok) return null;
-    
-    return res.json();
-  } catch (error) {
-    return null;
+    const db = readCmsDb();
+    const localFound = db.articles.find(
+      (a) => a.slug === slug || String(a.id) === slug
+    );
+    if (localFound) {
+      return localFound;
+    }
+  } catch (err) {
+    console.warn('Local CMS DB read error:', err);
   }
+
+  // 2. Fallback to external NEXT_PUBLIC_API_URL if configured
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${slug}`, {
+        cache: 'no-store'
+      });
+      if (res.ok) {
+        return res.json();
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  return null;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
-  
+
   if (!article) {
     return {
       title: "Artikel Tidak Ditemukan",
     };
   }
 
-  // Extract first 160 characters from article body to use as meta description
   const cleanDescription = article.content
     ? article.content.replace(/<[^>]*>/g, '').substring(0, 160).trim()
     : "Baca selengkapnya artikel edukasi hukum terbaru dari Kantor Narasumber Hukum.";
@@ -58,7 +75,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await getArticle(slug);
-  
+
   if (!article) {
     notFound();
   }

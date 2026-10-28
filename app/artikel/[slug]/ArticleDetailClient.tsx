@@ -41,16 +41,15 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
     handleTranslation();
   }, [locale, article]);
 
-  // Fetch related/top articles
+  // Fetch related/top articles from local CMS API
   useEffect(() => {
     const fetchRelated = async () => {
       if (!article) return;
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`);
+        const res = await fetch('/api/articles');
         const data = await res.json();
         let fetched = data.data || [];
-        fetched = fetched.filter((a: any) => a.id !== article.id);
-        // Sort by newest first
+        fetched = fetched.filter((a: any) => a.id !== article.id && a.slug !== article.slug);
         fetched.sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
         setRelatedArticles(fetched.slice(0, 3));
       } catch (e) {
@@ -65,16 +64,15 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
     if (!path) return 'https://via.placeholder.com/1200x675?text=No+Image';
     
     if (typeof path !== 'string') {
-      console.warn('Invalid image path received:', path);
       return 'https://via.placeholder.com/1200x675?text=Invalid+Image';
     }
 
-    if (path.startsWith('http')) return path;
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
     const cleanPath = path.startsWith('/') ? path.slice(1) : path;
     if (cleanPath.startsWith('storage/')) {
-        return `${process.env.NEXT_PUBLIC_API_URL}/${cleanPath}`;
+        return `${process.env.NEXT_PUBLIC_API_URL || ''}/${cleanPath}`;
     }
-    return `${process.env.NEXT_PUBLIC_API_URL}/storage/${cleanPath}`;
+    return `${process.env.NEXT_PUBLIC_API_URL || ''}/storage/${cleanPath}`;
   };
 
   // Process content to fix inline image URLs
@@ -82,7 +80,7 @@ const ArticleDetailClient = ({ article }: { article: any }) => {
     if (!content) return '';
     return content.replace(
       /src="(\/?)storage\/([^"]+)"/g, 
-      (match, slash, path) => `src="${process.env.NEXT_PUBLIC_API_URL}/storage/${path}"`
+      (_match, _slash, path) => `src="${process.env.NEXT_PUBLIC_API_URL || ''}/storage/${path}"`
     );
   };
 

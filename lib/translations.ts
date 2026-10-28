@@ -14,7 +14,7 @@ export const translations = {
             title_gold: "Kami",
             tagline: "Legal Certainty, Constructive Solutions, Empowering Your Legal Journey",
             description: [
-                "NARASUMBER HUKUM saat ini terdiri dari Narasumber Hukum yang bekerjasama dengan PT Sedana Legal Consultant (SELECO), SLECO Project dan PT Teira Dwan Indonesia (MTI-Talenstory). Dengan ini menjadikan kami sebuah kesatuan pelayanan dalam sektor Hukum, Izin, dan Legalitas disertai dengan Pengembangan dan Pelatihan Sumber Daya Manusia.",
+                "NARASUMBER HUKUM saat ini terdiri dari Narasumber Hukum yang bekerjasama dengan PT Sedana Legal Consultant (SELECO), SELECO Project dan PT Teira Dwan Indonesia (MTI-Talenstory). Dengan ini menjadikan kami sebuah kesatuan pelayanan dalam sektor Hukum, Izin, dan Legalitas disertai dengan Pengembangan dan Pelatihan Sumber Daya Manusia.",
                 "Kami mengaplikasikan pengetahuan, kemampuan, dan kreativitas yang maksimal untuk mencapai tujuan bersama dengan klien kami. Kami tersedia untuk memberikan layanan hukum, izin, legalitas, pengembangan dan pelatihan SDM yang efektif dan efisien secara tepat.",
                 "Pendirian NARASUMBER HUKUM dilatarbelakangi oleh pemahaman akan pentingnya kualitas pelayanan, dan komitmen terhadap kepuasan klien. Kami percaya bahwa dengan menyediakan layanan yang lengkap serta berkualitas tinggi adalah solusi yang tepat untuk memberikan berbagai kemudahan dan kelegaan bagi klien kami.",
                 "Kami yakin bahwa kolaborasi dalam tim kami menghasilkan kinerja maksimal dalam menangani dan menyelesaikan kebutuhan klien kami, karena tim kami berpengalaman dan terlatih serta terbiasa menghadapi berbagai perkara atau proyek dengan tingkat keahliannya yang tinggi."
@@ -27,9 +27,9 @@ export const translations = {
                 title: "Misi Kami",
                 items: [
                     { title: "Pelayanan Terbaik", desc: "Menyediakan layanan hukum berkualitas tinggi yang mendahulukan kepentingan klien dengan memberikan solusi tepat, responsif, dan inovatif." },
-                    { title: "Keadilan dan Kepastian Hukum", desc: "Mengadvokasi keadilan dan kepastian hukum sebagai landasan utama dalam setiap tindakan hukum yang kami ambil, dengan memastikan bahwa hak and kepentingan klien dijaga dengan cermat." },
+                    { title: "Keadilan dan Kepastian Hukum", desc: "Mengadvokasi keadilan dan kepastian hukum sebagai landasan utama dalam setiap tindakan hukum yang kami ambil, dengan memastikan bahwa hak dan kepentingan klien dijaga dengan cermat." },
                     { title: "Kemitraan yang Berkelanjutan", desc: "Mengembangkan hubungan jangka panjang yang saling menguntungkan dengan klien kami, dengan fokus pada dukungan berkelanjutan dalam mencapai tujuan hukum dan bisnis mereka." },
-                    { title: "Inovasi dan Pengetahuan", desc: "Terus mengembangkan pengetahuan dan teknologi dalam hukum untuk memberikan solusi yang paling muktahir dan efektif kepada klien kami." },
+                    { title: "Inovasi dan Pengetahuan", desc: "Terus mengembangkan pengetahuan dan teknologi dalam hukum untuk memberikan solusi yang paling mutakhir dan efektif kepada klien kami." },
                     { title: "Integritas dan Etika", desc: "Menegakkan standar tertinggi dalam integritas dan etika hukum, menjadikan kejujuran dan keadilan sebagai prinsip utama dalam setiap tindakan kami." },
                     { title: "Dukungan pada Pertumbuhan Bisnis", desc: "Membantu klien dalam menghadapi tantangan hukum yang kompleks dan memastikan pertumbuhan berkelanjutan bisnis mereka." }
                 ]
@@ -44,7 +44,7 @@ export const translations = {
                     "Perkara Perubahan Nama atau Identitas", "Perkara Wanprestasi", "Perkara Perbuatan Melawan Hukum (PMH)", "Perkara Pemisahan Harta",
                     "Perkara Perjanjian Bisnis atau Pekerjaan", "Perkara Pencurian atau Perampokan", "Perkara Pembunuhan", "Perkara Penipuan",
                     "Perkara Pemerasan", "Perkara Penganiayaan", "Perkara Pemerkosaan", "Perkara Korupsi",
-                    "Perkara Pengemplangan Pajak", "Perkara Pemalsuan Dokument", "Perkara Perzinahan", "Perkara Kekerasan Dalam Rumah Tangga",
+                    "Perkara Pengemplangan Pajak", "Perkara Pemalsuan Dokumen", "Perkara Perzinahan", "Perkara Kekerasan Dalam Rumah Tangga",
                     "Perkara Narkotika", "Perkara Pelanggaran Ketertiban Umum", "Perkara Pemalsuan (Counterfeiting)", "Perkara Perbuatan Curang",
                     "Perkara Pelanggaran Jabatan dan Perkara Pidana Lainnya"
                 ]
@@ -102,7 +102,7 @@ export const translations = {
         },
         partners: {
             title: "Partner Kami",
-            sleco: "Sleco Project",
+            sleco: "SELECO Project",
             narasumber: "Narasumber Hukum Law Firm",
             mti: "PT Teira Dwan Indonesia",
             mti_sub: "(MTI-Talenstory)"
@@ -145,7 +145,7 @@ export const translations = {
             subtitle: "Jawaban singkat untuk pertanyaan yang sering ditanyakan mengenai layanan kami.",
             items: [
                 { q: "Bagaimana cara memulai konsultasi hukum?", a: "Anda dapat menghubungi kami melalui tombol WhatsApp yang tersedia di website ini atau mengisi formulir kontak di halaman Hubungi Kami. Tim kami akan segera merespons permintaan Anda." },
-                { q: "Berapa biaya jasa hukum di Narasumber Hukum?", a: "Biaya jasa hukum kami bervariasi tergantung pada kompleksitas och jenis perkara. Kami selalu mengedepankan transparansi och akan memberikan estimasi biaya setelah sesi konsultasi awal." },
+                { q: "Berapa biaya jasa hukum di Narasumber Hukum?", a: "Biaya jasa hukum kami bervariasi tergantung pada kompleksitas dan jenis perkara. Kami selalu mengedepankan transparansi dan akan memberikan estimasi biaya setelah sesi konsultasi awal." },
                 { q: "Apakah Narasumber Hukum hanya melayani di Jakarta?", a: "Meskipun kantor pusat kami berada di lokasi tertentu, kami melayani klien dan menangani perkara di seluruh wilayah Indonesia (Seluruh Indonesia)." },
                 { q: "Layanan apa saja yang tersedia?", a: "Kami menyediakan layanan komprehensif mulai dari Litigasi & Non-Litigasi, Perizinan Bisnis, Legalitas Perusahaan, hingga Pengembangan SDM." }
             ]
@@ -206,7 +206,7 @@ export const translations = {
             no_results_desc: "Silakan coba kata kunci lain atau pilih kategori yang berbeda."
         },
         footer: {
-            desc: "Merupakan tempat berkumpulnya para Aktivis Handal dibidang Hukum, Perizinan, Legalitas, Pengembangan dan Pelatihan SDM yang telah terkoneksi dalam satu pintu untuk dapat melayani kebutuhan Klien kami di Seluruh Indonesia.",
+            desc: "Merupakan tempat berkumpulnya para Aktivis Handal di bidang Hukum, Perizinan, Legalitas, Pengembangan dan Pelatihan SDM yang telah terkoneksi dalam satu pintu untuk dapat melayani kebutuhan Klien kami di Seluruh Indonesia.",
             services_title: "Layanan Kami",
             office_title: "Kantor Kami",
             contact_title: "Hubungi Kami",
@@ -232,7 +232,7 @@ export const translations = {
             title_gold: "Us",
             tagline: "Legal Certainty, Constructive Solutions, Empowering Your Legal Journey",
             description: [
-                "NARASUMBER HUKUM currently consists of Legal Sources working with PT Sedana Legal Consultant (SELECO), SLECO Project and PT Teira Dwan Indonesia (MTI-Talenstory). This makes us a service unit in the Legal, Permit, and Legality sectors accompanied by Human Resource Development and Training.",
+                "NARASUMBER HUKUM currently consists of Legal Sources working with PT Sedana Legal Consultant (SELECO), SELECO Project and PT Teira Dwan Indonesia (MTI-Talenstory). This makes us a service unit in the Legal, Permit, and Legality sectors accompanied by Human Resource Development and Training.",
                 "We apply maximum knowledge, ability, and creativity to achieve common goals with our clients. We are available to provide appropriate legal services, permits, legality, HR development and training that are effective and efficient.",
                 "The establishment of NARASUMBER HUKUM was motivated by an understanding of the importance of service quality and commitment to client satisfaction. We believe that providing complete and high-quality services is the right solution to provide various conveniences and relief for our clients.",
                 "We are confident that collaboration in our team produces maximum performance in handling and completing our clients' needs, because our team is experienced and trained and used to facing various cases or projects with high levels of expertise."
@@ -320,7 +320,7 @@ export const translations = {
         },
         partners: {
             title: "Our Partners",
-            sleco: "Sleco Project",
+            sleco: "SELECO Project",
             narasumber: "Narasumber Hukum Law Firm",
             mti: "PT Teira Dwan Indonesia",
             mti_sub: "(MTI-Talenstory)"

@@ -1,12 +1,16 @@
 "use client";
 import React from 'react';
-import { Instagram, Facebook, Linkedin, Phone, Youtube, Music } from 'lucide-react';
+import { Instagram, Facebook, Linkedin, Phone, Shield } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useLanguage } from '@/context/LanguageContext';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
   const { t } = useLanguage();
+  const pathname = usePathname();
+  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin')) return null;
+
   return (
     <footer className="bg-navy text-white pt-16 border-t border-white/5">
       <div className="container mx-auto px-4">
@@ -29,7 +33,6 @@ const Footer = () => {
                 { name: 'Instagram', icon: <Instagram size={20} />, url: 'https://www.instagram.com/narasumberhukum' },
                 { name: 'Facebook', icon: <Facebook size={20} />, url: 'https://facebook.com/kantor.narasumber.hukum' },
                 { name: 'LinkedIn', icon: <Linkedin size={20} />, url: 'https://www.linkedin.com/company/kantor-narasumber-hukum' },
-                //  { name: 'Youtube', icon: <Youtube size={20} />, url: '' },
                 {
                   name: 'Whatsapp',
                   icon: <FaWhatsapp size={20} />,
@@ -53,13 +56,13 @@ const Footer = () => {
             <h4 className="text-xl font-bold mb-6 text-gold">{t('footer.services_title')}</h4>
             <ul className="space-y-4 text-sm text-gray-300">
               <li>
-                <Link href="/services" className="hover:text-gold transition-colors block leading-relaxed">{t('services.legal.title')}</Link>
+                <Link href="/services/hukum" className="hover:text-gold transition-colors block leading-relaxed">{t('services.legal.title')}</Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-gold transition-colors block leading-relaxed">{t('services.licensing.title')}</Link>
+                <Link href="/services/perizinan" className="hover:text-gold transition-colors block leading-relaxed">{t('services.licensing.title')}</Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-gold transition-colors block leading-relaxed">{t('services.hr.title')}</Link>
+                <Link href="/services/pelatihan-sdm" className="hover:text-gold transition-colors block leading-relaxed">{t('services.hr.title')}</Link>
               </li>
             </ul>
           </div>
@@ -112,10 +115,17 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 py-8 text-center">
+        <div className="border-t border-gray-800 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[10px] text-gray-500 uppercase tracking-widest">
             &copy; {new Date().getFullYear()} Narasumber Hukum. {t('footer.rights')}
           </p>
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-1.5 text-[11px] text-gray-500 hover:text-gold uppercase tracking-widest transition-colors"
+          >
+            <Shield size={13} />
+            Portal Admin
+          </Link>
         </div>
       </div>
     </footer>

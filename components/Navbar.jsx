@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
@@ -9,8 +9,9 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const { locale, setLocale, t } = useLanguage();
+  const { t } = useLanguage();
 
+  const isDashboard = pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin');
   const isHomePage = pathname === '/';
 
   useEffect(() => {
@@ -26,6 +27,8 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  if (isDashboard) return null;
+
   const navLinks = [
     { name: t('nav.home'), path: '/', isHash: false },
     { name: t('nav.about'), path: '/tentang', isHash: false },
@@ -39,7 +42,6 @@ const Navbar = () => {
   const handleNavClick = (e, link) => {
     setIsOpen(false);
 
-    // Smooth scroll for hash links if on home page
     if (link.isHash && pathname === '/') {
       e.preventDefault();
       const elementId = link.path.split('#')[1];
@@ -49,7 +51,6 @@ const Navbar = () => {
       }
     }
   };
-
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled || !isHomePage ? 'bg-navbar shadow-2xl py-3' : 'bg-transparent py-5'}`}>
@@ -91,7 +92,6 @@ const Navbar = () => {
               </Link>
             )
           ))}
-
 
           <Link
             href="/kontak"

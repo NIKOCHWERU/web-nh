@@ -1,7 +1,12 @@
+"use client";
 import React from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
+import { usePathname } from 'next/navigation';
 
 const FloatingWA = () => {
+  const pathname = usePathname();
+  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin')) return null;
+
   const waMessage = encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi. Mohon info jadwalnya.");
   
   return (
