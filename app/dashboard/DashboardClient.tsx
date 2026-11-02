@@ -2037,7 +2037,6 @@ export default function DashboardClient() {
                         </button>
                       </div>
                     </form>
-                  )}
                 </div>
               ) : (
                 <div className="space-y-5">
