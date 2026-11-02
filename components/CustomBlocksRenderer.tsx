@@ -549,19 +549,15 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
     case 'about_values': {
       const items = Array.isArray(block.data?.items) ? block.data.items : [];
       return (
-        <section className={`relative overflow-hidden ${bgClass} ${padClass}`}>
-          {/* Subtle Ambient Radial Lighting */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(197,160,89,0.14),transparent_70%)] pointer-events-none" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-
-          <div className="container relative z-10 mx-auto px-4 max-w-5xl">
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-4xl">
             {/* Header Section */}
             <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
               {block.data?.badge && (
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4 shadow-sm backdrop-blur-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold" />
                   {block.data.badge}
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold" />
                 </div>
               )}
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white tracking-wide uppercase mb-3">
@@ -572,14 +568,14 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
               </h2>
               <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-4" />
               {block.data?.subtitle && (
-                <p className="text-xs sm:text-sm md:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
+                <p className="text-sm md:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
                   {block.data.subtitle}
                 </p>
               )}
             </div>
 
-            {/* Vertical Executive Charter Rows (R | ....) */}
-            <div className="space-y-4 md:space-y-5">
+            {/* Pure Text Format: R | .... */}
+            <div className="divide-y divide-white/10 border-y border-white/10">
               {items.map((it: any, idx: number) => {
                 const titleStr = (it.title || '').trim();
 
@@ -608,80 +604,36 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
                   explanation = descStr.slice(periodIdx + 1).trim();
                 }
 
-                const renderIcon = () => {
-                  switch (badgeLetter) {
-                    case 'R':
-                      return <Zap className="w-4 h-4 text-gold" />;
-                    case 'I':
-                      return idx === 1 ? <BookOpen className="w-4 h-4 text-gold" /> : <Compass className="w-4 h-4 text-gold" />;
-                    case 'C':
-                      return idx === 2 ? <MessageSquare className="w-4 h-4 text-gold" /> : <Lightbulb className="w-4 h-4 text-gold" />;
-                    case 'E':
-                      return <Award className="w-4 h-4 text-gold" />;
-                    case 'P':
-                      return <ShieldCheck className="w-4 h-4 text-gold" />;
-                    default:
-                      return <Sparkles className="w-4 h-4 text-gold" />;
-                  }
-                };
-
                 return (
                   <div
                     key={idx}
-                    className="group relative p-5 sm:p-6 md:p-7 rounded-2xl bg-gradient-to-r from-[#141624]/95 via-[#10121a]/90 to-[#0b0c12]/95 border border-white/10 hover:border-gold/50 shadow-lg hover:shadow-[0_10px_35px_rgba(197,160,89,0.15)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
+                    className="py-6 sm:py-7 flex items-start gap-4 sm:gap-6 md:gap-8 group hover:bg-white/[0.02] transition-colors"
                   >
-                    {/* Left Accent Gold Highlight Line on Hover */}
-                    <div className="absolute left-0 inset-y-0 w-1 bg-gradient-to-b from-gold/50 via-gold to-gold/50 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 rounded-l-2xl" />
+                    {/* Letter Monogram + Separator | */}
+                    <div className="flex items-center gap-3 sm:gap-5 shrink-0 select-none pt-0.5">
+                      <span className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gold group-hover:text-gold-light transition-colors w-7 sm:w-10 text-center leading-none">
+                        {badgeLetter}
+                      </span>
+                      <span className="text-2xl sm:text-3xl md:text-4xl text-gold/30 font-light leading-none">
+                        |
+                      </span>
+                    </div>
 
-                    {/* Watermark Monogram Letter in Background */}
-                    <span className="absolute right-6 top-1/2 -translate-y-1/2 text-7xl sm:text-8xl md:text-9xl font-serif font-black text-gold/[0.03] group-hover:text-gold/[0.08] select-none pointer-events-none transition-colors duration-500">
-                      {badgeLetter}
-                    </span>
-
-                    {/* Horizontal / Responsive Flex Row */}
-                    <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                      {/* Left: Monogram Seal with Principle Number */}
-                      <div className="flex sm:flex-col items-center gap-3 sm:gap-1.5 shrink-0">
-                        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-gold/30 via-gold/15 to-gold/5 border border-gold/40 flex items-center justify-center font-serif text-2xl sm:text-3xl md:text-4xl font-black text-gold shadow-[0_0_25px_rgba(197,160,89,0.2)] group-hover:scale-105 group-hover:border-gold transition-all duration-300">
-                          {badgeLetter}
-                        </div>
-                        <span className="font-mono text-[10px] sm:text-[11px] tracking-widest text-gold/70 group-hover:text-gold font-bold uppercase">
-                          PRINSIP #{idx + 1}
-                        </span>
+                    {/* Text Details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1.5">
+                        <h3 className="text-base sm:text-lg md:text-xl font-serif font-bold text-white tracking-wide uppercase group-hover:text-gold transition-colors">
+                          {cleanTitle}
+                        </h3>
+                        {slogan && (
+                          <span className="text-xs sm:text-sm font-serif italic text-gold/90 font-medium">
+                            — "{slogan}"
+                          </span>
+                        )}
                       </div>
-
-                      {/* Vertical Divider Line (|) */}
-                      <div className="hidden sm:block w-[1.5px] self-stretch min-h-[60px] bg-gradient-to-b from-transparent via-gold/40 to-transparent group-hover:via-gold transition-colors shrink-0" />
-
-                      {/* Right: Content Section */}
-                      <div className="flex-1 min-w-0">
-                        {/* Title & Slogan Header */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                          <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
-                            <h3 className="text-base sm:text-lg md:text-xl font-serif font-bold text-white tracking-wide uppercase group-hover:text-gold transition-colors">
-                              {cleanTitle}
-                            </h3>
-                            {slogan && (
-                              <span className="inline-flex items-center px-3 py-0.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-serif italic font-medium">
-                                "{slogan}"
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Micro Icon Badge */}
-                          <div className="hidden md:flex w-8 h-8 rounded-lg bg-white/5 border border-white/10 items-center justify-center group-hover:bg-gold/15 group-hover:border-gold/30 transition-colors">
-                            {renderIcon()}
-                          </div>
-                        </div>
-
-                        {/* Divider Line */}
-                        <div className="w-full h-px bg-white/5 mb-2.5 group-hover:bg-gold/20 transition-colors" />
-
-                        {/* Explanation Text */}
-                        <p className="text-xs sm:text-sm md:text-[15px] text-gray-300/90 leading-relaxed font-light">
-                          {explanation}
-                        </p>
-                      </div>
+                      <p className="text-xs sm:text-sm md:text-base text-gray-300 font-light leading-relaxed">
+                        {explanation}
+                      </p>
                     </div>
                   </div>
                 );
