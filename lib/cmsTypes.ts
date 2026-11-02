@@ -334,9 +334,9 @@ export const INITIAL_CMS_DB: CmsDatabase = {
     whatsapp: '6282211020022',
     email: 'hello@narasumberhukum.com',
     address: 'Jakarta Pusat, Indonesia',
-    heroTitle: 'KANTOR NARASUMBER',
-    heroHighlight: 'HUKUM',
-    heroSubtitle: 'Pendampingan hukum profesional dengan pendekatan edukatif untuk solusi yang berkeadilan, resmi, dan terpercaya.',
+    heroTitle: 'SENTRAL EDUKASI',
+    heroHighlight: 'DAN SOLUSI HUKUM',
+    heroSubtitle: 'Sentral pendampingan hukum terintegrasi, perizinan berusaha, dan pengembangan SDM dengan pendekatan edukatif yang profesional, terpercaya, dan berorientasi pada kepastian hukum berkelanjutan.',
     heroVideoUrl: 'https://res.cloudinary.com/dysw7tjks/video/upload/v1756377208/Desain_tanpa_judul_oeaojq.mp4',
     ctaQuote: 'Keadilan dan Kepastian Hukum Adalah Hak Setiap Warga Negara,',
     ctaGold: 'Konsultasikan Masalah Hukum Anda Bersama Kami.'
