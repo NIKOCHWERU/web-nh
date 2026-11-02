@@ -170,7 +170,14 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
             {block.data?.body && (
               <div
                 className={`prose max-w-none leading-relaxed ${isDark ? 'text-gray-300 prose-headings:text-white' : 'text-gray-600 prose-headings:text-navy'}`}
-                dangerouslySetInnerHTML={{ __html: block.data.body }}
+                dangerouslySetInnerHTML={{
+                  __html: block.data.body.includes('<')
+                    ? block.data.body
+                    : block.data.body
+                        .split(/\n\s*\n/)
+                        .map((p: string) => `<p>${p.replace(/\n/g, '<br/>')}</p>`)
+                        .join('')
+                }}
               />
             )}
           </div>

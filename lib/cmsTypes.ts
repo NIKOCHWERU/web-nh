@@ -41,6 +41,164 @@ export interface CmsArticle {
   updated_at: string;
 }
 
+export interface ArticleVisualBlock {
+  id: string;
+  type: 'heading' | 'paragraph' | 'quote' | 'list' | 'image' | 'callout';
+  text?: string;
+  items?: string[];
+  imageUrl?: string;
+  caption?: string;
+  quoteAuthor?: string;
+}
+
+export function htmlToArticleBlocks(html: string): ArticleVisualBlock[] {
+  if (!html || !html.trim()) {
+    return [{ id: 'blk-init-1', type: 'paragraph', text: '' }];
+  }
+
+  const clean = html.trim();
+  const blocks: ArticleVisualBlock[] = [];
+
+  const tagRegex = /<(h[1-6]|blockquote|ul|ol|figure|div|p)\b([^>]*)>([\s\S]*?)<\/\1>|<img\b([^>]*)\/?>/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = tagRegex.exec(clean)) !== null) {
+    const id = `blk-${blocks.length + 1}-${Math.random().toString(36).substring(2, 7)}`;
+    const tagName = (match[1] || 'img').toLowerCase();
+    const attrs = match[2] || match[4] || '';
+    const inner = match[3] || '';
+
+    if (tagName.startsWith('h')) {
+      const text = inner.replace(/<[^>]*>/g, '').trim();
+      if (text) blocks.push({ id, type: 'heading', text });
+    } else if (tagName === 'blockquote') {
+      const citeMatch = /<cite[^>]*>([\s\S]*?)<\/cite>/i.exec(inner);
+      const quoteAuthor = citeMatch ? citeMatch[1].replace(/^[—\-]\s*/, '').replace(/<[^>]*>/g, '').trim() : '';
+      const text = inner
+        .replace(/<cite[^>]*>[\s\S]*?<\/cite>/gi, '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/^["'“”„]|["'“”„]$/g, '')
+        .trim();
+      blocks.push({ id, type: 'quote', text, quoteAuthor });
+    } else if (tagName === 'ul' || tagName === 'ol') {
+      const items: string[] = [];
+      const liRegex = /<li\b[^>]*>([\s\S]*?)<\/li>/gi;
+      let liMatch: RegExpExecArray | null;
+      while ((liMatch = liRegex.exec(inner)) !== null) {
+        const itemText = liMatch[1].replace(/<[^>]*>/g, '').trim();
+        if (itemText) items.push(itemText);
+      }
+      blocks.push({ id, type: 'list', items: items.length > 0 ? items : [''] });
+    } else if (tagName === 'figure') {
+      const srcMatch = /src=["']([^"']+)["']/i.exec(inner);
+      const capMatch = /<figcaption[^>]*>([\s\S]*?)<\/figcaption>/i.exec(inner);
+      const altMatch = /alt=["']([^"']*)["']/i.exec(inner);
+      if (srcMatch) {
+        blocks.push({
+          id,
+          type: 'image',
+          imageUrl: srcMatch[1],
+          caption: capMatch ? capMatch[1].replace(/<[^>]*>/g, '').trim() : (altMatch ? altMatch[1] : '')
+        });
+      }
+    } else if (tagName === 'img') {
+      const srcMatch = /src=["']([^"']+)["']/i.exec(attrs);
+      const altMatch = /alt=["']([^"']*)["']/i.exec(attrs);
+      if (srcMatch) {
+        blocks.push({
+          id,
+          type: 'image',
+          imageUrl: srcMatch[1],
+          caption: altMatch ? altMatch[1] : ''
+        });
+      }
+    } else if (tagName === 'div' && (attrs.includes('callout') || attrs.includes('border-gold') || attrs.includes('alert'))) {
+      const text = inner.replace(/<[^>]*>/g, '').trim();
+      if (text) blocks.push({ id, type: 'callout', text });
+    } else {
+      const imgInP = /<img\b([^>]*)\/?>/i.exec(inner);
+      if (imgInP && !inner.replace(/<img[^>]*\/?>|<[^>]*>/g, '').trim()) {
+        const srcMatch = /src=["']([^"']+)["']/i.exec(imgInP[1]);
+        const altMatch = /alt=["']([^"']*)["']/i.exec(imgInP[1]);
+        if (srcMatch) {
+          blocks.push({
+            id,
+            type: 'image',
+            imageUrl: srcMatch[1],
+            caption: altMatch ? altMatch[1] : ''
+          });
+        }
+      } else {
+        const text = inner.replace(/<[^>]*>/g, '').trim();
+        if (text) {
+          blocks.push({ id, type: 'paragraph', text });
+        }
+      }
+    }
+  }
+
+  if (blocks.length === 0) {
+    const rawLines = clean.split(/\n\s*\n/).map((l) => l.trim()).filter(Boolean);
+    if (rawLines.length > 0) {
+      return rawLines.map((line, idx) => ({
+        id: `blk-${idx + 1}-${Math.random().toString(36).substring(2, 7)}`,
+        type: 'paragraph',
+        text: line.replace(/<[^>]*>/g, '').trim()
+      }));
+    }
+    return [{ id: 'blk-fallback', type: 'paragraph', text: '' }];
+  }
+
+  return blocks;
+}
+
+export function articleBlocksToHtml(blocks: ArticleVisualBlock[]): string {
+  return blocks
+    .map((b) => {
+      switch (b.type) {
+        case 'heading': {
+          const text = (b.text || '').trim();
+          return text ? `<h2>${text}</h2>` : '';
+        }
+        case 'paragraph': {
+          const text = (b.text || '').trim();
+          if (!text) return '';
+          const parts = text.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+          if (parts.length > 1) {
+            return parts.map((p) => `<p>${p}</p>`).join('\n\n');
+          }
+          return `<p>${text}</p>`;
+        }
+        case 'quote': {
+          const text = (b.text || '').trim();
+          if (!text) return '';
+          const author = (b.quoteAuthor || '').trim();
+          return `<blockquote>"${text}"${author ? `\n<cite>— ${author}</cite>` : ''}</blockquote>`;
+        }
+        case 'list': {
+          const items = (b.items || []).map((i) => i.trim()).filter(Boolean);
+          if (items.length === 0) return '';
+          const lis = items.map((item) => `  <li>${item}</li>`).join('\n');
+          return `<ul>\n${lis}\n</ul>`;
+        }
+        case 'image': {
+          if (!b.imageUrl?.trim()) return '';
+          const caption = (b.caption || '').trim();
+          return `<figure class="my-6">\n  <img src="${b.imageUrl.trim()}" alt="${caption}" class="w-full rounded-2xl shadow-lg border border-white/10" />\n  ${caption ? `<figcaption class="text-xs text-center text-gray-400 mt-2 italic">${caption}</figcaption>` : ''}\n</figure>`;
+        }
+        case 'callout': {
+          const text = (b.text || '').trim();
+          if (!text) return '';
+          return `<div class="p-4 rounded-xl bg-gold/10 border-l-4 border-gold text-gold-light my-5 font-medium leading-relaxed">\n  ${text}\n</div>`;
+        }
+        default:
+          return '';
+      }
+    })
+    .filter(Boolean)
+    .join('\n\n');
+}
+
 export interface CmsContactMessage {
   id: string;
   name: string;
@@ -571,6 +729,71 @@ export const INITIAL_CMS_DB: CmsDatabase = {
       featured: false,
       published_at: '2026-10-22T11:00:00.000Z',
       updated_at: '2026-10-22T11:00:00.000Z'
+    },
+    {
+      id: 5,
+      title: 'Strategi Pendirian PT PMA & Pengurusan Legalitas Izin OSS RBA bagi Investor Asing di Indonesia',
+      slug: 'strategi-pendirian-pt-pma-dan-pengurusan-izin-oss-investor-asing',
+      category: { id: 5, name: 'Hukum Investasi & PMA' },
+      excerpt: 'Ketahui ketentuan modal disetor minimum, Daftar Positif Investasi (DPI), pengurusan NIB OSS RBA, hingga izin tinggal terbatas (KITAS/KITAP) bagi direksi ekspatriat.',
+      content: `
+        <p>Arus penanaman modal asing di Indonesia terus menunjukkan tren positif pasca harmonisasi regulasi melalui UU Cipta Kerja dan sistem OSS RBA. Namun, bagi entitas asing yang ingin mendirikan Perseroan Terbatas Penanaman Modal Asing (PT PMA), pemahaman atas ketentuan sektor bisnis terbuka dan tertutup menjadi keharusan mutlak.</p>
+        <h2>Ketentuan Dasar Modal & KBLI bagi PT PMA</h2>
+        <p>Berdasarkan Peraturan BKPM No. 4 Tahun 2021, PT PMA diklasifikasikan sebagai usaha besar dengan nilai investasi total di atas Rp10 miliar di luar tanah dan bangunan untuk setiap bidang usaha (KBLI 5 digit). Modal ditempatkan dan disetor minimal sebesar Rp10 miliar.</p>
+        <ul>
+          <li><strong>Daftar Positif Investasi (DPI):</strong> Mengidentifikasi apakah bidang usaha terbuka 100% untuk kepemilikan asing, memiliki batasan kuota kepemilikan saham, atau membutuhkan kemitraan dengan UMKM lokal.</li>
+          <li><strong>Pengurusan Akta Pendirian & SK Kemenkumham:</strong> Disahkan melalui notaris berwenang di Indonesia.</li>
+          <li><strong>Penerbitan NIB & Perizinan Berusaha Berbasis Risiko:</strong> Diproses melalui sistem OSS RBA kementerian investasi.</li>
+        </ul>
+        <h2>Pendampingan KITAS/KITAP & Izin Kerja Tenaga Kerja Asing</h2>
+        <p>Bagi tenaga ahli dan ekspatriat yang menjabat sebagai Direktur atau Komisaris, perusahaan wajib mengurus RPTKA (Rencana Penggunaan Tenaga Kerja Asing) serta rekomendasi visa tinggal terbatas (KITAS C312/C314) dari Direktorat Jenderal Imigrasi.</p>
+      `,
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+      image_url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+      supporting_images: [],
+      author_id: 'usr-author-1',
+      author: {
+        id: 'usr-author-1',
+        name: 'Divisi Legalitas & Perizinan SELECO',
+        title: 'Corporate Licensing & Tax Specialist',
+        profile_photo_url: '/logo.png'
+      },
+      status: 'published',
+      featured: false,
+      published_at: '2026-10-24T13:00:00.000Z',
+      updated_at: '2026-10-24T13:00:00.000Z'
+    },
+    {
+      id: 6,
+      title: 'Perlindungan Hak Kekayaan Intelektual (HAKI) & Pencegahan Sengketa Merek Dagang di Era Digital',
+      slug: 'perlindungan-hak-kekayaan-intelektual-dan-pencegahan-sengketa-merek-dagang',
+      category: { id: 6, name: 'HAKI & Teknologi' },
+      excerpt: 'Pentingnya pendaftaran merek lebih awal dengan asas First to File di DJKI, perlindungan rahasia dagang, serta langkah hukum menghadapi somasi pelanggaran merek.',
+      content: `
+        <p>Di era digital dan e-commerce, nama brand, logo, serta reputasi bisnis adalah aset paling berharga perusahaan. Namun, banyak pelaku usaha baru menyadari pentingnya HAKI setelah menerima surat somasi dari pihak lain atau ketika produk mereka dibajak di pasaran.</p>
+        <h2>Asas First to File dalam Hukum Merek Indonesia</h2>
+        <p>Undang-Undang Nomor 20 Tahun 2016 tentang Merek dan Indikasi Geografis menganut prinsip <strong>First to File</strong>. Artinya, hak eksklusif atas suatu merek diberikan kepada pihak yang pertama kali mengajukan permohonan pendaftaran ke DJKI Kemenkumham, bukan pihak yang pertama kali menggunakan merek tersebut.</p>
+        <h2>Strategi Mitigasi Sengketa Merek Korporasi</h2>
+        <ul>
+          <li><strong>Penelusuran Merek (Trademark Clearance Search):</strong> Memastikan tidak ada kesamaan pada pokoknya atau keseluruhannya dengan merek yang telah terdaftar di kelas barang/jasa yang sama.</li>
+          <li><strong>Pendaftaran Desain Industri & Hak Cipta:</strong> Mengamankan packaging, layout website, serta kode software perusahaan.</li>
+          <li><strong>Penanganan Somasi & Mediasi HAKI:</strong> Melakukan klarifikasi hukum secara terukur apabila terjadi klaim pelanggaran hak kekayaan intelektual.</li>
+        </ul>
+      `,
+      image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80',
+      image_url: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80',
+      supporting_images: [],
+      author_id: 'usr-admin-nh',
+      author: {
+        id: 'usr-admin-nh',
+        name: 'Administrator Narasumber Hukum',
+        title: 'Super Administrator & Managing Partner',
+        profile_photo_url: '/logo.png'
+      },
+      status: 'published',
+      featured: false,
+      published_at: '2026-10-26T15:20:00.000Z',
+      updated_at: '2026-10-26T15:20:00.000Z'
     }
   ],
   messages: [

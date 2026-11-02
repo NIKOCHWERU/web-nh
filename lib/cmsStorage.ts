@@ -19,7 +19,12 @@ export function readCmsDb(): CmsDatabase {
     const parsed = JSON.parse(raw);
     return {
       users: parsed.users || INITIAL_CMS_DB.users,
-      articles: parsed.articles || INITIAL_CMS_DB.articles,
+      articles: (() => {
+        const existingArticles: any[] = Array.isArray(parsed.articles) ? parsed.articles : [];
+        const existingSlugs = new Set(existingArticles.map((a: any) => a.slug));
+        const missing = INITIAL_CMS_DB.articles.filter((a) => !existingSlugs.has(a.slug));
+        return [...existingArticles, ...missing];
+      })(),
       messages: parsed.messages || INITIAL_CMS_DB.messages,
       blocks: (() => {
         const existingBlocks: any[] = Array.isArray(parsed.blocks) ? parsed.blocks : [];

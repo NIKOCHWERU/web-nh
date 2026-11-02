@@ -40,7 +40,12 @@ import {
   Type,
   RefreshCw,
   Check,
-  X
+  X,
+  AlignLeft,
+  Quote,
+  List,
+  AlertCircle,
+  GripVertical
 } from 'lucide-react';
 import {
   CmsDatabase,
@@ -48,6 +53,9 @@ import {
   CmsArticle,
   CmsContactMessage,
   PageBlock,
+  ArticleVisualBlock,
+  htmlToArticleBlocks,
+  articleBlocksToHtml,
   INITIAL_CMS_DB
 } from '@/lib/cmsTypes';
 import { BlockRendererItem } from '@/components/CustomBlocksRenderer';
@@ -101,7 +109,7 @@ const BLOCK_TEMPLATES: {
     defaultData: {
       badge: 'INFORMASI HUKUM',
       title: 'Komitmen Pelayanan Hukum Berkeadilan',
-      body: '<p>Kantor Narasumber Hukum berkomitmen menyajikan analisis hukum yang akurat, transparan, dan berorientasi pada solusi terbaik bagi setiap klien individu maupun korporasi.</p>'
+      body: 'Kantor Narasumber Hukum berkomitmen menyajikan analisis hukum yang akurat, transparan, dan berorientasi pada solusi terbaik bagi setiap klien individu maupun korporasi.'
     }
   },
   {
@@ -234,7 +242,8 @@ export default function DashboardClient() {
   const [articleSearch, setArticleSearch] = useState('');
   const [articleStatusFilter, setArticleStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [editingArticle, setEditingArticle] = useState<Partial<CmsArticle> | null>(null);
-  const [articlePreviewMode, setArticlePreviewMode] = useState(false);
+  const [articleBlocks, setArticleBlocks] = useState<ArticleVisualBlock[]>([]);
+  const [articleEditorTab, setArticleEditorTab] = useState<'visual' | 'preview'>('visual');
 
   // --- MESSAGES MODULE STATE ---
   const [messageSearch, setMessageSearch] = useState('');
@@ -423,12 +432,26 @@ export default function DashboardClient() {
   const openNewArticle = () => {
     const defaultAuthor =
       db.users.find((u) => u.id === currentUser?.id) || db.users[0];
+    const initialBlocks: ArticleVisualBlock[] = [
+      {
+        id: `blk-${Date.now()}-1`,
+        type: 'heading',
+        text: 'Latar Belakang & Urgensi Hukum'
+      },
+      {
+        id: `blk-${Date.now()}-2`,
+        type: 'paragraph',
+        text: 'Tuliskan uraian pembahasan edukasi hukum di sini secara mendalam dan berbobot.'
+      }
+    ];
+    setArticleBlocks(initialBlocks);
+    setArticleEditorTab('visual');
     setEditingArticle({
       title: '',
       slug: '',
       category: { id: 1, name: 'Hukum Perdata & Bisnis' },
       excerpt: '',
-      content: '<p>Tulis pembahasan artikel edukasi hukum di sini...</p>',
+      content: articleBlocksToHtml(initialBlocks),
       image_url: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80',
       supporting_images: [],
       author_id: defaultAuthor.id,
@@ -436,7 +459,86 @@ export default function DashboardClient() {
       featured: false,
       published_at: new Date().toISOString().slice(0, 10)
     });
-    setArticlePreviewMode(false);
+  };
+
+  const openEditArticle = (art: CmsArticle) => {
+    const parsed = htmlToArticleBlocks(art.content || '');
+    setArticleBlocks(parsed);
+    setArticleEditorTab('visual');
+    setEditingArticle({
+      ...art,
+      published_at: art.published_at ? art.published_at.slice(0, 10) : new Date().toISOString().slice(0, 10)
+    });
+  };
+
+  const handleAddArticleBlock = (type: ArticleVisualBlock['type']) => {
+    const newId = `blk-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+    let newBlock: ArticleVisualBlock;
+
+    switch (type) {
+      case 'heading':
+        newBlock = { id: newId, type: 'heading', text: '' };
+        break;
+      case 'paragraph':
+        newBlock = { id: newId, type: 'paragraph', text: '' };
+        break;
+      case 'quote':
+        newBlock = { id: newId, type: 'quote', text: '', quoteAuthor: '' };
+        break;
+      case 'list':
+        newBlock = { id: newId, type: 'list', items: [''] };
+        break;
+      case 'image':
+        newBlock = { id: newId, type: 'image', imageUrl: '', caption: '' };
+        break;
+      case 'callout':
+        newBlock = { id: newId, type: 'callout', text: '' };
+        break;
+      default:
+        newBlock = { id: newId, type: 'paragraph', text: '' };
+    }
+
+    setArticleBlocks((prev) => [...prev, newBlock]);
+  };
+
+  const handleUpdateArticleBlock = (id: string, updates: Partial<ArticleVisualBlock>) => {
+    setArticleBlocks((prev) =>
+      prev.map((b) => (b.id === id ? { ...b, ...updates } : b))
+    );
+  };
+
+  const handleMoveArticleBlock = (index: number, direction: 'up' | 'down') => {
+    setArticleBlocks((prev) => {
+      const next = [...prev];
+      const swapIdx = direction === 'up' ? index - 1 : index + 1;
+      if (swapIdx < 0 || swapIdx >= next.length) return prev;
+      const temp = next[index];
+      next[index] = next[swapIdx];
+      next[swapIdx] = temp;
+      return next;
+    });
+  };
+
+  const handleDuplicateArticleBlock = (index: number) => {
+    setArticleBlocks((prev) => {
+      const target = prev[index];
+      const copy: ArticleVisualBlock = {
+        ...JSON.parse(JSON.stringify(target)),
+        id: `blk-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`
+      };
+      const next = [...prev];
+      next.splice(index + 1, 0, copy);
+      return next;
+    });
+  };
+
+  const handleDeleteArticleBlock = (id: string) => {
+    setArticleBlocks((prev) => {
+      if (prev.length <= 1) {
+        return [{ id: `blk-${Date.now()}`, type: 'paragraph', text: '' }];
+      }
+      return prev.filter((b) => b.id !== id);
+    });
   };
 
   const handleSaveArticle = async (e: React.FormEvent) => {
@@ -462,6 +564,9 @@ export default function DashboardClient() {
       editingArticle.id ||
       (db.articles.length > 0 ? Math.max(...db.articles.map((a) => a.id)) + 1 : 1);
 
+    const finalHtml = articleBlocksToHtml(articleBlocks);
+    const firstParagraph = articleBlocks.find((b) => b.type === 'paragraph')?.text || '';
+
     const savedArticle: CmsArticle = {
       id: articleId,
       title: editingArticle.title.trim(),
@@ -472,8 +577,9 @@ export default function DashboardClient() {
       },
       excerpt:
         editingArticle.excerpt?.trim() ||
-        (editingArticle.content || '').replace(/<[^>]*>/g, '').slice(0, 160),
-      content: editingArticle.content || '',
+        firstParagraph.slice(0, 160) ||
+        finalHtml.replace(/<[^>]*>/g, '').slice(0, 160),
+      content: finalHtml,
       image: editingArticle.image_url || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80',
       image_url: editingArticle.image_url || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80',
       supporting_images: editingArticle.supporting_images || [],
@@ -510,14 +616,6 @@ export default function DashboardClient() {
   const handleDeleteArticle = async (id: number) => {
     const nextArticles = db.articles.filter((a) => a.id !== id);
     await persistCmsData({ ...db, articles: nextArticles }, 'Artikel berhasil dihapus.');
-  };
-
-  const insertArticleSnippet = (htmlSnippet: string) => {
-    if (!editingArticle) return;
-    setEditingArticle({
-      ...editingArticle,
-      content: `${editingArticle.content || ''}\n${htmlSnippet}`
-    });
   };
 
   const handleImageFileUpload = (
@@ -1161,10 +1259,7 @@ export default function DashboardClient() {
                         <button
                           type="button"
                           onClick={() => {
-                            setEditingArticle({
-                              ...a,
-                              published_at: a.published_at.slice(0, 10)
-                            });
+                            openEditArticle(a);
                             setActiveTab('articles');
                           }}
                           className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-gold hover:text-navy text-xs font-bold shrink-0 transition-colors cursor-pointer"
@@ -1188,22 +1283,43 @@ export default function DashboardClient() {
                 <div className="bg-[#15151c] border border-white/10 rounded-2xl p-6">
                   <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-6 border-b border-white/10">
                     <div>
-                      <h3 className="text-lg font-bold text-white">
-                        {editingArticle.id ? 'Edit Artikel Hukum' : 'Tulis Artikel Hukum Baru'}
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold block mb-1">
+                        VISUAL ARTICLE BUILDER
+                      </span>
+                      <h3 className="text-lg font-bold text-white font-serif">
+                        {editingArticle.id ? 'Edit Konten Artikel Hukum' : 'Tulis Artikel Hukum Baru'}
                       </h3>
                       <p className="text-xs text-gray-400">
-                        Gunakan toolbar blok konten di bawah untuk menyusun struktur artikel profesional.
+                        Susun konten artikel secara visual dengan blok judul, paragraf, pasal, dan poin tanpa perlu menulis tag HTML.
                       </p>
                     </div>
                     <div className="flex items-center gap-2.5">
-                      <button
-                        type="button"
-                        onClick={() => setArticlePreviewMode(!articlePreviewMode)}
-                        className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Eye size={14} className="text-gold" />
-                        {articlePreviewMode ? 'Mode Edit' : 'Preview Artikel'}
-                      </button>
+                      <div className="bg-[#1b1b24] p-1 rounded-xl border border-white/10 flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setArticleEditorTab('visual')}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            articleEditorTab === 'visual'
+                              ? 'bg-gold text-navy shadow-md'
+                              : 'text-gray-400 hover:text-white'
+                          }`}
+                        >
+                          <Edit3 size={13} className="inline mr-1.5" />
+                          Editor Blok Visual
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setArticleEditorTab('preview')}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            articleEditorTab === 'preview'
+                              ? 'bg-gold text-navy shadow-md'
+                              : 'text-gray-400 hover:text-white'
+                          }`}
+                        >
+                          <Eye size={13} className="inline mr-1.5 text-navy" />
+                          Live Preview Tampilan
+                        </button>
+                      </div>
                       <button
                         type="button"
                         onClick={() => setEditingArticle(null)}
@@ -1214,131 +1330,557 @@ export default function DashboardClient() {
                     </div>
                   </div>
 
-                  {articlePreviewMode ? (
-                    <div className="bg-white text-navy rounded-2xl p-8 max-w-4xl mx-auto">
-                      <span className="bg-gold text-navy text-[10px] font-bold px-3 py-1 uppercase tracking-widest rounded-full">
-                        {editingArticle.category?.name}
-                      </span>
-                      <h1 className="text-3xl font-bold mt-4 mb-4">{editingArticle.title || 'Judul Artikel'}</h1>
-                      {editingArticle.image_url && (
-                        <img
-                          src={editingArticle.image_url}
-                          alt="Preview"
-                          className="w-full h-72 object-cover rounded-xl mb-6"
-                        />
-                      )}
-                      <div
-                        className="prose max-w-none text-gray-800"
-                        dangerouslySetInnerHTML={{ __html: editingArticle.content || '' }}
-                      />
-                    </div>
-                  ) : (
-                    <form onSubmit={handleSaveArticle} className="grid lg:grid-cols-12 gap-6">
-                      {/* Left 8 cols: Main Content */}
-                      <div className="lg:col-span-8 space-y-4">
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
-                            Judul Artikel *
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            value={editingArticle.title || ''}
-                            onChange={(e) =>
-                              setEditingArticle({
-                                ...editingArticle,
-                                title: e.target.value,
-                                slug: e.target.value
-                                  .toLowerCase()
-                                  .replace(/[^a-z0-9\s-]/g, '')
-                                  .trim()
-                                  .replace(/\s+/g, '-')
-                              })
-                            }
-                            placeholder="Contoh: Panduan Lengkap Penyelesaian Sengketa Kontrak Bisnis..."
-                            className="w-full px-4 py-3 rounded-xl bg-[#1b1b24] border border-white/15 focus:border-gold text-white text-sm focus:outline-none"
-                          />
-                        </div>
+                  <form onSubmit={handleSaveArticle} className="grid lg:grid-cols-12 gap-6">
+                    {/* Left 8 cols: Main Content / Preview */}
+                    <div className="lg:col-span-8 space-y-4">
+                      {articleEditorTab === 'preview' ? (
+                        /* Live Preview Mode */
+                        <div className="bg-[#101015] border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
+                          <div className="flex items-center gap-2.5">
+                            <span className="px-3 py-1 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs font-bold uppercase tracking-wider">
+                              {editingArticle.category?.name || 'Hukum & Bisnis'}
+                            </span>
+                            {editingArticle.featured && (
+                              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[11px] font-bold border border-amber-500/30">
+                                ★ HEADLINE UTAMA
+                              </span>
+                            )}
+                            <span className="text-xs text-gray-400">
+                              {editingArticle.published_at || new Date().toISOString().slice(0, 10)}
+                            </span>
+                          </div>
 
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
-                            Slug URL Artikel
-                          </label>
-                          <input
-                            type="text"
-                            value={editingArticle.slug || ''}
-                            onChange={(e) => setEditingArticle({ ...editingArticle, slug: e.target.value })}
-                            placeholder="panduan-lengkap-penyelesaian-sengketa"
-                            className="w-full px-4 py-2.5 rounded-xl bg-[#1b1b24] border border-white/10 focus:border-gold text-gray-300 text-xs font-mono focus:outline-none"
-                          />
-                        </div>
+                          <h1 className="text-2xl md:text-3xl font-serif font-bold text-white leading-tight">
+                            {editingArticle.title || 'Judul Artikel Belum Diisi'}
+                          </h1>
 
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
-                            Ringkasan Singkat (Excerpt / Meta Description)
-                          </label>
-                          <textarea
-                            rows={2}
-                            value={editingArticle.excerpt || ''}
-                            onChange={(e) => setEditingArticle({ ...editingArticle, excerpt: e.target.value })}
-                            placeholder="Ringkasan 1-2 kalimat yang tampil pada kartu daftar artikel..."
-                            className="w-full px-4 py-2.5 rounded-xl bg-[#1b1b24] border border-white/15 focus:border-gold text-white text-sm focus:outline-none"
-                          />
-                        </div>
+                          {editingArticle.excerpt && (
+                            <p className="text-sm md:text-base text-gray-300 italic border-l-2 border-gold/50 pl-3">
+                              {editingArticle.excerpt}
+                            </p>
+                          )}
 
-                        {/* Block Content Insert Toolbar */}
-                        <div>
-                          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <label className="text-xs font-bold uppercase tracking-wider text-gray-400">
-                              Isi Konten Artikel (Mendukung Blok & HTML)
+                          {editingArticle.image_url && (
+                            <div className="rounded-2xl overflow-hidden border border-white/10 max-h-[380px]">
+                              <img
+                                src={editingArticle.image_url}
+                                alt={editingArticle.title || 'Sampul Artikel'}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+
+                          {/* Render Visual Blocks */}
+                          <div className="space-y-4 pt-2">
+                            {articleBlocks.map((b) => {
+                              if (b.type === 'heading') {
+                                return (
+                                  <h2
+                                    key={b.id}
+                                    className="text-xl md:text-2xl font-serif font-bold text-white mt-8 mb-3 border-l-4 border-gold pl-3"
+                                  >
+                                    {b.text || 'Sub-Judul'}
+                                  </h2>
+                                );
+                              }
+                              if (b.type === 'paragraph') {
+                                return (
+                                  <p
+                                    key={b.id}
+                                    className="text-gray-300 text-sm md:text-base leading-relaxed my-3.5 whitespace-pre-line"
+                                  >
+                                    {b.text}
+                                  </p>
+                                );
+                              }
+                              if (b.type === 'quote') {
+                                return (
+                                  <blockquote
+                                    key={b.id}
+                                    className="my-5 p-4 rounded-xl bg-gradient-to-r from-gold/10 to-transparent border-l-4 border-gold italic text-gold-light text-sm md:text-base"
+                                  >
+                                    <p className="font-serif">"{b.text}"</p>
+                                    {b.quoteAuthor && (
+                                      <cite className="block text-xs font-sans not-italic text-gray-400 mt-2 font-medium">
+                                        — {b.quoteAuthor}
+                                      </cite>
+                                    )}
+                                  </blockquote>
+                                );
+                              }
+                              if (b.type === 'list') {
+                                return (
+                                  <ul key={b.id} className="my-4 space-y-2">
+                                    {(b.items || []).filter(Boolean).map((it, i) => (
+                                      <li key={i} className="flex items-start gap-2.5 text-sm md:text-base text-gray-300">
+                                        <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
+                                        <span>{it}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                );
+                              }
+                              if (b.type === 'image') {
+                                if (!b.imageUrl) return null;
+                                return (
+                                  <figure key={b.id} className="my-6">
+                                    <img
+                                      src={b.imageUrl}
+                                      alt={b.caption || ''}
+                                      className="w-full rounded-2xl border border-white/10 shadow-lg object-cover max-h-[420px]"
+                                    />
+                                    {b.caption && (
+                                      <figcaption className="text-xs text-center text-gray-400 mt-2 italic">
+                                        {b.caption}
+                                      </figcaption>
+                                    )}
+                                  </figure>
+                                );
+                              }
+                              if (b.type === 'callout') {
+                                return (
+                                  <div
+                                    key={b.id}
+                                    className="my-5 p-4 rounded-xl bg-gold/10 border border-gold/30 text-gold-light text-sm md:text-base font-medium flex items-start gap-3"
+                                  >
+                                    <AlertCircle className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+                                    <div className="leading-relaxed">{b.text}</div>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })}
+                          </div>
+                        </div>
+                      ) : (
+                        /* Visual Editor Mode */
+                        <>
+                          <div>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
+                              Judul Artikel *
                             </label>
-                            <div className="flex flex-wrap gap-1.5">
-                              <button
-                                type="button"
-                                onClick={() => insertArticleSnippet('<h2>Sub-Judul Pembahasan Hukum</h2>')}
-                                className="px-2.5 py-1 rounded bg-white/10 hover:bg-gold hover:text-navy text-[11px] font-bold transition-colors cursor-pointer"
-                              >
-                                + Heading H2
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => insertArticleSnippet('<p>Tulis paragraf penjelasan hukum di sini...</p>')}
-                                className="px-2.5 py-1 rounded bg-white/10 hover:bg-gold hover:text-navy text-[11px] font-bold transition-colors cursor-pointer"
-                              >
-                                + Paragraf
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  insertArticleSnippet(
-                                    '<blockquote>"Kutipan pasal undang-undang atau yurisprudensi putusan pengadilan."</blockquote>'
-                                  )
-                                }
-                                className="px-2.5 py-1 rounded bg-white/10 hover:bg-gold hover:text-navy text-[11px] font-bold transition-colors cursor-pointer"
-                              >
-                                + Kutipan Pasal
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  insertArticleSnippet(
-                                    '<ul>\n  <li>Poin penjelasan hukum pertama</li>\n  <li>Poin penjelasan hukum kedua</li>\n</ul>'
-                                  )
-                                }
-                                className="px-2.5 py-1 rounded bg-white/10 hover:bg-gold hover:text-navy text-[11px] font-bold transition-colors cursor-pointer"
-                              >
-                                + Daftar Poin
-                              </button>
+                            <input
+                              type="text"
+                              required
+                              value={editingArticle.title || ''}
+                              onChange={(e) =>
+                                setEditingArticle({
+                                  ...editingArticle,
+                                  title: e.target.value,
+                                  slug: e.target.value
+                                    .toLowerCase()
+                                    .replace(/[^a-z0-9\s-]/g, '')
+                                    .trim()
+                                    .replace(/\s+/g, '-')
+                                })
+                              }
+                              placeholder="Contoh: Panduan Lengkap Penyelesaian Sengketa Kontrak Bisnis..."
+                              className="w-full px-4 py-3 rounded-xl bg-[#1b1b24] border border-white/15 focus:border-gold text-white text-sm focus:outline-none"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
+                              Slug URL Artikel
+                            </label>
+                            <input
+                              type="text"
+                              value={editingArticle.slug || ''}
+                              onChange={(e) => setEditingArticle({ ...editingArticle, slug: e.target.value })}
+                              placeholder="panduan-lengkap-penyelesaian-sengketa"
+                              className="w-full px-4 py-2.5 rounded-xl bg-[#1b1b24] border border-white/10 focus:border-gold text-gray-300 text-xs font-mono focus:outline-none"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
+                              Ringkasan Singkat (Excerpt / Cuplikan Artikel)
+                            </label>
+                            <textarea
+                              rows={2}
+                              value={editingArticle.excerpt || ''}
+                              onChange={(e) => setEditingArticle({ ...editingArticle, excerpt: e.target.value })}
+                              placeholder="Ringkasan 1-2 kalimat yang tampil pada kartu daftar artikel dan headline..."
+                              className="w-full px-4 py-2.5 rounded-xl bg-[#1b1b24] border border-white/15 focus:border-gold text-white text-sm focus:outline-none"
+                            />
+                          </div>
+
+                          {/* Visual Content Blocks Builder */}
+                          <div className="space-y-4 pt-2">
+                            <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-white/10">
+                              <div>
+                                <label className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                                  <Layers size={14} className="text-gold" />
+                                  Susunan Blok Konten Artikel ({articleBlocks.length} Blok)
+                                </label>
+                                <p className="text-[11px] text-gray-400 mt-0.5">
+                                  Klik tombol blok untuk menambah bagian. Geser urutan dengan tombol panah tanpa mengetik HTML.
+                                </p>
+                              </div>
+
+                              {/* Quick-Add Toolbar */}
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('heading')}
+                                  className="px-2.5 py-1.5 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-200 text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                                >
+                                  <Type size={12} className="text-purple-400" /> + Sub-Judul
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('paragraph')}
+                                  className="px-2.5 py-1.5 rounded-lg bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/30 text-blue-200 text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                                >
+                                  <AlignLeft size={12} className="text-blue-400" /> + Paragraf
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('quote')}
+                                  className="px-2.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-200 text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                                >
+                                  <Quote size={12} className="text-amber-400" /> + Kutipan / Pasal
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('list')}
+                                  className="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-200 text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                                >
+                                  <List size={12} className="text-emerald-400" /> + Daftar Poin
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('image')}
+                                  className="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-200 text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                                >
+                                  <ImageIcon size={12} className="text-cyan-400" /> + Gambar
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('callout')}
+                                  className="px-2.5 py-1.5 rounded-lg bg-gold/15 hover:bg-gold/25 border border-gold/30 text-gold-light text-[11px] font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                                >
+                                  <AlertCircle size={12} className="text-gold" /> + Catatan
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Block Cards List */}
+                            <div className="space-y-3.5">
+                              {articleBlocks.map((block, idx) => (
+                                <div
+                                  key={block.id}
+                                  className="bg-[#16161e] border border-white/10 hover:border-gold/40 rounded-xl p-4 transition-all shadow-md group relative"
+                                >
+                                  {/* Block Card Header */}
+                                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/5">
+                                    <div className="flex items-center gap-2">
+                                      <span className="w-6 h-6 rounded-md bg-white/5 text-gray-400 flex items-center justify-center text-xs font-mono font-bold">
+                                        #{idx + 1}
+                                      </span>
+                                      {block.type === 'heading' && (
+                                        <span className="px-2.5 py-0.5 rounded-md bg-purple-500/20 text-purple-300 text-[11px] font-bold flex items-center gap-1">
+                                          <Type size={12} /> Sub-Judul (Heading)
+                                        </span>
+                                      )}
+                                      {block.type === 'paragraph' && (
+                                        <span className="px-2.5 py-0.5 rounded-md bg-blue-500/20 text-blue-300 text-[11px] font-bold flex items-center gap-1">
+                                          <AlignLeft size={12} /> Paragraf Penjelasan
+                                        </span>
+                                      )}
+                                      {block.type === 'quote' && (
+                                        <span className="px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-[11px] font-bold flex items-center gap-1">
+                                          <Quote size={12} /> Kutipan / Bunyi Pasal
+                                        </span>
+                                      )}
+                                      {block.type === 'list' && (
+                                        <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[11px] font-bold flex items-center gap-1">
+                                          <List size={12} /> Daftar Poin (Bullet List)
+                                        </span>
+                                      )}
+                                      {block.type === 'image' && (
+                                        <span className="px-2.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 text-[11px] font-bold flex items-center gap-1">
+                                          <ImageIcon size={12} /> Gambar Pendukung
+                                        </span>
+                                      )}
+                                      {block.type === 'callout' && (
+                                        <span className="px-2.5 py-0.5 rounded-md bg-gold/20 text-gold text-[11px] font-bold flex items-center gap-1">
+                                          <AlertCircle size={12} /> Catatan Penting
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex items-center gap-1">
+                                      <button
+                                        type="button"
+                                        disabled={idx === 0}
+                                        onClick={() => handleMoveArticleBlock(idx, 'up')}
+                                        className={`p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors ${
+                                          idx === 0 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
+                                        }`}
+                                        title="Pindah ke Atas"
+                                      >
+                                        <ArrowUp size={14} />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        disabled={idx === articleBlocks.length - 1}
+                                        onClick={() => handleMoveArticleBlock(idx, 'down')}
+                                        className={`p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors ${
+                                          idx === articleBlocks.length - 1 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
+                                        }`}
+                                        title="Pindah ke Bawah"
+                                      >
+                                        <ArrowDown size={14} />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleDuplicateArticleBlock(idx)}
+                                        className="p-1.5 rounded-lg text-gray-400 hover:text-gold hover:bg-white/10 transition-colors cursor-pointer"
+                                        title="Duplikat Blok"
+                                      >
+                                        <Copy size={14} />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleDeleteArticleBlock(block.id)}
+                                        className="p-1.5 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                                        title="Hapus Blok"
+                                      >
+                                        <Trash2 size={14} />
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  {/* Block Card Content */}
+                                  <div>
+                                    {block.type === 'heading' && (
+                                      <input
+                                        type="text"
+                                        value={block.text || ''}
+                                        onChange={(e) => handleUpdateArticleBlock(block.id, { text: e.target.value })}
+                                        placeholder="Tulis sub-judul pembahasan di sini (contoh: 1. Dasar Hukum dan Peraturan Terkait)..."
+                                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#111116] border border-white/15 focus:border-purple-400 text-white font-bold text-sm focus:outline-none"
+                                      />
+                                    )}
+
+                                    {block.type === 'paragraph' && (
+                                      <textarea
+                                        rows={4}
+                                        value={block.text || ''}
+                                        onChange={(e) => handleUpdateArticleBlock(block.id, { text: e.target.value })}
+                                        placeholder="Tulis penjelasan hukum di sini secara bebas tanpa kode HTML (tekan Enter untuk baris baru)..."
+                                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#111116] border border-white/15 focus:border-blue-400 text-gray-200 text-sm leading-relaxed focus:outline-none"
+                                      />
+                                    )}
+
+                                    {block.type === 'quote' && (
+                                      <div className="space-y-2.5 pl-3 border-l-2 border-amber-400">
+                                        <div>
+                                          <label className="block text-[10px] font-bold uppercase text-amber-300 mb-1">
+                                            Isi Kutipan / Bunyi Pasal
+                                          </label>
+                                          <textarea
+                                            rows={3}
+                                            value={block.text || ''}
+                                            onChange={(e) => handleUpdateArticleBlock(block.id, { text: e.target.value })}
+                                            placeholder="Ketik bunyi pasal undang-undang atau kutipan putusan pengadilan..."
+                                            className="w-full px-3.5 py-2 rounded-xl bg-[#111116] border border-white/15 focus:border-amber-400 text-white text-sm italic focus:outline-none"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">
+                                            Sumber Kutipan / Nama Peraturan
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={block.quoteAuthor || ''}
+                                            onChange={(e) => handleUpdateArticleBlock(block.id, { quoteAuthor: e.target.value })}
+                                            placeholder="Contoh: Pasal 1365 KUHPerdata / Putusan MA RI No. 123 K/Pdt"
+                                            className="w-full px-3.5 py-2 rounded-xl bg-[#111116] border border-white/15 focus:border-amber-400 text-gray-300 text-xs focus:outline-none"
+                                          />
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {block.type === 'list' && (
+                                      <div className="space-y-2">
+                                        <label className="block text-[10px] font-bold uppercase text-emerald-300">
+                                          Daftar Butir Poin
+                                        </label>
+                                        {(block.items || ['']).map((item, itemIdx) => (
+                                          <div key={itemIdx} className="flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 ml-1" />
+                                            <input
+                                              type="text"
+                                              value={item}
+                                              onChange={(e) => {
+                                                const nextItems = [...(block.items || [''])];
+                                                nextItems[itemIdx] = e.target.value;
+                                                handleUpdateArticleBlock(block.id, { items: nextItems });
+                                              }}
+                                              placeholder={`Poin pembahasan #${itemIdx + 1}...`}
+                                              className="flex-1 px-3 py-2 rounded-xl bg-[#111116] border border-white/15 focus:border-emerald-400 text-white text-xs focus:outline-none"
+                                            />
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                const nextItems = (block.items || ['']).filter((_, i) => i !== itemIdx);
+                                                handleUpdateArticleBlock(block.id, {
+                                                  items: nextItems.length > 0 ? nextItems : ['']
+                                                });
+                                              }}
+                                              className="p-2 rounded-lg text-gray-500 hover:text-red-400 hover:bg-white/5 transition-colors cursor-pointer"
+                                              title="Hapus Poin"
+                                            >
+                                              <X size={14} />
+                                            </button>
+                                          </div>
+                                        ))}
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            handleUpdateArticleBlock(block.id, {
+                                              items: [...(block.items || []), '']
+                                            });
+                                          }}
+                                          className="mt-1 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                                        >
+                                          <Plus size={13} /> Tambah Butir Poin Baru
+                                        </button>
+                                      </div>
+                                    )}
+
+                                    {block.type === 'image' && (
+                                      <div className="space-y-3">
+                                        <div className="flex flex-col sm:flex-row gap-3">
+                                          <div className="flex-1 space-y-2">
+                                            <label className="block text-[10px] font-bold uppercase text-cyan-300">
+                                              URL Gambar atau Unggah Foto
+                                            </label>
+                                            <input
+                                              type="text"
+                                              value={block.imageUrl || ''}
+                                              onChange={(e) => handleUpdateArticleBlock(block.id, { imageUrl: e.target.value })}
+                                              placeholder="https://... atau klik tombol unggah"
+                                              className="w-full px-3 py-2 rounded-xl bg-[#111116] border border-white/15 focus:border-cyan-400 text-white text-xs focus:outline-none"
+                                            />
+                                            <div className="flex items-center gap-2">
+                                              <label className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-cyan-500/20 hover:text-cyan-300 text-gray-300 text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors">
+                                                <ImageIcon size={13} />
+                                                Unggah dari Laptop
+                                                <input
+                                                  type="file"
+                                                  accept="image/*"
+                                                  className="hidden"
+                                                  onChange={(e) =>
+                                                    handleImageFileUpload(e, (dataUrl) =>
+                                                      handleUpdateArticleBlock(block.id, { imageUrl: dataUrl })
+                                                    )
+                                                  }
+                                                />
+                                              </label>
+                                            </div>
+                                          </div>
+                                          {block.imageUrl && (
+                                            <div className="w-32 h-20 rounded-xl overflow-hidden border border-white/15 shrink-0 bg-black/40">
+                                              <img
+                                                src={block.imageUrl}
+                                                alt="Preview"
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                          )}
+                                        </div>
+                                        <div>
+                                          <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">
+                                            Keterangan / Caption Gambar (Opsional)
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={block.caption || ''}
+                                            onChange={(e) => handleUpdateArticleBlock(block.id, { caption: e.target.value })}
+                                            placeholder="Contoh: Diskusi tim konsultan Narasumber Hukum bersama mitra strategis."
+                                            className="w-full px-3 py-2 rounded-xl bg-[#111116] border border-white/15 focus:border-cyan-400 text-gray-300 text-xs focus:outline-none"
+                                          />
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {block.type === 'callout' && (
+                                      <div className="p-3.5 rounded-xl bg-gold/10 border border-gold/30 space-y-2">
+                                        <label className="block text-[10px] font-bold uppercase text-gold flex items-center gap-1.5">
+                                          <AlertCircle size={13} /> Isi Kotak Catatan / Rekomendasi Penting
+                                        </label>
+                                        <textarea
+                                          rows={3}
+                                          value={block.text || ''}
+                                          onChange={(e) => handleUpdateArticleBlock(block.id, { text: e.target.value })}
+                                          placeholder="Tuliskan catatan penting, peringatan hukum, atau klausul perhatian..."
+                                          className="w-full px-3.5 py-2 rounded-xl bg-[#111116] border border-gold/30 focus:border-gold text-gold-light text-sm leading-relaxed focus:outline-none"
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Bottom Quick-Add Bar */}
+                            <div className="p-4 rounded-xl border border-dashed border-white/15 bg-white/[0.02] flex flex-col items-center justify-center text-center gap-2.5">
+                              <span className="text-xs font-semibold text-gray-400">
+                                Tambah Bagian / Blok Konten Baru:
+                              </span>
+                              <div className="flex flex-wrap items-center justify-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('heading')}
+                                  className="px-3 py-1.5 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-200 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                                >
+                                  <Type size={13} /> + Sub-Judul
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('paragraph')}
+                                  className="px-3 py-1.5 rounded-xl bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/30 text-blue-200 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                                >
+                                  <AlignLeft size={13} /> + Paragraf
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('quote')}
+                                  className="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-200 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                                >
+                                  <Quote size={13} /> + Kutipan / Pasal
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('list')}
+                                  className="px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-200 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                                >
+                                  <List size={13} /> + Daftar Poin
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('image')}
+                                  className="px-3 py-1.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-200 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                                >
+                                  <ImageIcon size={13} /> + Gambar
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddArticleBlock('callout')}
+                                  className="px-3 py-1.5 rounded-xl bg-gold/15 hover:bg-gold/25 border border-gold/30 text-gold-light text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                                >
+                                  <AlertCircle size={13} /> + Catatan Penting
+                                </button>
+                              </div>
                             </div>
                           </div>
-                          <textarea
-                            rows={14}
-                            value={editingArticle.content || ''}
-                            onChange={(e) => setEditingArticle({ ...editingArticle, content: e.target.value })}
-                            className="w-full px-4 py-3 rounded-xl bg-[#1b1b24] border border-white/15 focus:border-gold text-white text-sm font-mono leading-relaxed focus:outline-none"
-                          />
-                        </div>
-                      </div>
+                        </>
+                      )}
+                    </div>
 
                       {/* Right 4 cols: Meta, Author, Image, Publish */}
                       <div className="lg:col-span-4 space-y-4">
@@ -1608,12 +2150,7 @@ export default function DashboardClient() {
                                   </Link>
                                   <button
                                     type="button"
-                                    onClick={() =>
-                                      setEditingArticle({
-                                        ...art,
-                                        published_at: art.published_at.slice(0, 10)
-                                      })
-                                    }
+                                    onClick={() => openEditArticle(art)}
                                     className="p-2 rounded-lg bg-white/5 hover:bg-gold hover:text-navy text-gray-300 transition-colors cursor-pointer"
                                     title="Edit Artikel"
                                   >
@@ -2764,19 +3301,23 @@ export default function DashboardClient() {
                         {selectedBlock.data.body !== undefined && (
                           <div>
                             <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">
-                              Konten Paragraf (HTML)
+                              Uraian Paragraf (Teks Bebas)
                             </label>
                             <textarea
                               rows={5}
-                              value={selectedBlock.data.body || ''}
+                              value={(selectedBlock.data.body || '').replace(/<\/?p>/gi, '')}
                               onChange={(e) =>
                                 handleUpdateSelectedBlock((b) => ({
                                   ...b,
                                   data: { ...b.data, body: e.target.value }
                                 }))
                               }
-                              className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs font-mono"
+                              placeholder="Tulis uraian paragraf atau penjelasan di sini..."
+                              className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs leading-relaxed"
                             />
+                            <p className="text-[10px] text-gray-500 mt-1">
+                              Tulis teks biasa tanpa tag HTML. Format paragraf akan diatur otomatis.
+                            </p>
                           </div>
                         )}
 
