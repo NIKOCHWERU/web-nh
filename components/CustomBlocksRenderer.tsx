@@ -551,10 +551,10 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
       return (
         <section className={`relative overflow-hidden ${bgClass} ${padClass}`}>
           {/* Subtle Ambient Radial Lighting */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[750px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(197,160,89,0.12),transparent_70%)] pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(197,160,89,0.14),transparent_70%)] pointer-events-none" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
-          <div className="container relative z-10 mx-auto px-4 max-w-6xl">
+          <div className="container relative z-10 mx-auto px-4 max-w-5xl">
             {/* Header Section */}
             <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
               {block.data?.badge && (
@@ -564,19 +564,22 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
                   <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
                 </div>
               )}
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-white tracking-wide uppercase mb-3">
-                {block.data?.title}
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white tracking-wide uppercase mb-3">
+                <span className="block mb-1 sm:inline sm:mr-3">NILAI-NILAI UTAMA</span>
+                <span className="text-gold tracking-[0.2em] font-sans font-light whitespace-nowrap text-xl sm:text-3xl md:text-4xl">
+                  (R - I - C - C - I - E - P)
+                </span>
               </h2>
-              <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-4" />
+              <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-4" />
               {block.data?.subtitle && (
-                <p className="text-xs md:text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
+                <p className="text-xs sm:text-sm md:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
                   {block.data.subtitle}
                 </p>
               )}
             </div>
 
-            {/* Values Cards: Balanced Layout (Top 4, Bottom 3 Centered) */}
-            <div className="flex flex-wrap justify-center gap-5 md:gap-6">
+            {/* Vertical Executive Charter Rows (R | ....) */}
+            <div className="space-y-4 md:space-y-5">
               {items.map((it: any, idx: number) => {
                 const titleStr = (it.title || '').trim();
 
@@ -625,49 +628,60 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
                 return (
                   <div
                     key={idx}
-                    className="group relative w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] flex flex-col justify-between p-6 rounded-2xl bg-gradient-to-b from-[#141620] via-[#10121a] to-[#0b0c12] border border-white/10 hover:border-gold/50 shadow-lg hover:shadow-[0_12px_35px_rgba(197,160,89,0.14)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+                    className="group relative p-5 sm:p-6 md:p-7 rounded-2xl bg-gradient-to-r from-[#141624]/95 via-[#10121a]/90 to-[#0b0c12]/95 border border-white/10 hover:border-gold/50 shadow-lg hover:shadow-[0_10px_35px_rgba(197,160,89,0.15)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
                   >
-                    {/* Top Accent Gold Line */}
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent group-hover:via-gold transition-colors duration-500" />
+                    {/* Left Accent Gold Highlight Line on Hover */}
+                    <div className="absolute left-0 inset-y-0 w-1 bg-gradient-to-b from-gold/50 via-gold to-gold/50 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 rounded-l-2xl" />
 
                     {/* Watermark Monogram Letter in Background */}
-                    <span className="absolute right-3 top-2 text-6xl md:text-7xl font-serif font-black text-gold/[0.05] group-hover:text-gold/[0.12] select-none pointer-events-none transition-colors duration-300">
+                    <span className="absolute right-6 top-1/2 -translate-y-1/2 text-7xl sm:text-8xl md:text-9xl font-serif font-black text-gold/[0.03] group-hover:text-gold/[0.08] select-none pointer-events-none transition-colors duration-500">
                       {badgeLetter}
                     </span>
 
-                    <div className="relative z-10">
-                      {/* Monogram Seal & Micro-Icon Badge */}
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold/30 via-gold/15 to-gold/5 border border-gold/40 flex items-center justify-center font-serif text-xl font-bold text-gold shadow-[0_0_20px_rgba(197,160,89,0.18)] group-hover:scale-105 group-hover:border-gold transition-all duration-300">
+                    {/* Horizontal / Responsive Flex Row */}
+                    <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                      {/* Left: Monogram Seal with Principle Number */}
+                      <div className="flex sm:flex-col items-center gap-3 sm:gap-1.5 shrink-0">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-gold/30 via-gold/15 to-gold/5 border border-gold/40 flex items-center justify-center font-serif text-2xl sm:text-3xl md:text-4xl font-black text-gold shadow-[0_0_25px_rgba(197,160,89,0.2)] group-hover:scale-105 group-hover:border-gold transition-all duration-300">
                           {badgeLetter}
                         </div>
-                        <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-gold/15 group-hover:border-gold/30 transition-colors">
-                          {renderIcon()}
-                        </div>
+                        <span className="font-mono text-[10px] sm:text-[11px] tracking-widest text-gold/70 group-hover:text-gold font-bold uppercase">
+                          PRINSIP #{idx + 1}
+                        </span>
                       </div>
 
-                      {/* Title */}
-                      <h3 className="text-base font-serif font-bold text-white tracking-wide uppercase mb-2 group-hover:text-gold transition-colors">
-                        {cleanTitle}
-                      </h3>
+                      {/* Vertical Divider Line (|) */}
+                      <div className="hidden sm:block w-[1.5px] self-stretch min-h-[60px] bg-gradient-to-b from-transparent via-gold/40 to-transparent group-hover:via-gold transition-colors shrink-0" />
 
-                      {/* Slogan Motto (Italic Gold) */}
-                      {slogan && (
-                        <div className="text-xs font-serif italic text-gold/90 font-medium mb-2.5 pb-2 border-b border-white/5">
-                          "{slogan}"
+                      {/* Right: Content Section */}
+                      <div className="flex-1 min-w-0">
+                        {/* Title & Slogan Header */}
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                          <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
+                            <h3 className="text-base sm:text-lg md:text-xl font-serif font-bold text-white tracking-wide uppercase group-hover:text-gold transition-colors">
+                              {cleanTitle}
+                            </h3>
+                            {slogan && (
+                              <span className="inline-flex items-center px-3 py-0.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-serif italic font-medium">
+                                "{slogan}"
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Micro Icon Badge */}
+                          <div className="hidden md:flex w-8 h-8 rounded-lg bg-white/5 border border-white/10 items-center justify-center group-hover:bg-gold/15 group-hover:border-gold/30 transition-colors">
+                            {renderIcon()}
+                          </div>
                         </div>
-                      )}
 
-                      {/* Explanation Description */}
-                      <p className="text-xs text-gray-300/85 leading-relaxed font-light">
-                        {explanation}
-                      </p>
-                    </div>
+                        {/* Divider Line */}
+                        <div className="w-full h-px bg-white/5 mb-2.5 group-hover:bg-gold/20 transition-colors" />
 
-                    {/* Bottom subtle indicator */}
-                    <div className="relative z-10 pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-gray-400 group-hover:text-gold/80 transition-colors">
-                      <span className="font-mono tracking-widest uppercase">PRINSIP #{idx + 1}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
+                        {/* Explanation Text */}
+                        <p className="text-xs sm:text-sm md:text-[15px] text-gray-300/90 leading-relaxed font-light">
+                          {explanation}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 );
