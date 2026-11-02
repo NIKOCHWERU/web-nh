@@ -26,17 +26,6 @@ import { PageBlock, DEFAULT_PRESET_BLOCKS } from '@/lib/cmsTypes';
 
 export function BlockRendererItem({ block, isPreview = false }: { block: PageBlock; isPreview?: boolean }) {
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-
-  useEffect(() => {
-    if (block.type !== 'testimonials') return;
-    const items = Array.isArray(block.data?.items) ? block.data.items : [];
-    if (items.length <= 1) return;
-    const timer = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % items.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [block.type, block.data?.items]);
 
   if (!block.visible && !isPreview) return null;
 
@@ -367,133 +356,43 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
 
     case 'testimonials': {
       const items = Array.isArray(block.data?.items) ? block.data.items : [];
-      if (items.length === 0) return null;
-
-      const currentItem = items[activeTestimonial % items.length] || items[0];
-
-      const handlePrev = () => {
-        setActiveTestimonial((prev) => (prev === 0 ? items.length - 1 : prev - 1));
-      };
-
-      const handleNext = () => {
-        setActiveTestimonial((prev) => (prev + 1) % items.length);
-      };
-
-      const initials = (currentItem.name || '')
-        .split(' ')
-        .map((w: string) => w[0])
-        .filter(Boolean)
-        .slice(0, 2)
-        .join('')
-        .toUpperCase();
-
       return (
-        <section className={`relative overflow-hidden ${bgClass} ${padClass}`}>
-          {/* Subtle Ambient Radial Lighting */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(197,160,89,0.12),transparent_70%)] pointer-events-none" />
-
-          <div className="container relative z-10 mx-auto px-4 max-w-4xl">
-            {/* Header Section */}
-            <div className="text-center mb-10 md:mb-14">
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="text-center mb-10">
               {block.data?.badge && (
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+                <span className="inline-block px-3 py-1 rounded-full bg-gold/15 border border-gold/40 text-gold text-xs font-bold uppercase tracking-widest mb-3">
                   {block.data.badge}
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
-                </div>
+                </span>
               )}
-              <h2 className={`text-2xl sm:text-3xl md:text-4xl font-serif font-bold tracking-wide uppercase mb-3 ${isDark ? 'text-white' : 'text-navy'}`}>
-                {block.data?.title || 'Testimoni & Kepercayaan Klien'}
+              <h2 className={`text-2xl md:text-3xl font-bold mb-3 uppercase ${isDark ? 'text-white' : 'text-navy'}`}>
+                {block.data?.title || 'Testimoni Klien'}
               </h2>
-              <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-3" />
+              <div className="w-16 h-1 bg-gold mx-auto mb-3"></div>
               {block.data?.subtitle && (
-                <p className={`text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-light ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-xs md:text-sm max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {block.data.subtitle}
                 </p>
               )}
             </div>
-
-            {/* Carousel Stage (1 by 1) */}
-            <div className="relative">
-              {/* Main Card Slide */}
-              <div className="relative p-7 sm:p-10 md:p-12 rounded-3xl bg-gradient-to-b from-[#141624]/95 via-[#10121a]/90 to-[#0b0c12]/95 border border-white/10 hover:border-gold/40 shadow-2xl transition-all duration-500 overflow-hidden text-center">
-                {/* Background Huge Quote Icon */}
-                <Quote className="absolute right-6 -bottom-6 w-36 h-36 text-gold/[0.04] select-none pointer-events-none rotate-12" />
-
-                {/* Golden Rating Stars */}
-                <div className="flex items-center justify-center gap-1.5 mb-6 text-gold">
-                  {[...Array(5)].map((_, s) => (
-                    <Star key={s} size={18} className="fill-gold text-gold" />
-                  ))}
-                </div>
-
-                {/* Testimonial Quote Text */}
-                <div className="min-h-[120px] sm:min-h-[100px] flex items-center justify-center mb-8">
-                  <p className="text-base sm:text-lg md:text-xl font-serif italic text-gray-200 leading-relaxed font-light max-w-3xl mx-auto">
-                    "{currentItem.text}"
+            <div className="grid md:grid-cols-3 gap-6">
+              {items.map((tItem: any, i: number) => (
+                <div
+                  key={i}
+                  className={`p-6 rounded-xl border border-l-4 border-l-gold shadow-sm flex flex-col justify-between ${
+                    isDark ? 'bg-[#16161b] border-white/10' : 'bg-gray-50 border-gray-200'
+                  }`}
+                >
+                  <p className={`italic text-sm md:text-base mb-4 leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    "{tItem.text}"
                   </p>
-                </div>
-
-                {/* Client Profile / Signature */}
-                <div className="flex flex-col items-center justify-center">
-                  {/* Initials Avatar */}
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gold/30 via-gold/15 to-gold/5 border border-gold/50 flex items-center justify-center font-serif text-lg font-bold text-gold shadow-[0_0_15px_rgba(197,160,89,0.2)] mb-3">
-                    {initials || 'NH'}
+                  <div>
+                    <div className={`font-bold text-sm ${isDark ? 'text-white' : 'text-navy'}`}>{tItem.name}</div>
+                    <div className="text-xs text-gold uppercase tracking-wider font-semibold">{tItem.role}</div>
                   </div>
-
-                  <h4 className="text-base sm:text-lg font-serif font-bold text-white tracking-wide uppercase">
-                    {currentItem.name}
-                  </h4>
-                  <p className="text-xs sm:text-sm text-gold font-mono tracking-widest uppercase mt-0.5 font-semibold">
-                    {currentItem.role}
-                  </p>
                 </div>
-              </div>
-
-              {/* Prev / Next Navigation Arrows */}
-              {items.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={handlePrev}
-                    aria-label="Testimoni Sebelumnya"
-                    className="absolute left-2 sm:-left-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#12131b] border border-white/15 hover:border-gold text-gray-300 hover:text-gold flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all cursor-pointer z-20"
-                  >
-                    <ChevronLeft size={22} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    aria-label="Testimoni Selanjutnya"
-                    className="absolute right-2 sm:-right-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#12131b] border border-white/15 hover:border-gold text-gray-300 hover:text-gold flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all cursor-pointer z-20"
-                  >
-                    <ChevronRight size={22} />
-                  </button>
-                </>
-              )}
+              ))}
             </div>
-
-            {/* Dots / Carousel Indicators */}
-            {items.length > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
-                {items.map((_: any, dotIdx: number) => {
-                  const isActive = dotIdx === activeTestimonial % items.length;
-                  return (
-                    <button
-                      key={dotIdx}
-                      type="button"
-                      onClick={() => setActiveTestimonial(dotIdx)}
-                      aria-label={`Beralih ke testimoni ${dotIdx + 1}`}
-                      className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                        isActive
-                          ? 'w-8 bg-gold shadow-[0_0_10px_rgba(197,160,89,0.5)]'
-                          : 'w-2.5 bg-white/20 hover:bg-white/40'
-                      }`}
-                    />
-                  );
-                })}
-              </div>
-            )}
           </div>
         </section>
       );
