@@ -87,37 +87,61 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
     }
 
     case 'hero': {
+      const videoSrc = block.data?.bgVideoUrl || "https://res.cloudinary.com/dysw7tjks/video/upload/v1756377208/Desain_tanpa_judul_oeaojq.mp4";
       return (
-        <section className={`relative overflow-hidden ${bgClass} ${padClass}`}>
-          {block.data?.bgImage && (
-            <div className="absolute inset-0">
-              <img src={block.data.bgImage} alt={block.data.title || 'Banner'} className="w-full h-full object-cover opacity-25" />
-              <div className="absolute inset-0 bg-navy/80"></div>
-            </div>
-          )}
-          <div className={`container mx-auto px-4 max-w-6xl relative z-10 ${alignClass}`}>
+        <section className={`relative overflow-hidden ${padClass} min-h-[380px] md:min-h-[460px] flex items-center bg-gradient-to-br from-[#0a0a0b] via-[#161618] to-[#0a0a0b] text-white`}>
+          {/* Background Video with Dark Overlay (Matches actual site) */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            {videoSrc ? (
+              <video
+                className="absolute top-0 left-0 w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+                key={videoSrc}
+              >
+                <source src={videoSrc} type="video/mp4" />
+              </video>
+            ) : block.data?.bgImage ? (
+              <img src={block.data.bgImage} alt="Banner" className="w-full h-full object-cover opacity-25" />
+            ) : null}
+            <div className="absolute inset-0 bg-black/75"></div>
+          </div>
+
+          <div className={`container mx-auto px-4 max-w-5xl relative z-10 ${alignClass}`}>
             {block.data?.badge && (
-              <span className="inline-block px-3.5 py-1 rounded-full bg-gold/15 border border-gold/40 text-gold text-xs font-bold uppercase tracking-widest mb-4">
+              <span className="inline-block px-3 py-1 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs font-bold uppercase tracking-widest mb-4">
                 {block.data.badge}
               </span>
             )}
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight tracking-tight uppercase font-sans">
               {block.data?.title}{' '}
-              {block.data?.highlight && <span className="text-gold">{block.data.highlight}</span>}
+              {block.data?.highlight && <span className="text-gold block sm:inline">{block.data.highlight}</span>}
             </h2>
             {block.data?.subtitle && (
-              <p className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${block.style?.align === 'center' ? 'mx-auto' : ''} ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className="text-sm md:text-base lg:text-lg mb-8 max-w-3xl leading-relaxed text-gray-300 border-l-4 border-gold pl-4 font-light">
                 {block.data.subtitle}
               </p>
             )}
-            {block.data?.buttonText && (
-              <Link
-                href={block.data.buttonUrl || '/kontak'}
-                className="inline-flex items-center gap-2 bg-gold text-navy px-7 py-3.5 rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-white transition-all shadow-md"
-              >
-                {block.data.buttonText} <ArrowRight size={16} />
-              </Link>
-            )}
+            <div className="flex flex-wrap items-center gap-3">
+              {block.data?.buttonText && (
+                <Link
+                  href={block.data.buttonUrl || '/services'}
+                  className="inline-flex items-center gap-2 bg-gold text-navy px-6 py-3.5 rounded font-bold uppercase tracking-widest text-xs hover:bg-white transition-all shadow-xl"
+                >
+                  {block.data.buttonText} <ArrowRight size={15} />
+                </Link>
+              )}
+              {block.data?.secondaryBtnText && (
+                <Link
+                  href={block.data.secondaryBtnUrl || '/kontak'}
+                  className="inline-flex items-center gap-2 border border-white/80 text-white px-6 py-3.5 rounded font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-navy transition-all"
+                >
+                  {block.data.secondaryBtnText}
+                </Link>
+              )}
+            </div>
           </div>
         </section>
       );
@@ -150,6 +174,12 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
     }
 
     case 'features_grid': {
+      const defaultImages = [
+        "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80"
+      ];
+      const defaultBadges = ["34 Cakupan Perkara", "411 Layanan Izin & Pajak", "6 Program Utama"];
       const items = Array.isArray(block.data?.items) ? block.data.items : [];
       return (
         <section className={`${bgClass} ${padClass}`}>
@@ -172,22 +202,41 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
               )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {items.map((item: any, idx: number) => (
-                <div
-                  key={idx}
-                  className={`p-6 rounded-xl border transition-all ${
-                    isDark
-                      ? 'bg-[#16161b] border-white/10 hover:border-gold/50'
-                      : 'bg-white border-gray-200 shadow-sm hover:shadow-md hover:border-gold'
-                  }`}
-                >
-                  <div className="w-11 h-11 rounded-lg bg-gold/15 border border-gold/30 text-gold flex items-center justify-center mb-4">
-                    {idx % 3 === 0 ? <Scale size={22} /> : idx % 3 === 1 ? <FileText size={22} /> : <ShieldCheck size={22} />}
+              {items.map((item: any, idx: number) => {
+                const cardImg = item.image || defaultImages[idx % 3];
+                const cardBadge = item.badge || defaultBadges[idx % 3];
+                return (
+                  <div
+                    key={idx}
+                    className="relative group overflow-hidden rounded-2xl shadow-lg border border-gray-200 h-[340px] flex flex-col justify-end text-left"
+                  >
+                    {/* Real background image with dark gradient like live website */}
+                    <div className="absolute inset-0">
+                      <img
+                        src={cardImg}
+                        alt={item.title || 'Layanan'}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/85 to-navy/35"></div>
+                    </div>
+
+                    <div className="absolute top-4 right-4 z-10">
+                      <span className="px-3 py-1 rounded-full bg-navy/90 border border-gold/40 text-gold text-[10px] font-bold tracking-wider uppercase shadow-md">
+                        {cardBadge}
+                      </span>
+                    </div>
+
+                    <div className="relative z-10 p-6 flex flex-col justify-end text-white">
+                      <div className="w-10 h-10 rounded-xl bg-gold/20 text-gold flex items-center justify-center mb-3 border border-gold/30">
+                        {idx % 3 === 0 ? <Scale size={20} /> : idx % 3 === 1 ? <FileText size={20} /> : <ShieldCheck size={20} />}
+                      </div>
+                      <h3 className="text-lg md:text-xl font-bold mb-2 text-white font-sans">{item.title}</h3>
+                      <p className="text-xs text-gray-300 leading-relaxed line-clamp-3 font-light mb-3">{item.desc}</p>
+                      <div className="w-8 h-0.5 bg-gold"></div>
+                    </div>
                   </div>
-                  <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-navy'}`}>{item.title}</h3>
-                  <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{item.desc}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

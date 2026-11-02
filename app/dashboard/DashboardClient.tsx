@@ -2406,6 +2406,45 @@ export default function DashboardClient() {
                         </div>
 
                         
+                                                {selectedBlock.type === 'hero' && (
+                          <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
+                            <div className="text-xs font-bold text-gold uppercase">Background Video & Tombol Hero</div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">URL Background Video (MP4)</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.bgVideoUrl || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, bgVideoUrl: e.target.value } }))}
+                                placeholder="https://res.cloudinary.com/.../video.mp4"
+                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs font-mono"
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Teks Tombol Ke-2</label>
+                                <input
+                                  type="text"
+                                  value={selectedBlock.data.secondaryBtnText || ''}
+                                  onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, secondaryBtnText: e.target.value } }))}
+                                  placeholder="KONSULTASI SEKARANG"
+                                  className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Link Tombol Ke-2</label>
+                                <input
+                                  type="text"
+                                  value={selectedBlock.data.secondaryBtnUrl || ''}
+                                  onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, secondaryBtnUrl: e.target.value } }))}
+                                  placeholder="/kontak"
+                                  className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+
                         {/* NAVBAR SECTION EDITORS */}
                         {selectedBlock.type === 'navbar_section' && (
                           <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
