@@ -76,18 +76,14 @@ const HomeClient = () => {
             variants={fadeInUp}
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight tracking-tight uppercase">
-              {locale === 'id' && siteSettings?.heroTitle
-                ? siteSettings.heroTitle
-                : t('hero.title').split(' ').slice(0, 2).join(' ')}{' '}
+              {t('hero.title').split(' ').slice(0, 2).join(' ')}{' '}
               <br />
               <span className="text-gold">
-                {locale === 'id' && siteSettings?.heroHighlight
-                  ? siteSettings.heroHighlight
-                  : t('hero.title').split(' ').slice(2).join(' ')}
+                {t('hero.title').split(' ').slice(2).join(' ')}
               </span>
             </h1>
             <p className="text-base md:text-lg lg:text-xl mb-8 md:mb-10 text-gray-300 leading-relaxed border-l-4 border-gold pl-4 md:pl-6 font-light">
-              {locale === 'id' && siteSettings?.heroSubtitle ? siteSettings.heroSubtitle : t('hero.subtitle')}
+              {t('hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/services" className="bg-gold text-navy px-8 py-4 rounded font-bold transition duration-300 hover:bg-white hover:text-navy uppercase text-sm tracking-widest flex items-center justify-center gap-2 group">
