@@ -11,7 +11,7 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
-import { PageBlock } from '@/lib/cmsTypes';
+import { PageBlock, DEFAULT_PRESET_BLOCKS } from '@/lib/cmsTypes';
 
 export function BlockRendererItem({ block, isPreview = false }: { block: PageBlock; isPreview?: boolean }) {
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
@@ -89,7 +89,12 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
     case 'hero': {
       const videoSrc = block.data?.bgVideoUrl || "https://res.cloudinary.com/dysw7tjks/video/upload/v1756377208/Desain_tanpa_judul_oeaojq.mp4";
       return (
-        <section className={`relative overflow-hidden ${padClass} min-h-[380px] md:min-h-[460px] flex items-center bg-gradient-to-br from-[#0a0a0b] via-[#161618] to-[#0a0a0b] text-white`}>
+        <section
+          id="home"
+          className={`relative overflow-hidden ${
+            isPreview ? 'py-16 min-h-[380px] md:min-h-[460px]' : 'h-screen'
+          } flex items-center bg-gradient-to-br from-[#0a0a0b] via-[#161618] to-[#0a0a0b] text-white`}
+        >
           {/* Background Video with Dark Overlay (Matches actual site) */}
           <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
             {videoSrc ? (
@@ -109,16 +114,16 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
             <div className="absolute inset-0 bg-black/75"></div>
           </div>
 
-          <div className={`container mx-auto px-4 max-w-5xl relative z-10 ${alignClass}`}>
+          <div className={`container mx-auto px-4 max-w-5xl relative z-10 ${alignClass} ${!isPreview ? 'pt-10' : ''}`}>
             {block.data?.badge && (
               <span className="inline-block px-3 py-1 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs font-bold uppercase tracking-widest mb-4">
                 {block.data.badge}
               </span>
             )}
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight tracking-tight uppercase font-sans">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight tracking-tight uppercase font-sans">
               {block.data?.title}{' '}
               {block.data?.highlight && <span className="text-gold block sm:inline">{block.data.highlight}</span>}
-            </h2>
+            </h1>
             {block.data?.subtitle && (
               <p className="text-sm md:text-base lg:text-lg mb-8 max-w-3xl leading-relaxed text-gray-300 border-l-4 border-gold pl-4 font-light">
                 {block.data.subtitle}
@@ -128,7 +133,7 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
               {block.data?.buttonText && (
                 <Link
                   href={block.data.buttonUrl || '/services'}
-                  className="inline-flex items-center gap-2 bg-gold text-navy px-6 py-3.5 rounded font-bold uppercase tracking-widest text-xs hover:bg-white transition-all shadow-xl"
+                  className="inline-flex items-center gap-2 bg-gold text-navy px-8 py-4 rounded font-bold uppercase tracking-widest text-xs hover:bg-white transition-all shadow-xl"
                 >
                   {block.data.buttonText} <ArrowRight size={15} />
                 </Link>
@@ -136,7 +141,7 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
               {block.data?.secondaryBtnText && (
                 <Link
                   href={block.data.secondaryBtnUrl || '/kontak'}
-                  className="inline-flex items-center gap-2 border border-white/80 text-white px-6 py-3.5 rounded font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-navy transition-all"
+                  className="inline-flex items-center gap-2 border border-white/80 text-white px-8 py-4 rounded font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-navy transition-all"
                 >
                   {block.data.secondaryBtnText}
                 </Link>
@@ -642,7 +647,13 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
 }
 
 export default function CustomBlocksRenderer({ page }: { page: 'home' | 'tentang' | 'services' | 'kontak' }) {
-  const [blocks, setBlocks] = useState<PageBlock[]>([]);
+  const [blocks, setBlocks] = useState<PageBlock[]>(() =>
+    DEFAULT_PRESET_BLOCKS.filter((b) => b.page === page && b.visible).sort((a, b) => {
+      if (a.id === 'blk-home-hero' && b.id === 'blk-home-stats') return -1;
+      if (a.id === 'blk-home-stats' && b.id === 'blk-home-hero') return 1;
+      return a.order - b.order;
+    })
+  );
 
   useEffect(() => {
     fetch('/api/cms', { cache: 'no-store' })
@@ -651,8 +662,14 @@ export default function CustomBlocksRenderer({ page }: { page: 'home' | 'tentang
         if (data && Array.isArray(data.blocks)) {
           const filtered = data.blocks
             .filter((b: PageBlock) => b.page === page && b.visible)
-            .sort((a: PageBlock, b: PageBlock) => a.order - b.order);
-          setBlocks(filtered);
+            .sort((a: PageBlock, b: PageBlock) => {
+              if (a.id === 'blk-home-hero' && b.id === 'blk-home-stats') return -1;
+              if (a.id === 'blk-home-stats' && b.id === 'blk-home-hero') return 1;
+              return a.order - b.order;
+            });
+          if (filtered.length > 0) {
+            setBlocks(filtered);
+          }
         }
       })
       .catch(() => {});
@@ -663,7 +680,7 @@ export default function CustomBlocksRenderer({ page }: { page: 'home' | 'tentang
   return (
     <>
       {blocks.map((block) => (
-        <BlockRendererItem key={block.id} block={block} />
+        <BlockRendererItem key={block.id} block={block} isPreview={false} />
       ))}
     </>
   );

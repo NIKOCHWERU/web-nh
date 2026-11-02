@@ -25,7 +25,14 @@ export function readCmsDb(): CmsDatabase {
         const existingBlocks: any[] = Array.isArray(parsed.blocks) ? parsed.blocks : [];
         const existingIds = new Set(existingBlocks.map(b => b.id));
         const missingPresets = INITIAL_CMS_DB.blocks.filter(b => !existingIds.has(b.id));
-        return [...existingBlocks, ...missingPresets];
+        const merged = [...existingBlocks, ...missingPresets];
+        const heroBlock = merged.find(b => b.id === 'blk-home-hero');
+        const statsBlock = merged.find(b => b.id === 'blk-home-stats');
+        if (heroBlock && statsBlock && heroBlock.order >= statsBlock.order) {
+          heroBlock.order = 1;
+          statsBlock.order = 2;
+        }
+        return merged.sort((a, b) => (a.order || 0) - (b.order || 0));
       })(),
       siteSettings: { ...INITIAL_CMS_DB.siteSettings, ...(parsed.siteSettings || {}) }
     };
