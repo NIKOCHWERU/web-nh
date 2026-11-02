@@ -275,7 +275,14 @@ export default function DashboardClient() {
       const res = await fetch('/api/cms', { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
-        setDb(data);
+        const incomingBlocks: PageBlock[] = Array.isArray(data.blocks) ? data.blocks : [];
+        const existingIds = new Set(incomingBlocks.map((b: any) => b.id));
+        const mergedBlocks = [
+          ...incomingBlocks,
+          ...INITIAL_CMS_DB.blocks.filter((b) => !existingIds.has(b.id))
+        ];
+        const mergedDb = { ...data, blocks: mergedBlocks };
+        setDb(mergedDb);
         if (data.blocks?.length > 0 && !selectedBlockId) {
           const firstHome = data.blocks.find((b: PageBlock) => b.page === 'home');
           if (firstHome) setSelectedBlockId(firstHome.id);
@@ -1897,8 +1904,8 @@ export default function DashboardClient() {
                     onChange={(e) => {
                       const nextPage = e.target.value as any;
                       setBuilderPage(nextPage);
-                      const first = db.blocks.find((b) => b.page === nextPage);
-                      setSelectedBlockId(first?.id || null);
+                      const pageBlocks = db.blocks.filter((b) => b.page === nextPage);
+                      setSelectedBlockId(pageBlocks[0]?.id || null);
                     }}
                     className="px-3.5 py-1.5 rounded-lg bg-[#0e0e12] border border-gold/40 text-white text-xs font-bold focus:outline-none cursor-pointer"
                   >

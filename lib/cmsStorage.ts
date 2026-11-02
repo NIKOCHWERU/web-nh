@@ -21,7 +21,12 @@ export function readCmsDb(): CmsDatabase {
       users: parsed.users || INITIAL_CMS_DB.users,
       articles: parsed.articles || INITIAL_CMS_DB.articles,
       messages: parsed.messages || INITIAL_CMS_DB.messages,
-      blocks: parsed.blocks || INITIAL_CMS_DB.blocks,
+      blocks: (() => {
+        const existingBlocks: any[] = Array.isArray(parsed.blocks) ? parsed.blocks : [];
+        const existingIds = new Set(existingBlocks.map(b => b.id));
+        const missingPresets = INITIAL_CMS_DB.blocks.filter(b => !existingIds.has(b.id));
+        return [...existingBlocks, ...missingPresets];
+      })(),
       siteSettings: { ...INITIAL_CMS_DB.siteSettings, ...(parsed.siteSettings || {}) }
     };
   } catch (err) {
