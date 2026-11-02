@@ -9,7 +9,14 @@ import {
   FileText,
   ShieldCheck,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Zap,
+  BookOpen,
+  Compass,
+  MessageSquare,
+  Lightbulb,
+  Award,
+  Sparkles
 } from 'lucide-react';
 import { PageBlock, DEFAULT_PRESET_BLOCKS } from '@/lib/cmsTypes';
 
@@ -542,43 +549,125 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
     case 'about_values': {
       const items = Array.isArray(block.data?.items) ? block.data.items : [];
       return (
-        <section className={`${bgClass} ${padClass}`}>
-          <div className="container mx-auto px-4 max-w-5xl">
-            <div className="text-center mb-10">
+        <section className={`relative overflow-hidden ${bgClass} ${padClass}`}>
+          {/* Subtle Ambient Radial Lighting */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[750px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(197,160,89,0.12),transparent_70%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+
+          <div className="container relative z-10 mx-auto px-4 max-w-6xl">
+            {/* Header Section */}
+            <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
               {block.data?.badge && (
-                <span className="inline-block px-3 py-1 rounded-full bg-gold/15 border border-gold/40 text-gold text-xs font-bold uppercase tracking-widest mb-3">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-[0.2em] mb-4 shadow-sm backdrop-blur-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
                   {block.data.badge}
-                </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+                </div>
               )}
-              <h2 className="text-2xl md:text-4xl font-bold mb-3 text-white uppercase tracking-wider">
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-white tracking-wide uppercase mb-3">
                 {block.data?.title}
               </h2>
+              <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-4" />
               {block.data?.subtitle && (
-                <p className="text-xs md:text-sm text-gray-300 max-w-2xl mx-auto">
+                <p className="text-xs md:text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
                   {block.data.subtitle}
                 </p>
               )}
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+            {/* Values Cards: Balanced Layout (Top 4, Bottom 3 Centered) */}
+            <div className="flex flex-wrap justify-center gap-5 md:gap-6">
               {items.map((it: any, idx: number) => {
+                const titleStr = (it.title || '').trim();
+
                 const badgeLetter = (() => {
-                  if (!it.title) return String(idx + 1);
-                  const trimmed = it.title.trim();
-                  if (trimmed.includes(' - ')) {
-                    const prefix = trimmed.split(' - ')[0].trim();
+                  if (!titleStr) return String(idx + 1);
+                  if (titleStr.includes(' - ')) {
+                    const prefix = titleStr.split(' - ')[0].trim();
                     if (prefix.length <= 2) return prefix.toUpperCase();
                   }
-                  return trimmed.charAt(0).toUpperCase() || String(idx + 1);
+                  return titleStr.charAt(0).toUpperCase() || String(idx + 1);
                 })();
 
+                const cleanTitle = (() => {
+                  if (titleStr.includes(' - ')) {
+                    return titleStr.split(' - ').slice(1).join(' - ').trim();
+                  }
+                  return titleStr;
+                })();
+
+                const descStr = (it.desc || '').trim();
+                let slogan = '';
+                let explanation = descStr;
+                const periodIdx = descStr.indexOf('.');
+                if (periodIdx !== -1 && periodIdx < 45) {
+                  slogan = descStr.slice(0, periodIdx).trim();
+                  explanation = descStr.slice(periodIdx + 1).trim();
+                }
+
+                const renderIcon = () => {
+                  switch (badgeLetter) {
+                    case 'R':
+                      return <Zap className="w-4 h-4 text-gold" />;
+                    case 'I':
+                      return idx === 1 ? <BookOpen className="w-4 h-4 text-gold" /> : <Compass className="w-4 h-4 text-gold" />;
+                    case 'C':
+                      return idx === 2 ? <MessageSquare className="w-4 h-4 text-gold" /> : <Lightbulb className="w-4 h-4 text-gold" />;
+                    case 'E':
+                      return <Award className="w-4 h-4 text-gold" />;
+                    case 'P':
+                      return <ShieldCheck className="w-4 h-4 text-gold" />;
+                    default:
+                      return <Sparkles className="w-4 h-4 text-gold" />;
+                  }
+                };
+
                 return (
-                  <div key={idx} className="p-5 rounded-2xl bg-[#14141a] border border-white/10 hover:border-gold/50 transition flex flex-col justify-between">
-                    <div>
-                      <div className="w-10 h-10 rounded-xl bg-gold text-navy font-black text-base flex items-center justify-center mb-3 shrink-0 uppercase select-none shadow-md">
-                        {badgeLetter}
+                  <div
+                    key={idx}
+                    className="group relative w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] flex flex-col justify-between p-6 rounded-2xl bg-gradient-to-b from-[#141620] via-[#10121a] to-[#0b0c12] border border-white/10 hover:border-gold/50 shadow-lg hover:shadow-[0_12px_35px_rgba(197,160,89,0.14)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+                  >
+                    {/* Top Accent Gold Line */}
+                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent group-hover:via-gold transition-colors duration-500" />
+
+                    {/* Watermark Monogram Letter in Background */}
+                    <span className="absolute right-3 top-2 text-6xl md:text-7xl font-serif font-black text-gold/[0.05] group-hover:text-gold/[0.12] select-none pointer-events-none transition-colors duration-300">
+                      {badgeLetter}
+                    </span>
+
+                    <div className="relative z-10">
+                      {/* Monogram Seal & Micro-Icon Badge */}
+                      <div className="flex items-center justify-between mb-5">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold/30 via-gold/15 to-gold/5 border border-gold/40 flex items-center justify-center font-serif text-xl font-bold text-gold shadow-[0_0_20px_rgba(197,160,89,0.18)] group-hover:scale-105 group-hover:border-gold transition-all duration-300">
+                          {badgeLetter}
+                        </div>
+                        <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-gold/15 group-hover:border-gold/30 transition-colors">
+                          {renderIcon()}
+                        </div>
                       </div>
-                      <h4 className="text-sm font-bold text-white mb-2 leading-snug">{it.title}</h4>
-                      <p className="text-xs text-gray-400 leading-relaxed font-light">{it.desc}</p>
+
+                      {/* Title */}
+                      <h3 className="text-base font-serif font-bold text-white tracking-wide uppercase mb-2 group-hover:text-gold transition-colors">
+                        {cleanTitle}
+                      </h3>
+
+                      {/* Slogan Motto (Italic Gold) */}
+                      {slogan && (
+                        <div className="text-xs font-serif italic text-gold/90 font-medium mb-2.5 pb-2 border-b border-white/5">
+                          "{slogan}"
+                        </div>
+                      )}
+
+                      {/* Explanation Description */}
+                      <p className="text-xs text-gray-300/85 leading-relaxed font-light">
+                        {explanation}
+                      </p>
+                    </div>
+
+                    {/* Bottom subtle indicator */}
+                    <div className="relative z-10 pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-gray-400 group-hover:text-gold/80 transition-colors">
+                      <span className="font-mono tracking-widest uppercase">PRINSIP #{idx + 1}</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
                     </div>
                   </div>
                 );
