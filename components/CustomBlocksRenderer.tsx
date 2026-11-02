@@ -552,16 +552,30 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
                 </p>
               )}
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {items.map((it: any, idx: number) => (
-                <div key={idx} className="p-5 rounded-2xl bg-[#14141a] border border-white/10 hover:border-gold/50 transition">
-                  <div className="w-9 h-9 rounded-xl bg-gold text-navy font-black text-sm flex items-center justify-center mb-3">
-                    {it.title.split(' - ')[0] || String(idx + 1)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {items.map((it: any, idx: number) => {
+                const badgeLetter = (() => {
+                  if (!it.title) return String(idx + 1);
+                  const trimmed = it.title.trim();
+                  if (trimmed.includes(' - ')) {
+                    const prefix = trimmed.split(' - ')[0].trim();
+                    if (prefix.length <= 2) return prefix.toUpperCase();
+                  }
+                  return trimmed.charAt(0).toUpperCase() || String(idx + 1);
+                })();
+
+                return (
+                  <div key={idx} className="p-5 rounded-2xl bg-[#14141a] border border-white/10 hover:border-gold/50 transition flex flex-col justify-between">
+                    <div>
+                      <div className="w-10 h-10 rounded-xl bg-gold text-navy font-black text-base flex items-center justify-center mb-3 shrink-0 uppercase select-none shadow-md">
+                        {badgeLetter}
+                      </div>
+                      <h4 className="text-sm font-bold text-white mb-2 leading-snug">{it.title}</h4>
+                      <p className="text-xs text-gray-400 leading-relaxed font-light">{it.desc}</p>
+                    </div>
                   </div>
-                  <h4 className="text-sm font-bold text-white mb-1.5">{it.title}</h4>
-                  <p className="text-xs text-gray-400 leading-relaxed">{it.desc}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
