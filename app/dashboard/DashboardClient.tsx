@@ -2562,14 +2562,53 @@ export default function DashboardClient() {
                           <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
                             <div className="text-xs font-bold text-gold uppercase">Visi & Misi</div>
                             <div>
+                              <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Judul Visi</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.visionTitle || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, visionTitle: e.target.value } }))}
+                                className="w-full px-3 py-1.5 rounded-lg bg-[#1b1b24] border border-white/15 text-gold text-xs font-bold mb-2"
+                              />
                               <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Uraian Visi</label>
                               <textarea
                                 rows={3}
                                 value={selectedBlock.data.visionDesc || ''}
                                 onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, visionDesc: e.target.value } }))}
-                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs mb-3"
                               />
                             </div>
+                            {Array.isArray(selectedBlock.data.missions) && (
+                              <div className="space-y-2 pt-2 border-t border-white/10">
+                                <label className="block text-[11px] font-bold text-gold uppercase">Daftar Misi ({selectedBlock.data.missions.length})</label>
+                                {selectedBlock.data.missions.map((m: any, mIdx: number) => (
+                                  <div key={mIdx} className="p-2.5 rounded bg-[#121217] border border-white/10 space-y-1.5">
+                                    <div className="text-[10px] text-gray-400 font-bold">MISI #{mIdx + 1}</div>
+                                    <input
+                                      type="text"
+                                      value={m.title || ''}
+                                      onChange={(e) => {
+                                        const nextM = [...selectedBlock.data.missions];
+                                        nextM[mIdx] = { ...m, title: e.target.value };
+                                        handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, missions: nextM } }));
+                                      }}
+                                      placeholder="Judul Misi"
+                                      className="w-full px-2 py-1 rounded bg-[#1b1b24] border border-white/10 text-gold text-xs font-bold"
+                                    />
+                                    <textarea
+                                      rows={2}
+                                      value={m.desc || ''}
+                                      onChange={(e) => {
+                                        const nextM = [...selectedBlock.data.missions];
+                                        nextM[mIdx] = { ...m, desc: e.target.value };
+                                        handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, missions: nextM } }));
+                                      }}
+                                      placeholder="Uraian Misi"
+                                      className="w-full px-2 py-1 rounded bg-[#1b1b24] border border-white/10 text-white text-xs"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         )}
 
@@ -2839,13 +2878,15 @@ export default function DashboardClient() {
                                       ? { q: 'Pertanyaan Baru?', a: 'Jawaban penjelasan...' }
                                       : selectedBlock.type === 'testimonials'
                                       ? { text: 'Testimoni klien...', name: 'Nama Klien', role: 'Jabatan' }
+                                      : selectedBlock.type === 'about_values'
+                                      ? { title: 'NILAI BARU', desc: 'Uraian prinsip dan nilai...' }
                                       : { title: 'Judul Fitur', desc: 'Deskripsi fitur...' };
                                   handleUpdateSelectedBlock((b) => ({
                                     ...b,
                                     data: { ...b.data, items: [...b.data.items, newItem] }
                                   }));
                                 }}
-                                className="px-2.5 py-1 rounded bg-gold text-navy text-[10px] font-bold cursor-pointer"
+                                className="px-2.5 py-1 rounded bg-gold text-navy text-[10px] font-bold cursor-pointer hover:bg-white transition"
                               >
                                 + Tambah Item
                               </button>
@@ -2857,7 +2898,7 @@ export default function DashboardClient() {
                                 className="p-3 rounded-xl bg-[#1b1b24] border border-white/10 space-y-2"
                               >
                                 <div className="flex items-center justify-between text-[10px] text-gray-400 font-bold">
-                                  <span>ITEM #{idx + 1}</span>
+                                  <span className="text-gold font-mono">ITEM #{idx + 1}</span>
                                   <button
                                     type="button"
                                     onClick={() =>
@@ -2869,7 +2910,7 @@ export default function DashboardClient() {
                                         }
                                       }))
                                     }
-                                    className="text-red-400 hover:underline cursor-pointer"
+                                    className="text-red-400 hover:text-red-300 hover:underline cursor-pointer"
                                   >
                                     Hapus
                                   </button>
@@ -2877,151 +2918,273 @@ export default function DashboardClient() {
 
                                 {selectedBlock.type === 'stats_bar' && (
                                   <div className="grid grid-cols-2 gap-2">
-                                    <input
-                                      type="text"
-                                      value={item.value || ''}
-                                      onChange={(e) => {
-                                        const next = [...selectedBlock.data.items];
-                                        next[idx] = { ...item, value: e.target.value };
-                                        handleUpdateSelectedBlock((b) => ({
-                                          ...b,
-                                          data: { ...b.data, items: next }
-                                        }));
-                                      }}
-                                      placeholder="Angka (448+)"
-                                      className="px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gold text-xs font-bold"
-                                    />
-                                    <input
-                                      type="text"
-                                      value={item.label || ''}
-                                      onChange={(e) => {
-                                        const next = [...selectedBlock.data.items];
-                                        next[idx] = { ...item, label: e.target.value };
-                                        handleUpdateSelectedBlock((b) => ({
-                                          ...b,
-                                          data: { ...b.data, items: next }
-                                        }));
-                                      }}
-                                      placeholder="Label"
-                                      className="px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs"
-                                    />
+                                    <div>
+                                      <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Nilai / Angka</label>
+                                      <input
+                                        type="text"
+                                        value={item.value || ''}
+                                        onChange={(e) => {
+                                          const next = [...selectedBlock.data.items];
+                                          next[idx] = { ...item, value: e.target.value };
+                                          handleUpdateSelectedBlock((b) => ({
+                                            ...b,
+                                            data: { ...b.data, items: next }
+                                          }));
+                                        }}
+                                        placeholder="Angka (448+)"
+                                        className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gold text-xs font-bold"
+                                      />
+                                    </div>
+                                    <div>
+                                      <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Label Statistik</label>
+                                      <input
+                                        type="text"
+                                        value={item.label || ''}
+                                        onChange={(e) => {
+                                          const next = [...selectedBlock.data.items];
+                                          next[idx] = { ...item, label: e.target.value };
+                                          handleUpdateSelectedBlock((b) => ({
+                                            ...b,
+                                            data: { ...b.data, items: next }
+                                          }));
+                                        }}
+                                        placeholder="Label"
+                                        className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs"
+                                      />
+                                    </div>
                                   </div>
                                 )}
 
-                                {selectedBlock.type === 'features_grid' && (
-                                  <>
-                                    <input
-                                      type="text"
-                                      value={item.title || ''}
-                                      onChange={(e) => {
-                                        const next = [...selectedBlock.data.items];
-                                        next[idx] = { ...item, title: e.target.value };
-                                        handleUpdateSelectedBlock((b) => ({
-                                          ...b,
-                                          data: { ...b.data, items: next }
-                                        }));
-                                      }}
-                                      placeholder="Judul Kartu"
-                                      className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs font-bold"
-                                    />
-                                    <textarea
-                                      rows={2}
-                                      value={item.desc || ''}
-                                      onChange={(e) => {
-                                        const next = [...selectedBlock.data.items];
-                                        next[idx] = { ...item, desc: e.target.value };
-                                        handleUpdateSelectedBlock((b) => ({
-                                          ...b,
-                                          data: { ...b.data, items: next }
-                                        }));
-                                      }}
-                                      placeholder="Deskripsi"
-                                      className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gray-300 text-xs"
-                                    />
-                                  </>
+                                {(selectedBlock.type === 'features_grid' || selectedBlock.type === 'about_values' || (!['stats_bar', 'faq', 'testimonials'].includes(selectedBlock.type))) && (
+                                  <div className="space-y-2">
+                                    <div>
+                                      <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">
+                                        {selectedBlock.type === 'about_values' ? 'Nama Nilai / Prinsip' : 'Judul Item / Fitur'}
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={item.title || ''}
+                                        onChange={(e) => {
+                                          const next = [...selectedBlock.data.items];
+                                          next[idx] = { ...item, title: e.target.value };
+                                          handleUpdateSelectedBlock((b) => ({
+                                            ...b,
+                                            data: { ...b.data, items: next }
+                                          }));
+                                        }}
+                                        placeholder="Judul (misal: R - RESPONSIVE)"
+                                        className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs font-bold"
+                                      />
+                                    </div>
+                                    <div>
+                                      <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Deskripsi / Uraian</label>
+                                      <textarea
+                                        rows={2}
+                                        value={item.desc || ''}
+                                        onChange={(e) => {
+                                          const next = [...selectedBlock.data.items];
+                                          next[idx] = { ...item, desc: e.target.value };
+                                          handleUpdateSelectedBlock((b) => ({
+                                            ...b,
+                                            data: { ...b.data, items: next }
+                                          }));
+                                        }}
+                                        placeholder="Deskripsi penjelasan..."
+                                        className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gray-300 text-xs"
+                                      />
+                                    </div>
+                                    {selectedBlock.type === 'features_grid' && (
+                                      <div className="grid grid-cols-2 gap-2 pt-1">
+                                        <div>
+                                          <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Badge Kartu</label>
+                                          <input
+                                            type="text"
+                                            value={item.badge || ''}
+                                            onChange={(e) => {
+                                              const next = [...selectedBlock.data.items];
+                                              next[idx] = { ...item, badge: e.target.value };
+                                              handleUpdateSelectedBlock((b) => ({
+                                                ...b,
+                                                data: { ...b.data, items: next }
+                                              }));
+                                            }}
+                                            placeholder="misal: 34 Cakupan Perkara"
+                                            className="w-full px-2 py-1 rounded bg-[#121217] border border-white/10 text-gold text-[11px]"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">URL Gambar</label>
+                                          <input
+                                            type="text"
+                                            value={item.image || ''}
+                                            onChange={(e) => {
+                                              const next = [...selectedBlock.data.items];
+                                              next[idx] = { ...item, image: e.target.value };
+                                              handleUpdateSelectedBlock((b) => ({
+                                                ...b,
+                                                data: { ...b.data, items: next }
+                                              }));
+                                            }}
+                                            placeholder="https://..."
+                                            className="w-full px-2 py-1 rounded bg-[#121217] border border-white/10 text-gray-300 text-[11px]"
+                                          />
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
 
                                 {selectedBlock.type === 'faq' && (
-                                  <>
-                                    <input
-                                      type="text"
-                                      value={item.q || ''}
-                                      onChange={(e) => {
-                                        const next = [...selectedBlock.data.items];
-                                        next[idx] = { ...item, q: e.target.value };
-                                        handleUpdateSelectedBlock((b) => ({
-                                          ...b,
-                                          data: { ...b.data, items: next }
-                                        }));
-                                      }}
-                                      placeholder="Pertanyaan"
-                                      className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs font-bold"
-                                    />
-                                    <textarea
-                                      rows={2}
-                                      value={item.a || ''}
-                                      onChange={(e) => {
-                                        const next = [...selectedBlock.data.items];
-                                        next[idx] = { ...item, a: e.target.value };
-                                        handleUpdateSelectedBlock((b) => ({
-                                          ...b,
-                                          data: { ...b.data, items: next }
-                                        }));
-                                      }}
-                                      placeholder="Jawaban"
-                                      className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gray-300 text-xs"
-                                    />
-                                  </>
+                                  <div className="space-y-2">
+                                    <div>
+                                      <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Pertanyaan</label>
+                                      <input
+                                        type="text"
+                                        value={item.q || ''}
+                                        onChange={(e) => {
+                                          const next = [...selectedBlock.data.items];
+                                          next[idx] = { ...item, q: e.target.value };
+                                          handleUpdateSelectedBlock((b) => ({
+                                            ...b,
+                                            data: { ...b.data, items: next }
+                                          }));
+                                        }}
+                                        placeholder="Pertanyaan"
+                                        className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs font-bold"
+                                      />
+                                    </div>
+                                    <div>
+                                      <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Jawaban</label>
+                                      <textarea
+                                        rows={2}
+                                        value={item.a || ''}
+                                        onChange={(e) => {
+                                          const next = [...selectedBlock.data.items];
+                                          next[idx] = { ...item, a: e.target.value };
+                                          handleUpdateSelectedBlock((b) => ({
+                                            ...b,
+                                            data: { ...b.data, items: next }
+                                          }));
+                                        }}
+                                        placeholder="Jawaban"
+                                        className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gray-300 text-xs"
+                                      />
+                                    </div>
+                                  </div>
                                 )}
 
                                 {selectedBlock.type === 'testimonials' && (
-                                  <>
-                                    <textarea
-                                      rows={2}
-                                      value={item.text || ''}
-                                      onChange={(e) => {
-                                        const next = [...selectedBlock.data.items];
-                                        next[idx] = { ...item, text: e.target.value };
-                                        handleUpdateSelectedBlock((b) => ({
-                                          ...b,
-                                          data: { ...b.data, items: next }
-                                        }));
-                                      }}
-                                      placeholder="Kutipan Testimoni"
-                                      className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs"
-                                    />
-                                    <div className="grid grid-cols-2 gap-2">
-                                      <input
-                                        type="text"
-                                        value={item.name || ''}
+                                  <div className="space-y-2">
+                                    <div>
+                                      <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Kutipan Testimoni</label>
+                                      <textarea
+                                        rows={2}
+                                        value={item.text || ''}
                                         onChange={(e) => {
                                           const next = [...selectedBlock.data.items];
-                                          next[idx] = { ...item, name: e.target.value };
+                                          next[idx] = { ...item, text: e.target.value };
                                           handleUpdateSelectedBlock((b) => ({
                                             ...b,
                                             data: { ...b.data, items: next }
                                           }));
                                         }}
-                                        placeholder="Nama Klien"
-                                        className="px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs"
-                                      />
-                                      <input
-                                        type="text"
-                                        value={item.role || ''}
-                                        onChange={(e) => {
-                                          const next = [...selectedBlock.data.items];
-                                          next[idx] = { ...item, role: e.target.value };
-                                          handleUpdateSelectedBlock((b) => ({
-                                            ...b,
-                                            data: { ...b.data, items: next }
-                                          }));
-                                        }}
-                                        placeholder="Jabatan / Perusahaan"
-                                        className="px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gold text-xs"
+                                        placeholder="Kutipan Testimoni"
+                                        className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs"
                                       />
                                     </div>
-                                  </>
+                                    <div className="grid grid-cols-2 gap-2">
+                                      <div>
+                                        <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Nama Klien</label>
+                                        <input
+                                          type="text"
+                                          value={item.name || ''}
+                                          onChange={(e) => {
+                                            const next = [...selectedBlock.data.items];
+                                            next[idx] = { ...item, name: e.target.value };
+                                            handleUpdateSelectedBlock((b) => ({
+                                              ...b,
+                                              data: { ...b.data, items: next }
+                                            }));
+                                          }}
+                                          placeholder="Nama Klien"
+                                          className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-white text-xs"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-[9px] font-bold text-gray-400 uppercase mb-0.5">Jabatan / Peran</label>
+                                        <input
+                                          type="text"
+                                          value={item.role || ''}
+                                          onChange={(e) => {
+                                            const next = [...selectedBlock.data.items];
+                                            next[idx] = { ...item, role: e.target.value };
+                                            handleUpdateSelectedBlock((b) => ({
+                                              ...b,
+                                              data: { ...b.data, items: next }
+                                            }));
+                                          }}
+                                          placeholder="Jabatan / Perusahaan"
+                                          className="w-full px-2.5 py-1.5 rounded bg-[#121217] border border-white/10 text-gold text-xs"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
                                 )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Bullets Array Editor for split_content */}
+                        {Array.isArray(selectedBlock.data.bullets) && (
+                          <div className="space-y-2.5 pt-2 border-t border-white/10">
+                            <div className="flex items-center justify-between">
+                              <label className="text-[11px] font-bold text-gold uppercase">
+                                Poin Keunggulan / Bullets ({selectedBlock.data.bullets.length})
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  handleUpdateSelectedBlock((b) => ({
+                                    ...b,
+                                    data: { ...b.data, bullets: [...b.data.bullets, 'Poin keunggulan baru...'] }
+                                  }));
+                                }}
+                                className="px-2.5 py-1 rounded bg-gold text-navy text-[10px] font-bold cursor-pointer hover:bg-white transition"
+                              >
+                                + Tambah Poin
+                              </button>
+                            </div>
+                            {selectedBlock.data.bullets.map((bullet: string, bIdx: number) => (
+                              <div key={bIdx} className="flex items-center gap-2">
+                                <input
+                                  type="text"
+                                  value={bullet}
+                                  onChange={(e) => {
+                                    const nextB = [...selectedBlock.data.bullets];
+                                    nextB[bIdx] = e.target.value;
+                                    handleUpdateSelectedBlock((b) => ({
+                                      ...b,
+                                      data: { ...b.data, bullets: nextB }
+                                    }));
+                                  }}
+                                  className="flex-1 px-2.5 py-1.5 rounded bg-[#1b1b24] border border-white/10 text-white text-xs"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    handleUpdateSelectedBlock((b) => ({
+                                      ...b,
+                                      data: {
+                                        ...b.data,
+                                        bullets: b.data.bullets.filter((_: any, i: number) => i !== bIdx)
+                                      }
+                                    }));
+                                  }}
+                                  className="text-red-400 hover:text-red-300 text-xs px-2 py-1 cursor-pointer"
+                                >
+                                  Hapus
+                                </button>
                               </div>
                             ))}
                           </div>
