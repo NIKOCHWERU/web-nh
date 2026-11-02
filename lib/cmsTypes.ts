@@ -336,7 +336,7 @@ export const INITIAL_CMS_DB: CmsDatabase = {
     address: 'Jakarta Pusat, Indonesia',
     heroTitle: 'SENTRAL EDUKASI',
     heroHighlight: 'DAN SOLUSI',
-    heroSubtitle: 'Kami memberikan pendampingan hukum yang profesional dengan pendekatan edukatif untuk solusi yang berkeadilan, terpercaya, dan berkelanjutan, guna melindungi hak hukum serta mendukung pertumbuhan bisnis Anda di seluruh Indonesia.',
+    heroSubtitle: 'Kami menyediakan layanan konsultasi dan pendampingan hukum, perizinan, perpajakan, serta legalitas usaha melalui pendekatan edukatif dan solutif. Konsultasikan kebutuhan hukum Anda bersama kami.',
     heroVideoUrl: 'https://res.cloudinary.com/dysw7tjks/video/upload/v1756377208/Desain_tanpa_judul_oeaojq.mp4',
     ctaQuote: 'Keadilan dan Kepastian Hukum Adalah Hak Setiap Warga Negara,',
     ctaGold: 'Konsultasikan Masalah Hukum Anda Bersama Kami.'

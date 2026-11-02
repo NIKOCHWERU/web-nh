@@ -52,7 +52,7 @@ export const translations = {
         },
         hero: {
             title: "Sentral Edukasi Dan Solusi",
-            subtitle: "Kami memberikan pendampingan hukum yang profesional dengan pendekatan edukatif untuk solusi yang berkeadilan, terpercaya, dan berkelanjutan, guna melindungi hak hukum serta mendukung pertumbuhan bisnis Anda di seluruh Indonesia.",
+            subtitle: "Kami menyediakan layanan konsultasi dan pendampingan hukum, perizinan, perpajakan, serta legalitas usaha melalui pendekatan edukatif dan solutif. Konsultasikan kebutuhan hukum Anda bersama kami.",
             cta_services: "Layanan Kami",
             cta_consult: "Konsultasi Sekarang",
             tagline: "Legal Certainty, Constructive Solutions, Empowering Your Legal Journey",
@@ -270,7 +270,7 @@ export const translations = {
         },
         hero: {
             title: "Education and Solution Center",
-            subtitle: "We provide professional legal assistance with an educational approach for fair, trustworthy, and sustainable solutions, safeguarding your legal rights and empowering your business growth across Indonesia.",
+            subtitle: "We provide legal consultation and assistance, licensing, taxation, and business legality through an educational and solutions-oriented approach. Consult your legal needs with us.",
             cta_services: "Our Services",
             cta_consult: "Consult Now",
             tagline: "Legal Certainty, Constructive Solutions, Empowering Your Legal Journey",
