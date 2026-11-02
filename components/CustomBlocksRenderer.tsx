@@ -349,6 +349,244 @@ export function BlockRendererItem({ block, isPreview = false }: { block: PageBlo
       );
     }
 
+        case 'navbar_section': {
+      return (
+        <header className="bg-[#0b0c10] text-white py-4 px-6 border-b border-gold/30 shadow-xl">
+          <div className="container mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <img src={block.data?.logoUrl || '/logo.png'} alt="Logo" className="w-10 h-10 object-contain" />
+              <div>
+                <div className="text-lg font-bold font-serif text-gold tracking-wider leading-tight">
+                  {block.data?.brandName || 'NARASUMBER HUKUM'}
+                </div>
+                <div className="text-[9px] text-gray-300 tracking-[0.25em] uppercase">
+                  {block.data?.tagline || 'SENTRAL EDUKASI & SOLUSI'}
+                </div>
+              </div>
+            </div>
+            <div className="hidden md:flex items-center gap-6 text-xs uppercase tracking-wider font-semibold text-gray-300">
+              <span className="text-gold">Beranda</span>
+              <span>Tentang Kami</span>
+              <span>Layanan</span>
+              <span>Artikel</span>
+              <span>Kontak</span>
+            </div>
+            <Link
+              href={block.data?.ctaUrl || '/kontak'}
+              className="px-5 py-2 rounded-full bg-gold text-navy font-bold text-xs uppercase tracking-widest hover:bg-white transition"
+            >
+              {block.data?.ctaText || 'HUBUNGI'}
+            </Link>
+          </div>
+        </header>
+      );
+    }
+
+    case 'footer_section': {
+      const offices = Array.isArray(block.data?.offices) ? block.data.offices : [];
+      return (
+        <footer className="bg-[#08080a] text-white py-12 px-6 border-t border-white/10">
+          <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                <h4 className="text-lg font-bold font-serif text-gold">NARASUMBER HUKUM</h4>
+              </div>
+              <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                {block.data?.aboutSummary || 'Sentral edukasi dan pendampingan hukum, perizinan, dan pelatihan SDM di seluruh Indonesia.'}
+              </p>
+              <div className="text-xs text-gray-400">
+                WhatsApp: <strong className="text-gold">{block.data?.whatsapp || '0822 1102 0022'}</strong>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-gold uppercase tracking-wider mb-4">Kantor Operasional</h4>
+              <div className="space-y-3 text-xs text-gray-300">
+                {offices.map((off: any, idx: number) => (
+                  <div key={idx} className="border-b border-white/5 pb-2">
+                    <div className="font-bold text-white">{off.name}</div>
+                    <div className="text-[11px] text-gray-400">{off.addr}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-gold uppercase tracking-wider mb-4">Legal & Hak Cipta</h4>
+              <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                Advocate, Intercessor, and Legal Consultant. Dilindungi Undang-Undang Republik Indonesia.
+              </p>
+              <div className="text-xs text-gray-500">
+                © {new Date().getFullYear()} Narasumber Hukum. {block.data?.copyright || 'All Rights Reserved.'}
+              </div>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    case 'about_story': {
+      const paragraphs = Array.isArray(block.data?.paragraphs) ? block.data.paragraphs : [];
+      return (
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-5xl font-black text-navy uppercase tracking-wider">
+                {block.data?.title || 'NARASUMBER HUKUM'}
+              </h2>
+              <div className="w-24 h-1.5 bg-gold mx-auto mt-4 rounded-full"></div>
+            </div>
+            <div className="space-y-5 text-gray-700 text-sm md:text-base leading-relaxed">
+              {paragraphs.map((p: string, idx: number) => (
+                <p key={idx} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  {p}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    case 'about_vision_mission': {
+      const missions = Array.isArray(block.data?.missions) ? block.data.missions : [];
+      return (
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-4xl font-bold uppercase tracking-wide mb-3 text-gold">
+                {block.data?.visionTitle || 'Visi Kami'}
+              </h2>
+              <p className="text-base md:text-xl italic max-w-3xl mx-auto leading-relaxed text-gray-200">
+                "{block.data?.visionDesc}"
+              </p>
+            </div>
+            <div className="border-t border-white/10 pt-10">
+              <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wide mb-8 text-center text-white">
+                {block.data?.missionTitle || 'Misi Kami'}
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {missions.map((m: any, idx: number) => (
+                  <div key={idx} className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-gold/40 transition">
+                    <h4 className="text-sm font-bold text-gold mb-1.5">{m.title}</h4>
+                    <p className="text-xs text-gray-300 leading-relaxed">{m.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    case 'about_values': {
+      const items = Array.isArray(block.data?.items) ? block.data.items : [];
+      return (
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="text-center mb-10">
+              {block.data?.badge && (
+                <span className="inline-block px-3 py-1 rounded-full bg-gold/15 border border-gold/40 text-gold text-xs font-bold uppercase tracking-widest mb-3">
+                  {block.data.badge}
+                </span>
+              )}
+              <h2 className="text-2xl md:text-4xl font-bold mb-3 text-white uppercase tracking-wider">
+                {block.data?.title}
+              </h2>
+              {block.data?.subtitle && (
+                <p className="text-xs md:text-sm text-gray-300 max-w-2xl mx-auto">
+                  {block.data.subtitle}
+                </p>
+              )}
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {items.map((it: any, idx: number) => (
+                <div key={idx} className="p-5 rounded-2xl bg-[#14141a] border border-white/10 hover:border-gold/50 transition">
+                  <div className="w-9 h-9 rounded-xl bg-gold text-navy font-black text-sm flex items-center justify-center mb-3">
+                    {it.title.split(' - ')[0] || String(idx + 1)}
+                  </div>
+                  <h4 className="text-sm font-bold text-white mb-1.5">{it.title}</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">{it.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    case 'services_intro': {
+      return (
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-4xl text-center">
+            {block.data?.badge && (
+              <span className="inline-block px-3.5 py-1 rounded-full bg-gold/15 border border-gold/30 text-gold text-xs font-bold uppercase tracking-widest mb-3">
+                {block.data.badge}
+              </span>
+            )}
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 uppercase text-white">
+              {block.data?.title}
+            </h2>
+            <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-3xl mx-auto">
+              {block.data?.subtitle}
+            </p>
+          </div>
+        </section>
+      );
+    }
+
+    case 'services_catalog': {
+      return (
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-md">
+                <div className="text-xs font-bold text-gold uppercase mb-2">Slide 1</div>
+                <h3 className="text-lg font-bold text-navy mb-2">{block.data?.slide1Title}</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">{block.data?.slide1Desc}</p>
+              </div>
+              <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-md">
+                <div className="text-xs font-bold text-gold uppercase mb-2">Slide 2</div>
+                <h3 className="text-lg font-bold text-navy mb-2">{block.data?.slide2Title}</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">{block.data?.slide2Desc}</p>
+              </div>
+              <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-md">
+                <div className="text-xs font-bold text-gold uppercase mb-2">Slide 3</div>
+                <h3 className="text-lg font-bold text-navy mb-2">{block.data?.slide3Title}</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">{block.data?.slide3Desc}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    case 'contact_form_section': {
+      return (
+        <section className={`${bgClass} ${padClass}`}>
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-4xl font-bold text-navy mb-2 uppercase">{block.data?.title || 'Hubungi Kami'}</h2>
+              <p className="text-xs md:text-sm text-gray-500">{block.data?.subtitle}</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              <div className="p-4 rounded-xl bg-white border border-gray-200 text-center">
+                <div className="text-[11px] font-bold text-gray-400 uppercase">WhatsApp</div>
+                <div className="text-xs font-bold text-navy">{block.data?.whatsapp}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white border border-gray-200 text-center">
+                <div className="text-[11px] font-bold text-gray-400 uppercase">Email</div>
+                <div className="text-xs font-bold text-navy">{block.data?.email}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white border border-gray-200 text-center">
+                <div className="text-[11px] font-bold text-gray-400 uppercase">Alamat</div>
+                <div className="text-xs font-bold text-navy">{block.data?.address}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
     default:
       return null;
   }

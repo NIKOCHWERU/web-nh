@@ -242,9 +242,10 @@ export default function DashboardClient() {
   const [selectedMessage, setSelectedMessage] = useState<CmsContactMessage | null>(null);
 
   // --- VISUAL BUILDER (ELEMENTOR) STATE ---
-  const [builderPage, setBuilderPage] = useState<'home' | 'tentang' | 'services' | 'kontak'>('home');
+  const [builderPage, setBuilderPage] = useState<'home' | 'tentang' | 'services' | 'kontak' | 'global'>('home');
   const [builderViewport, setBuilderViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
+  const [canvasFocusMode, setCanvasFocusMode] = useState<'focused' | 'all'>('focused');
   const [inspectorTab, setInspectorTab] = useState<'content' | 'style' | 'global'>('content');
 
   // --- USERS MODULE STATE ---
@@ -398,6 +399,13 @@ export default function DashboardClient() {
   const selectedBlock = useMemo(() => {
     return db.blocks.find((b) => b.id === selectedBlockId) || null;
   }, [db.blocks, selectedBlockId]);
+
+  const displayedBlocks = useMemo(() => {
+    if (canvasFocusMode === 'focused' && selectedBlock) {
+      return [selectedBlock];
+    }
+    return currentPageBlocks;
+  }, [canvasFocusMode, selectedBlock, currentPageBlocks]);
 
   const unreadCount = useMemo(
     () => db.messages.filter((m) => m.status === 'unread').length,
@@ -1892,12 +1900,13 @@ export default function DashboardClient() {
                       const first = db.blocks.find((b) => b.page === nextPage);
                       setSelectedBlockId(first?.id || null);
                     }}
-                    className="px-3.5 py-1.5 rounded-lg bg-[#0e0e12] border border-gold/40 text-white text-xs font-bold focus:outline-none"
+                    className="px-3.5 py-1.5 rounded-lg bg-[#0e0e12] border border-gold/40 text-white text-xs font-bold focus:outline-none cursor-pointer"
                   >
-                    <option value="home">Beranda (/)</option>
-                    <option value="tentang">Tentang Kami (/tentang)</option>
-                    <option value="services">Layanan (/services)</option>
-                    <option value="kontak">Kontak (/kontak)</option>
+                    <option value="global">🌐 Global (Header Navbar & Footer)</option>
+                    <option value="home">🏠 Beranda (/)</option>
+                    <option value="tentang">📄 Tentang Kami (/tentang)</option>
+                    <option value="services">⚖️ Layanan (/services)</option>
+                    <option value="kontak">📞 Kontak (/kontak)</option>
                   </select>
                 </div>
 
@@ -2046,15 +2055,45 @@ export default function DashboardClient() {
                     }`}
                   >
                     {/* Canvas Header Indicator */}
-                    <div className="bg-[#18181f] text-gray-300 px-4 py-2 text-[11px] flex items-center justify-between border-b border-white/10">
-                      <span>
-                        Kanvas Live Preview: <strong className="text-gold uppercase">{builderPage}</strong>
-                      </span>
-                      <span>Klik blok untuk mengedit di panel kanan</span>
+                    <div className="bg-[#18181f] text-gray-300 px-4 py-2 text-[11px] flex flex-wrap items-center justify-between gap-2 border-b border-white/10">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>
+                          Live Preview: <strong className="text-gold uppercase">{builderPage}</strong>
+                        </span>
+                        {selectedBlock && (
+                          <span className="bg-gold/15 text-gold border border-gold/30 px-2 py-0.5 rounded text-[10px] font-bold">
+                            Fokus: {selectedBlock.name}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[10px]">
+                        <span className="text-gray-400">Mode:</span>
+                        <button
+                          type="button"
+                          onClick={() => setCanvasFocusMode('focused')}
+                          className={`px-2 py-0.5 rounded font-bold transition cursor-pointer ${
+                            canvasFocusMode === 'focused' ? 'bg-gold text-navy' : 'bg-white/10 text-gray-300 hover:text-white'
+                          }`}
+                          title="Hanya tampilkan potongan div/komponen yang sedang aktif diedit"
+                        >
+                          Potongan Komponen
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCanvasFocusMode('all')}
+                          className={`px-2 py-0.5 rounded font-bold transition cursor-pointer ${
+                            canvasFocusMode === 'all' ? 'bg-gold text-navy' : 'bg-white/10 text-gray-300 hover:text-white'
+                          }`}
+                          title="Tampilkan semua blok di halaman ini"
+                        >
+                          Semua Blok
+                        </button>
+                      </div>
                     </div>
 
-                    {currentPageBlocks.length > 0 ? (
-                      currentPageBlocks.map((block, idx) => (
+                    {displayedBlocks.length > 0 ? (
+                      displayedBlocks.map((block, idx) => (
                         <div
                           key={block.id}
                           onClick={() => {
@@ -2358,6 +2397,188 @@ export default function DashboardClient() {
                             {selectedBlock.type}
                           </span>
                         </div>
+
+                        
+                        {/* NAVBAR SECTION EDITORS */}
+                        {selectedBlock.type === 'navbar_section' && (
+                          <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
+                            <div className="text-xs font-bold text-gold uppercase">Pengaturan Navbar Header</div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Nama Brand / Judul</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.brandName || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, brandName: e.target.value } }))}
+                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Tagline Navbar</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.tagline || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, tagline: e.target.value } }))}
+                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">URL Logo (Contoh: /logo.png)</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.logoUrl || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, logoUrl: e.target.value } }))}
+                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs font-mono"
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Teks Tombol CTA</label>
+                                <input
+                                  type="text"
+                                  value={selectedBlock.data.ctaText || ''}
+                                  onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, ctaText: e.target.value } }))}
+                                  className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Link Tombol CTA</label>
+                                <input
+                                  type="text"
+                                  value={selectedBlock.data.ctaUrl || ''}
+                                  onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, ctaUrl: e.target.value } }))}
+                                  className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* FOOTER SECTION EDITORS */}
+                        {selectedBlock.type === 'footer_section' && (
+                          <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
+                            <div className="text-xs font-bold text-gold uppercase">Pengaturan Footer</div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Deskripsi Singkat Footer</label>
+                              <textarea
+                                rows={3}
+                                value={selectedBlock.data.aboutSummary || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, aboutSummary: e.target.value } }))}
+                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Nomor WhatsApp</label>
+                                <input
+                                  type="text"
+                                  value={selectedBlock.data.whatsapp || ''}
+                                  onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, whatsapp: e.target.value } }))}
+                                  className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs font-mono"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Teks Hak Cipta</label>
+                                <input
+                                  type="text"
+                                  value={selectedBlock.data.copyright || ''}
+                                  onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, copyright: e.target.value } }))}
+                                  className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* ABOUT STORY PARAGRAPHS */}
+                        {selectedBlock.type === 'about_story' && Array.isArray(selectedBlock.data.paragraphs) && (
+                          <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
+                            <div className="text-xs font-bold text-gold uppercase">Paragraf Kisah & Profil</div>
+                            {selectedBlock.data.paragraphs.map((p: string, idx: number) => (
+                              <div key={idx}>
+                                <label className="block text-[10px] font-bold text-gray-400 mb-1">Paragraf {idx + 1}</label>
+                                <textarea
+                                  rows={4}
+                                  value={p}
+                                  onChange={(e) => {
+                                    const next = [...selectedBlock.data.paragraphs];
+                                    next[idx] = e.target.value;
+                                    handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, paragraphs: next } }));
+                                  }}
+                                  className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* ABOUT VISION MISSION */}
+                        {selectedBlock.type === 'about_vision_mission' && (
+                          <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
+                            <div className="text-xs font-bold text-gold uppercase">Visi & Misi</div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-400 uppercase mb-1">Uraian Visi</label>
+                              <textarea
+                                rows={3}
+                                value={selectedBlock.data.visionDesc || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, visionDesc: e.target.value } }))}
+                                className="w-full px-3 py-2 rounded-lg bg-[#1b1b24] border border-white/15 text-white text-xs"
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* SERVICES CATALOG SLIDES */}
+                        {selectedBlock.type === 'services_catalog' && (
+                          <div className="space-y-3 p-3 bg-white/5 rounded-xl border border-gold/30">
+                            <div className="text-xs font-bold text-gold uppercase">Uraian 3 Slide Layanan</div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-gray-400 mb-0.5">Judul Slide 1</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.slide1Title || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, slide1Title: e.target.value } }))}
+                                className="w-full px-3 py-1.5 rounded bg-[#1b1b24] border border-white/15 text-white text-xs mb-1"
+                              />
+                              <textarea
+                                rows={2}
+                                value={selectedBlock.data.slide1Desc || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, slide1Desc: e.target.value } }))}
+                                className="w-full px-3 py-1.5 rounded bg-[#1b1b24] border border-white/15 text-white text-xs"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-gray-400 mb-0.5">Judul Slide 2</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.slide2Title || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, slide2Title: e.target.value } }))}
+                                className="w-full px-3 py-1.5 rounded bg-[#1b1b24] border border-white/15 text-white text-xs mb-1"
+                              />
+                              <textarea
+                                rows={2}
+                                value={selectedBlock.data.slide2Desc || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, slide2Desc: e.target.value } }))}
+                                className="w-full px-3 py-1.5 rounded bg-[#1b1b24] border border-white/15 text-white text-xs"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-gray-400 mb-0.5">Judul Slide 3</label>
+                              <input
+                                type="text"
+                                value={selectedBlock.data.slide3Title || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, slide3Title: e.target.value } }))}
+                                className="w-full px-3 py-1.5 rounded bg-[#1b1b24] border border-white/15 text-white text-xs mb-1"
+                              />
+                              <textarea
+                                rows={2}
+                                value={selectedBlock.data.slide3Desc || ''}
+                                onChange={(e) => handleUpdateSelectedBlock(b => ({ ...b, data: { ...b.data, slide3Desc: e.target.value } }))}
+                                className="w-full px-3 py-1.5 rounded bg-[#1b1b24] border border-white/15 text-white text-xs"
+                              />
+                            </div>
+                          </div>
+                        )}
+
 
                         {/* Common fields: badge, title, highlight, subtitle */}
                         {selectedBlock.data.badge !== undefined && (

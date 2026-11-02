@@ -55,7 +55,7 @@ export interface CmsContactMessage {
 
 export interface PageBlock {
   id: string;
-  page: 'home' | 'tentang' | 'services' | 'kontak';
+  page: 'home' | 'tentang' | 'services' | 'kontak' | 'global';
   type:
     | 'hero'
     | 'heading_text'
@@ -65,7 +65,7 @@ export interface PageBlock {
     | 'testimonials'
     | 'faq'
     | 'cta_banner'
-    | 'custom_html';
+    | 'custom_html' | 'navbar_section' | 'footer_section' | 'about_story' | 'about_vision_mission' | 'about_values' | 'services_intro' | 'services_catalog' | 'contact_form_section';
   name: string;
   visible: boolean;
   order: number;
@@ -301,33 +301,304 @@ export const INITIAL_CMS_DB: CmsDatabase = {
       created_at: '2026-10-22T14:40:00.000Z'
     }
   ],
-  blocks: [
-    {
-      id: 'blk-home-stats',
-      page: 'home',
-      type: 'stats_bar',
-      name: 'Statistik & Cakupan Layanan Utama',
-      visible: true,
-      order: 1,
-      style: {
-        bgTheme: 'navy',
-        paddingY: 'md',
-        align: 'center',
-        accentColor: '#C5A059'
-      },
-      data: {
-        badge: 'SENTRAL EDUKASI & SOLUSI HUKUM TERPADU',
-        title: 'Kesatuan Pelayanan Hukum, Legalitas & Pengembangan SDM',
-        subtitle: 'Didukung kolaborasi strategis bersama PT Sedana Legal Consultant (SELECO), SELECO Project, dan PT Teira Dwan Indonesia (MTI-Talenstory).',
-        items: [
-          { value: '448+', label: 'Total Cakupan Layanan' },
-          { value: '34', label: 'Cakupan Perkara Hukum' },
-          { value: '411', label: 'Layanan Izin, Pajak & BPN' },
-          { value: '18', label: 'Kementerian Terkait' }
-        ]
-      }
+  
+export const DEFAULT_PRESET_BLOCKS: PageBlock[] = [
+  // GLOBAL
+  {
+    id: 'blk-global-navbar',
+    page: 'global',
+    type: 'navbar_section',
+    name: 'Header & Navbar Utama',
+    visible: true,
+    order: 1,
+    style: { bgTheme: 'navy', paddingY: 'sm', align: 'left', accentColor: '#C5A059' },
+    data: {
+      brandName: 'NARASUMBER HUKUM',
+      tagline: 'SENTRAL EDUKASI & SOLUSI',
+      logoUrl: '/logo.png',
+      ctaText: 'HUBUNGI',
+      ctaUrl: '/kontak'
     }
-  ],
+  },
+  {
+    id: 'blk-global-footer',
+    page: 'global',
+    type: 'footer_section',
+    name: 'Footer & Informasi Kontak Bawah',
+    visible: true,
+    order: 2,
+    style: { bgTheme: 'navy', paddingY: 'md', align: 'left', accentColor: '#C5A059' },
+    data: {
+      aboutSummary: 'Merupakan tempat berkumpulnya para Aktivis Handal dibidang Hukum, Perizinan, Legalitas, Pengembangan dan Pelatihan SDM yang telah terkoneksi dalam satu pintu untuk dapat melayani kebutuhan Klien kami di Seluruh Indonesia.',
+      offices: [
+        { name: 'Kantor I', addr: 'Jl.M.H Thamrin No. 9 Lt 12, Kebon Sirih Menteng, DKI Jakarta, 10340' },
+        { name: 'Kantor II', addr: 'Jl. Sunset Road No. 77, Lt.3, Kuta, Kec. Kuta, Badung, Bali, 80361' },
+        { name: 'Kantor III', addr: 'Jl. Kertabumi No 1 Ruko Kertabumi Blok A No.9 Lantai 2 Karawang Kulon, Karawang Barat, Jawa Barat' }
+      ],
+      whatsapp: '0822 1102 0022',
+      email: 'hello@narasumberhukum.com',
+      copyright: 'All Rights Reserved.'
+    }
+  },
+
+  // BERANDA (HOME)
+  {
+    id: 'blk-home-hero',
+    page: 'home',
+    type: 'hero',
+    name: 'Hero Banner Beranda',
+    visible: true,
+    order: 1,
+    style: { bgTheme: 'navy', paddingY: 'lg', align: 'left', accentColor: '#C5A059' },
+    data: {
+      badge: 'SENTRAL EDUKASI & SOLUSI HUKUM',
+      title: 'SENTRAL EDUKASI',
+      highlight: 'DAN SOLUSI',
+      subtitle: 'Kami menyediakan layanan konsultasi dan pendampingan hukum, perizinan, perpajakan, serta legalitas usaha melalui pendekatan edukatif dan solutif. Konsultasikan kebutuhan hukum Anda bersama kami.',
+      buttonText: 'LAYANAN KAMI',
+      buttonUrl: '/services',
+      secondaryBtnText: 'KONSULTASI SEKARANG',
+      secondaryBtnUrl: '/kontak',
+      bgVideoUrl: 'https://res.cloudinary.com/dysw7tjks/video/upload/v1756377208/Desain_tanpa_judul_oeaojq.mp4'
+    }
+  },
+  {
+    id: 'blk-home-stats',
+    page: 'home',
+    type: 'stats_bar',
+    name: 'Statistik & Ringkasan Layanan',
+    visible: true,
+    order: 2,
+    style: { bgTheme: 'navy', paddingY: 'md', align: 'center', accentColor: '#C5A059' },
+    data: {
+      badge: 'SENTRAL EDUKASI & SOLUSI TERPADU',
+      title: 'Kesatuan Pelayanan Hukum, Legalitas & Pengembangan SDM',
+      subtitle: 'Didukung kolaborasi strategis bersama PT Sedana Legal Consultant (SELECO), SELECO Project, dan PT Teira Dwan Indonesia (MTI-Talenstory).',
+      items: [
+        { value: '448+', label: 'Total Cakupan Layanan' },
+        { value: '34', label: 'Cakupan Perkara Hukum' },
+        { value: '411', label: 'Layanan Izin, Pajak & BPN' },
+        { value: '18', label: 'Kementerian Terkait' }
+      ]
+    }
+  },
+  {
+    id: 'blk-home-features',
+    page: 'home',
+    type: 'features_grid',
+    name: 'Pilar 3 Layanan Unggulan',
+    visible: true,
+    order: 3,
+    style: { bgTheme: 'white', paddingY: 'md', align: 'center', accentColor: '#C5A059' },
+    data: {
+      badge: 'LAYANAN UNGGULAN',
+      title: 'Solusi Terpadu Kebutuhan Hukum & Bisnis',
+      subtitle: 'Solusi hukum komprehensif yang disesuaikan dengan kebutuhan Anda.',
+      items: [
+        {
+          title: 'Bidang Hukum',
+          desc: 'Kami siap mendampingi, memberikan pertimbangan, serta melakukan segala bentuk upaya hukum di Indonesia (Litigasi & Non-Litigasi).'
+        },
+        {
+          title: 'Perizinan & Legalitas (411 Layanan)',
+          desc: 'Solusi praktis perlindungan aset dan legalitas bisnis. Kami mendampingi dari investasi awal hingga operasional lintas 18 Kementerian.'
+        },
+        {
+          title: 'Pengembangan & Pelatihan SDM',
+          desc: 'Kami berdedikasi merancang langkah perubahan berdampak bagi individu dan perusahaan melalui metode pelatihan SDM inovatif.'
+        }
+      ]
+    }
+  },
+  {
+    id: 'blk-home-values',
+    page: 'home',
+    type: 'about_values',
+    name: 'Nilai-Nilai Perusahaan (RICCIEP)',
+    visible: true,
+    order: 4,
+    style: { bgTheme: 'navy', paddingY: 'lg', align: 'center', accentColor: '#C5A059' },
+    data: {
+      badge: 'OUR VALUES',
+      title: 'Nilai-Nilai Utama (R-I-C-C-I-E-P)',
+      subtitle: 'Prinsip utama yang menjadi landasan setiap langkah kami dalam melayani Anda.',
+      items: [
+        { title: 'R - RESPONSIVE', desc: 'Action Today, Not Tomorrow. Menanggapi setiap komunikasi maksimal dalam hitungan jam.' },
+        { title: 'I - INFORMATIVE', desc: 'Clarity is Power. Menyajikan data yang akurat, transparan, dan mudah dipahami.' },
+        { title: 'C - COMMUNICATIVE', desc: 'Listen First, Solve Better. Membangun dialog dua arah yang jujur tanpa hambatan.' },
+        { title: 'C - CREATIVE', desc: 'Think Beyond Boundaries. Menawarkan sudut pandang baru dan solusi inovatif.' },
+        { title: 'I - INITIATIVE', desc: 'Lead the Way. Bertindak proaktif untuk mencegah kendala sebelum terjadi.' },
+        { title: 'E - EFFECTIVE', desc: 'Result-Oriented Action. Bekerja dengan fokus pada tujuan akhir dan dampak nyata.' },
+        { title: 'P - POSITIVE', desc: 'Optimism in Every Challenge. Menjaga energi positif dan memberikan rasa aman.' }
+      ]
+    }
+  },
+  {
+    id: 'blk-home-testimonials',
+    page: 'home',
+    type: 'testimonials',
+    name: 'Testimoni & Kepercayaan Klien',
+    visible: true,
+    order: 5,
+    style: { bgTheme: 'white', paddingY: 'md', align: 'center', accentColor: '#C5A059' },
+    data: {
+      badge: 'TESTIMONI KLIEN',
+      title: 'Dedikasi Nyata Bagi Klien Kami',
+      subtitle: 'Dedikasi kami tercermin dalam setiap kesuksesan yang diraih oleh klien kami.',
+      items: [
+        {
+          text: 'Tim Narasumber Hukum memiliki pemahaman yang mendalam tentang hukum, perizinan dan legalitas yang ada di Indonesia. Kami bersyukur semua permasalahan dalam usaha saya dapat ditangani dengan baik dan efisien.',
+          name: 'Anwar Muksin',
+          role: 'Klien Korporat'
+        },
+        {
+          text: 'Ibu Debora dan tim melakukan pekerjaan yang sangat baik dan praktis. Mereka memberikan penjelasan yang jelas untuk membantu kami mengambil keputusan.',
+          name: 'Ani Handayani',
+          role: 'Klien Bisnis'
+        },
+        {
+          text: 'Tim ini dapat diandalkan dan responsif. Saya sangat puas dengan kinerja tim, berintegritas dan bersedia mempertimbangkan biaya alternatif untuk menjaga kepuasan klien.',
+          name: 'Ridwan Hanafi',
+          role: 'Klien Individu'
+        }
+      ]
+    }
+  },
+  {
+    id: 'blk-home-faq',
+    page: 'home',
+    type: 'faq',
+    name: 'Accordion Pertanyaan Populer (FAQ)',
+    visible: true,
+    order: 6,
+    style: { bgTheme: 'gray', paddingY: 'md', align: 'center', accentColor: '#C5A059' },
+    data: {
+      title: 'Pertanyaan Populer Seputar Layanan',
+      items: [
+        {
+          q: 'Bagaimana cara memulai konsultasi hukum?',
+          a: 'Anda dapat menghubungi kami melalui tombol WhatsApp yang tersedia di website ini atau mengisi formulir kontak di halaman Hubungi Kami.'
+        },
+        {
+          q: 'Berapa biaya jasa hukum di Narasumber Hukum?',
+          a: 'Biaya jasa hukum kami bervariasi tergantung pada kompleksitas dan jenis perkara. Kami selalu mengedepankan transparansi dan akan memberikan estimasi biaya setelah sesi konsultasi awal.'
+        },
+        {
+          q: 'Apakah Narasumber Hukum hanya melayani di Jakarta?',
+          a: 'Meskipun kantor operasional kami berada di DKI Jakarta, Bali, dan Karawang, kami melayani klien dan menangani perkara di seluruh wilayah Indonesia.'
+        }
+      ]
+    }
+  },
+  {
+    id: 'blk-home-cta',
+    page: 'home',
+    type: 'cta_banner',
+    name: 'Banner Ajakan Konsultasi (CTA)',
+    visible: true,
+    order: 7,
+    style: { bgTheme: 'navy', paddingY: 'md', align: 'center', accentColor: '#C5A059' },
+    data: {
+      title: 'Jangan Ditunda Dan Dipendam,',
+      highlight: 'Segera Selesaikan.',
+      subtitle: 'Tim ahli kami siap memberikan solusi hukum terbaik untuk Anda. Hubungi kami sekarang untuk konsultasi awal.',
+      buttonText: 'Konsultasi Gratis via WhatsApp',
+      buttonUrl: 'https://wa.me/6282211020022'
+    }
+  },
+
+  // TENTANG KAMI (TENTANG)
+  {
+    id: 'blk-tentang-story',
+    page: 'tentang',
+    type: 'about_story',
+    name: 'Profil & Kisah Narasumber Hukum',
+    visible: true,
+    order: 1,
+    style: { bgTheme: 'white', paddingY: 'lg', align: 'left', accentColor: '#C5A059' },
+    data: {
+      title: 'NARASUMBER HUKUM',
+      paragraphs: [
+        'NARASUMBER HUKUM saat ini terdiri dari Firma Narasumber Hukum yang bekerjasama dengan PT Sedana Legal Consultant (SELECO) dan PT Teira Dwan Indonesia (MTI-Talenstory). Dengan ini menjadikan kami sebuah kesatuan pelayanan dalam sektor Hukum, Izin, dan Legalitas disertai dengan Pengembangan dan Pelatihan Sumber Daya Manusia. Kami mengaplikasikan pengetahuan, kemampuan, dan kreativitas yang maksimal untuk mencapai tujuan bersama dengan klien kami. Kami tersedia untuk memberikan layanan hukum, izin, legalitas, pengembangan dan pelatihan SDM yang efektif dan efisien secara tepat.',
+        'Pendirian NARASUMBER HUKUM dilatarbelakangi oleh pemahaman akan pentingnya kualitas pelayanan, dan komitmen terhadap kepuasan klien. Kami percaya bahwa dengan menyediakan layanan yang lengkap serta berkualitas tinggi adalah solusi yang tepat untuk memberikan berbagai kemudahan dan kelegaan bagi klien kami.',
+        'Kami yakin bahwa kolaborasi dalam tim kami menghasilkan kinerja maksimal dalam menangani dan menyelesaikan kebutuhan klien kami, karena tim kami berpengalaman dan terlatih serta terbiasa menghadapi berbagai perkara atau proyek dengan tingkat keahliannya yang tinggi.'
+      ]
+    }
+  },
+  {
+    id: 'blk-tentang-vision',
+    page: 'tentang',
+    type: 'about_vision_mission',
+    name: 'Visi & Misi Perusahaan',
+    visible: true,
+    order: 2,
+    style: { bgTheme: 'navy', paddingY: 'lg', align: 'center', accentColor: '#C5A059' },
+    data: {
+      visionTitle: 'Visi Kami',
+      visionDesc: 'Menjadi mitra terpercaya dalam menyediakan solusi hukum yang berintegritas, inovatif, dan berorientasi pada hasil guna mendukung pertumbuhan dan kepastian hukum bagi setiap klien.',
+      missionTitle: 'Misi Kami',
+      missions: [
+        { title: 'Pelayanan Terbaik', desc: 'Menyediakan layanan hukum berkualitas tinggi yang mendahulukan kepentingan klien dengan memberikan solusi tepat, responsif, dan inovatif.' },
+        { title: 'Keadilan dan Kepastian Hukum', desc: 'Mengadvokasi keadilan dan kepastian hukum sebagai landasan utama dalam setiap tindakan hukum yang kami ambil.' },
+        { title: 'Kemitraan yang Berkelanjutan', desc: 'Mengembangkan hubungan jangka panjang yang saling menguntungkan dengan klien kami.' },
+        { title: 'Inovasi dan Pengetahuan', desc: 'Terus mengembangkan pengetahuan dan teknologi dalam hukum untuk memberikan solusi paling mutakhir.' }
+      ]
+    }
+  },
+
+  // LAYANAN (SERVICES)
+  {
+    id: 'blk-services-intro',
+    page: 'services',
+    type: 'services_intro',
+    name: 'Pengenalan 3 Slide Layanan',
+    visible: true,
+    order: 1,
+    style: { bgTheme: 'navy', paddingY: 'md', align: 'center', accentColor: '#C5A059' },
+    data: {
+      badge: 'KATALOG LAYANAN RESMI',
+      title: 'Layanan Terpadu Narasumber Hukum',
+      subtitle: 'Terbagi dalam 3 Divisi Utama: Pelayanan Hukum (34 Perkara), Pelayanan Perizinan & Legalitas (411 Layanan), serta Pelayanan Pelatihan & Pengembangan SDM (6 Program).'
+    }
+  },
+  {
+    id: 'blk-services-catalog',
+    page: 'services',
+    type: 'services_catalog',
+    name: 'Katalog Interaktif 3 Slide & 411 Perizinan',
+    visible: true,
+    order: 2,
+    style: { bgTheme: 'white', paddingY: 'lg', align: 'left', accentColor: '#C5A059' },
+    data: {
+      slide1Title: 'Slide 1: Pelayanan Hukum',
+      slide1Desc: 'Meliputi seluruh Perkara/Upaya Hukum di Indonesia, baik Litigasi (Pengadilan) maupun Non-Litigasi (Luar Pengadilan).',
+      slide2Title: 'Slide 2: Pelayanan Perizinan dan Legalitas',
+      slide2Desc: 'Pengurusan & pendampingan lengkap dari investasi awal hingga operasional, mencakup 411 izin di 18 Kementerian RI.',
+      slide3Title: 'Slide 3: Pengembangan dan Pelatihan SDM',
+      slide3Desc: 'Merancang langkah perubahan berdampak melalui In-House Training, Outbound, People Enabler, Career Coaching, dan R&D.'
+    }
+  },
+
+  // KONTAK (KONTAK)
+  {
+    id: 'blk-kontak-form',
+    page: 'kontak',
+    type: 'contact_form_section',
+    name: 'Formulir Konsultasi & Alamat Kantor',
+    visible: true,
+    order: 1,
+    style: { bgTheme: 'gray', paddingY: 'lg', align: 'left', accentColor: '#C5A059' },
+    data: {
+      title: 'Hubungi Kami',
+      subtitle: 'Kami siap mendengarkan dan mendampingi setiap perkara Anda dengan profesionalisme tinggi.',
+      whatsapp: '+62-822-1102-0022',
+      email: 'hello@narasumberhukum.com',
+      address: 'Jakarta Pusat, Indonesia'
+    }
+  }
+];
+
+  blocks: DEFAULT_PRESET_BLOCKS,
   siteSettings: {
     siteName: 'Narasumber Hukum',
     tagline: 'Sentral Edukasi & Solusi',
