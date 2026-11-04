@@ -552,11 +552,12 @@ export default function LinkTreeManager({
                                     @{lt.slug}
                                   </span>
                                   {lt.profile.isVerified && (
-                                    <ShieldCheck
-                                      size={15}
-                                      className="text-amber-400 shrink-0"
-                                      title="Terverifikasi"
-                                    />
+                                    <span title="Terverifikasi" className="inline-flex">
+                                      <ShieldCheck
+                                        size={15}
+                                        className="text-amber-400 shrink-0"
+                                      />
+                                    </span>
                                   )}
                                 </div>
                                 <div className="font-bold text-white text-xs mt-1 truncate">
