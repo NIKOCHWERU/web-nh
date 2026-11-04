@@ -1481,8 +1481,8 @@ export default function LinkTreeManager({
                 </div>
 
                 {/* Smartphone Screen Canvas */}
-                <div className="flex-1 rounded-[30px] overflow-hidden overflow-y-auto relative pt-2 flex flex-col bg-[#FAFAFA] text-slate-800 max-h-[680px]">
-                  <LinkTreePublicView item={editingItem} />
+                <div className="flex-1 rounded-[30px] overflow-hidden overflow-y-auto relative pt-1 flex flex-col bg-[#FAFAFA] text-slate-800 max-h-[680px]">
+                  <LinkTreePublicView item={editingItem} inMockup={true} />
                 </div>
               </div>
 
