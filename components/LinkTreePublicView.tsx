@@ -1,10 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import Link from 'next/link';
 import {
-  Share2,
-  Copy,
-  Check,
   MapPin,
   Clock,
   Mail,
@@ -90,42 +86,11 @@ interface LinkTreePublicViewProps {
 }
 
 export default function LinkTreePublicView({ item, inMockup = false }: LinkTreePublicViewProps) {
-  const [copied, setCopied] = useState(false);
   const [imgErr, setImgErr] = useState(false);
 
   const theme = item.theme || 'gold_luxury';
   const isNavyTheme = theme === 'navy_gold';
   const isMinimalTheme = theme === 'minimal_white';
-
-  const currentUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/@${item.slug}`
-    : `https://narasumberhukum.com/@${item.slug}`;
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(currentUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch {
-      // fallback
-    }
-  };
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `${item.profile.name} - Link Tree Resmi`,
-          text: item.profile.bio || item.profile.tagline,
-          url: currentUrl
-        });
-      } catch {
-        handleCopyLink();
-      }
-    } else {
-      handleCopyLink();
-    }
-  };
 
   const defaultAvatar = '/logo.png';
   const avatarSrc = !imgErr && item.profile.avatarUrl ? item.profile.avatarUrl : defaultAvatar;
@@ -163,56 +128,6 @@ export default function LinkTreePublicView({ item, inMockup = false }: LinkTreeP
             : 'max-w-md sm:max-w-xl md:max-w-2xl mx-auto'
         }`}
       >
-        {/* Top Header Bar */}
-        <header className="w-full flex items-center justify-between mb-4 sm:mb-6 px-1">
-          <Link
-            href="/"
-            className={`inline-flex items-center gap-2 text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full transition-all shadow-sm ${
-              isNavyTheme
-                ? 'bg-white/10 hover:bg-white/20 text-gray-200 border border-white/10'
-                : 'bg-white hover:bg-amber-50 text-slate-700 border border-amber-200/60'
-            }`}
-          >
-            <img src="/logo.png" alt="NH" className="w-4 h-4 sm:w-5 sm:h-5 object-contain" />
-            <span className="tracking-wide">Narasumber Hukum</span>
-          </Link>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleCopyLink}
-              aria-label="Salin URL Linktree"
-              className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full transition-all cursor-pointer shadow-sm ${
-                copied
-                  ? 'bg-emerald-600 text-white border border-emerald-500'
-                  : isNavyTheme
-                  ? 'bg-white/10 hover:bg-white/20 text-gray-200 border border-white/10'
-                  : 'bg-white hover:bg-amber-50 text-slate-700 border border-amber-200/60'
-              }`}
-            >
-              {copied ? (
-                <Check size={14} className="text-white" />
-              ) : (
-                <Copy size={14} className="text-amber-500" />
-              )}
-              <span>{copied ? 'Tersalin!' : 'Salin Link'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleShare}
-              aria-label="Bagikan Profil"
-              className={`p-2 sm:p-2.5 rounded-full transition-all cursor-pointer shadow-sm ${
-                isNavyTheme
-                  ? 'bg-white/10 hover:bg-white/20 text-gray-200 border border-white/10'
-                  : 'bg-white hover:bg-amber-50 text-slate-700 border border-amber-200/60'
-              }`}
-            >
-              <Share2 size={15} />
-            </button>
-          </div>
-        </header>
-
         {/* Profile Card Frame */}
         <main
           className={`w-full rounded-3xl overflow-hidden shadow-2xl relative transition-all duration-300 ${
