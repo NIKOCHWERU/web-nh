@@ -7,8 +7,7 @@ import {
   Phone,
   FileText,
   Globe,
-  ChevronRight,
-  ShieldCheck
+  ChevronRight
 } from 'lucide-react';
 import { LinkTreeItem, LinkTreeLinkItem } from '@/lib/cmsTypes';
 
@@ -436,14 +435,8 @@ export default function LinkTreePublicView({ item, inMockup = false }: LinkTreeP
               </div>
             )}
 
-            {/* Verified Official Seal */}
-            <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-dashed border-gray-200 dark:border-white/10 flex items-center justify-center gap-2 text-center text-[11px] sm:text-xs text-gray-400">
-              <ShieldCheck size={15} className="text-[#C5A059]" />
-              <span>Profil Resmi &bull; Kantor Narasumber Hukum Indonesia</span>
-            </div>
-
             {/* Footer Copyright */}
-            <div className="mt-3 text-center text-[10px] sm:text-[11px] text-gray-400">
+            <div className="mt-6 sm:mt-8 pt-4 border-t border-gray-100 dark:border-white/5 text-center text-[10px] sm:text-[11px] text-gray-400">
               <p>
                 {item.companyInfo?.copyright ||
                   '© 2026 Kantor Narasumber Hukum. All rights reserved.'}
