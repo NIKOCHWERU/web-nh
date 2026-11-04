@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 
 const Footer = () => {
   const { t } = useLanguage();
+  const pathname = usePathname();
   const isHidden =
     pathname?.startsWith('/dashboard') ||
     pathname?.startsWith('/admin') ||

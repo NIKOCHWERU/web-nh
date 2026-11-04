@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 
 const FloatingLanguage = () => {
     const { locale, setLocale } = useLanguage();
+    const pathname = usePathname();
     const isHidden =
         pathname?.startsWith('/dashboard') ||
         pathname?.startsWith('/admin') ||
