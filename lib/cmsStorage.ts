@@ -39,6 +39,15 @@ export function readCmsDb(): CmsDatabase {
         }
         return merged.sort((a, b) => (a.order || 0) - (b.order || 0));
       })(),
+      linktrees: (() => {
+        const existing: any[] = Array.isArray(parsed.linktrees) ? parsed.linktrees : [];
+        if (existing.length === 0 && INITIAL_CMS_DB.linktrees) {
+          return INITIAL_CMS_DB.linktrees;
+        }
+        const existingSlugs = new Set(existing.map((lt: any) => lt.slug));
+        const missing = (INITIAL_CMS_DB.linktrees || []).filter(lt => !existingSlugs.has(lt.slug));
+        return [...existing, ...missing];
+      })(),
       siteSettings: { ...INITIAL_CMS_DB.siteSettings, ...(parsed.siteSettings || {}) }
     };
   } catch (err) {

@@ -8,8 +8,13 @@ import { usePathname } from 'next/navigation';
 
 const Footer = () => {
   const { t } = useLanguage();
-  const pathname = usePathname();
-  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin')) return null;
+  const isHidden =
+    pathname?.startsWith('/dashboard') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/linktree') ||
+    pathname?.startsWith('/@') ||
+    pathname?.startsWith('/%40');
+  if (isHidden) return null;
 
   return (
     <footer className="bg-navy text-white pt-16 border-t border-white/5">

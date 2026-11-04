@@ -69,6 +69,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: '/@:slug',
+        destination: '/linktree/:slug',
+      },
+      {
+        source: '/%40:slug',
+        destination: '/linktree/:slug',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -59,6 +59,7 @@ export async function PUT(request: Request) {
       articles: body.articles !== undefined ? body.articles : currentDb.articles,
       messages: body.messages !== undefined ? body.messages : currentDb.messages,
       blocks: body.blocks !== undefined ? body.blocks : currentDb.blocks,
+      linktrees: body.linktrees !== undefined ? body.linktrees : (currentDb.linktrees || []),
       siteSettings: body.siteSettings !== undefined ? { ...currentDb.siteSettings, ...body.siteSettings } : currentDb.siteSettings
     };
 

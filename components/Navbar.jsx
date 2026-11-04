@@ -11,7 +11,12 @@ const Navbar = () => {
   const pathname = usePathname();
   const { t } = useLanguage();
 
-  const isDashboard = pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin');
+  const isHidden =
+    pathname?.startsWith('/dashboard') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/linktree') ||
+    pathname?.startsWith('/@') ||
+    pathname?.startsWith('/%40');
   const isHomePage = pathname === '/';
 
   useEffect(() => {
@@ -27,7 +32,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (isDashboard) return null;
+  if (isHidden) return null;
 
   const navLinks = [
     { name: t('nav.home'), path: '/', isHash: false },

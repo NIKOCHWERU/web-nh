@@ -236,11 +236,47 @@ export interface PageBlock {
   data: Record<string, any>;
 }
 
+export interface LinkTreeLinkItem {
+  id: string;
+  title: string;
+  subtitle?: string;
+  url: string;
+  icon?: string;
+  customIconUrl?: string;
+  useProfilePhoto?: boolean;
+}
+
+export interface LinkTreeItem {
+  id: string;
+  slug: string;
+  active: boolean;
+  theme?: 'gold_luxury' | 'navy_gold' | 'minimal_white';
+  profile: {
+    bannerUrl?: string;
+    avatarUrl?: string;
+    name: string;
+    tagline?: string;
+    bio?: string;
+    isVerified?: boolean;
+  };
+  companyInfo?: {
+    address?: string;
+    hours?: string;
+    email?: string;
+    phone?: string;
+    copyright?: string;
+  };
+  links: LinkTreeLinkItem[];
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface CmsDatabase {
   users: CmsUser[];
   articles: CmsArticle[];
   messages: CmsContactMessage[];
   blocks: PageBlock[];
+  linktrees?: LinkTreeItem[];
   siteSettings: {
     siteName: string;
     tagline: string;
@@ -823,6 +859,76 @@ export const INITIAL_CMS_DB: CmsDatabase = {
   
 
   blocks: DEFAULT_PRESET_BLOCKS,
+
+  linktrees: [
+    {
+      id: 'lt-deborajalessveva',
+      slug: 'deborajalessveva',
+      active: true,
+      theme: 'gold_luxury',
+      profile: {
+        bannerUrl: '',
+        avatarUrl: '/logo.png',
+        name: 'Debora Jalessveva, S.H., M.H.',
+        tagline: 'Managing Partner & Konsultan Hukum',
+        bio: 'Kantor Narasumber Hukum — Sentral Edukasi & Solusi Hukum Terpercaya di Indonesia. Melayani konsultasi hukum korporasi, legalitas bisnis, dan pendampingan perkara.',
+        isVerified: true
+      },
+      companyInfo: {
+        address: 'Jl. M.H Thamrin No. 9 Lt 12, Kebon Sirih, Menteng, DKI Jakarta',
+        hours: 'Senin - Jumat: 08:30 - 17:30 WIB',
+        email: 'hello@narasumberhukum.com',
+        phone: '+62 822-1102-0022',
+        copyright: '© 2026 Kantor Narasumber Hukum. All rights reserved.'
+      },
+      links: [
+        {
+          id: 'link-wa',
+          title: 'Konsultasi WhatsApp Hotline Resmi',
+          subtitle: 'Respon Cepat Tim Legal Narasumber Hukum',
+          url: 'https://wa.me/6282211020022?text=Halo%20Ibu%20Debora%20Jalessveva,%20saya%20ingin%20berkonsultasi%20hukum.',
+          icon: 'auto'
+        },
+        {
+          id: 'link-profile',
+          title: 'Profil Lengkap Narasumber Hukum',
+          subtitle: 'Kunjungi Website Resmi & Profil Tim',
+          url: 'https://narasumberhukum.com/tentang',
+          icon: 'globe'
+        },
+        {
+          id: 'link-services',
+          title: 'Layanan Hukum & Perizinan Usaha',
+          subtitle: 'Litigasi, Non-Litigasi, OSS RBA, BPOM & HAKI',
+          url: 'https://narasumberhukum.com/services',
+          icon: 'file-text'
+        },
+        {
+          id: 'link-articles',
+          title: 'Artikel & Edukasi Hukum Terkini',
+          subtitle: 'Panduan & Analisis Hukum Praktis',
+          url: 'https://narasumberhukum.com/artikel',
+          icon: 'file-text'
+        },
+        {
+          id: 'link-ig',
+          title: 'Instagram Resmi @narasumberhukum',
+          subtitle: '@narasumberhukum',
+          url: 'https://www.instagram.com/narasumberhukum/',
+          icon: 'auto'
+        },
+        {
+          id: 'link-li',
+          title: 'LinkedIn Kantor Narasumber Hukum',
+          subtitle: 'Kantor Narasumber Hukum',
+          url: 'https://www.linkedin.com/company/kantor-narasumber-hukum/',
+          icon: 'auto'
+        }
+      ],
+      created_at: '2026-11-04T10:00:00.000Z',
+      updated_at: '2026-11-04T10:00:00.000Z'
+    }
+  ],
 
   siteSettings: {
     siteName: 'Narasumber Hukum',

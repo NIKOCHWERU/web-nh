@@ -4,8 +4,13 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 
 const FloatingWA = () => {
-  const pathname = usePathname();
-  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin')) return null;
+  const isHidden =
+    pathname?.startsWith('/dashboard') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/linktree') ||
+    pathname?.startsWith('/@') ||
+    pathname?.startsWith('/%40');
+  if (isHidden) return null;
 
   const waMessage = encodeURIComponent("Halo Kantor Narasumber Hukum, saya ingin berkonsultasi. Mohon info jadwalnya.");
   

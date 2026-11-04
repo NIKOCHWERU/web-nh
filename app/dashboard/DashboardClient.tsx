@@ -45,7 +45,8 @@ import {
   Quote,
   List,
   AlertCircle,
-  GripVertical
+  GripVertical,
+  Share2
 } from 'lucide-react';
 import {
   CmsDatabase,
@@ -59,8 +60,9 @@ import {
   INITIAL_CMS_DB
 } from '@/lib/cmsTypes';
 import { BlockRendererItem } from '@/components/CustomBlocksRenderer';
+import LinkTreeManager from '@/components/dashboard/LinkTreeManager';
 
-type ActiveTab = 'overview' | 'articles' | 'messages' | 'builder' | 'users' | 'settings';
+type ActiveTab = 'overview' | 'articles' | 'messages' | 'builder' | 'users' | 'settings' | 'linktree';
 
 const BLOCK_TEMPLATES: {
   type: PageBlock['type'];
@@ -935,6 +937,13 @@ export default function DashboardClient() {
                 show: true
               },
               {
+                id: 'linktree',
+                label: 'Link Tree Generator',
+                icon: <Share2 size={17} />,
+                badge: (db.linktrees || []).length,
+                show: true
+              },
+              {
                 id: 'builder',
                 label: 'Visual Block Builder',
                 icon: <Layers size={17} />,
@@ -1020,6 +1029,7 @@ export default function DashboardClient() {
               {activeTab === 'messages' && 'Kotak Masuk Pesan Formulir Kontak'}
               {activeTab === 'builder' && 'Visual Block Page Builder (Elementor Mode)'}
               {activeTab === 'users' && 'Manajemen Akun Pengguna & Penulis Artikel'}
+              {activeTab === 'linktree' && 'Link Tree Corporate & Personal Generator'}
               {activeTab === 'settings' && 'Pengaturan Umum & Identitas Website'}
             </h2>
           </div>
@@ -1053,7 +1063,7 @@ export default function DashboardClient() {
           {activeTab === 'overview' && (
             <div className="space-y-6 max-w-7xl mx-auto">
               {/* KPI Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div
                   onClick={() => setActiveTab('articles')}
                   className="bg-[#15151c] border border-white/10 hover:border-gold/40 rounded-2xl p-5 cursor-pointer transition-all"
@@ -1088,6 +1098,26 @@ export default function DashboardClient() {
                   <div className="text-3xl font-extrabold text-white mb-1">{db.messages.length}</div>
                   <div className="text-xs text-emerald-400 font-semibold">
                     {unreadCount} pesan belum dibaca
+                  </div>
+                </div>
+
+                <div
+                  onClick={() => setActiveTab('linktree')}
+                  className="bg-[#15151c] border border-white/10 hover:border-gold/40 rounded-2xl p-5 cursor-pointer transition-all"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                      Link Tree Generator
+                    </span>
+                    <div className="w-9 h-9 rounded-xl bg-amber-500/15 text-gold flex items-center justify-center">
+                      <Share2 size={18} />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-extrabold text-white mb-1">
+                    {(db.linktrees || []).length}
+                  </div>
+                  <div className="text-xs text-gold font-semibold">
+                    {(db.linktrees || []).filter((lt) => lt.active).length} profil aktif (@)
                   </div>
                 </div>
 
@@ -1141,6 +1171,13 @@ export default function DashboardClient() {
                     className="px-4 py-2.5 rounded-xl bg-gold text-navy font-bold text-xs flex items-center gap-2 hover:bg-white transition-all cursor-pointer"
                   >
                     <Plus size={15} /> Tulis Artikel Hukum Baru
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('linktree')}
+                    className="px-4 py-2.5 rounded-xl bg-gold/15 hover:bg-gold text-gold hover:text-navy font-bold text-xs flex items-center gap-2 border border-gold/30 transition-all cursor-pointer"
+                  >
+                    <Share2 size={15} /> Kelola Link Tree (@)
                   </button>
                   {canManageBuilderAndUsers && (
                     <button
@@ -4159,6 +4196,18 @@ export default function DashboardClient() {
                 </button>
               </div>
             </div>
+          )}
+
+          {/* =================================================================
+              TAB 7: LINK TREE GENERATOR
+          ================================================================= */}
+          {activeTab === 'linktree' && (
+            <LinkTreeManager
+              db={db}
+              onSaveDb={persistCmsData}
+              showToast={showToast}
+              savingDb={savingDb}
+            />
           )}
         </main>
       </div>
