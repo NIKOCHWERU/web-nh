@@ -7,12 +7,14 @@ import { useLanguage } from '@/context/LanguageContext';
 const ContactForm = () => {
   const { t } = useLanguage();
   const [status, setStatus] = useState('idle'); // idle, sending, success, error
+  const [loadedAt] = useState(() => Date.now());
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     subject: '',
-    message: ''
+    message: '',
+    hp_company: ''
   });
   const [validationErrors, setValidationErrors] = useState(null);
 
@@ -23,14 +25,19 @@ const ContactForm = () => {
     try {
       setValidationErrors(null);
 
-      // 1. Save to local CMS API (/api/contact) so messages are always stored in Dashboard
+      // 1. Save to local CMS API (/api/contact) with anti-bot fields
+      const payload = {
+        ...formData,
+        _loadedAt: loadedAt
+      };
+
       const localRes = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       // 2. Also forward to external NEXT_PUBLIC_API_URL if configured
@@ -97,6 +104,27 @@ const ContactForm = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
+            {/* Anti-spam honeypot trap - invisible to humans, caught by automated bots */}
+            <div
+              style={{
+                display: 'none',
+                position: 'absolute',
+                left: '-9999px',
+                opacity: 0,
+                pointerEvents: 'none'
+              }}
+              aria-hidden="true"
+            >
+              <input
+                type="text"
+                name="hp_company"
+                value={formData.hp_company || ''}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-600">{t('contact_form.name_label')}</label>
